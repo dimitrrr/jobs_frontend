@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { BACKEND } from '../../axios';
+import { DEFAULT_PAGE_AFTER_LOGIN, LOGGENID_ITEM, TOKEN_ITEM } from '../../constants';
 
 export const Login = () => {
   const [state, setState] = useState({
     email: "",
     password: "",
   });
+
+  const isLoggedIn = window.localStorage.getItem(LOGGENID_ITEM);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      window.location.replace(DEFAULT_PAGE_AFTER_LOGIN);
+    }
+  }, [isLoggedIn]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -17,7 +27,20 @@ export const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(state);
+    
+    try {
+      BACKEND.post('/login', state).then(response => {
+        console.log(response);
+        if(response.data.status === 'ok') {
+          alert('login successful');
+          window.localStorage.setItem(TOKEN_ITEM, response.data.data);
+          window.localStorage.setItem('loggedIn', true);
+          window.location.replace(DEFAULT_PAGE_AFTER_LOGIN);
+        }
+      });
+    } catch(error) {
+      console.log(error);
+    }
   };
 
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TimezoneSelect, { allTimezones } from "react-timezone-select";
+import { BACKEND } from '../../axios';
 
 export const Registration = () => {
   const [state, setState] = useState({
@@ -8,7 +9,7 @@ export const Registration = () => {
     email: "",
     password: "",
   });
-  const [tz, setTz] = useState(
+  const [timeZone, setTimeZone] = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone
   );
 
@@ -22,7 +23,19 @@ export const Registration = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(state);
+    
+    const userData = {
+      ...state,
+      timeZone: JSON.stringify(timeZone),
+    }
+
+    try {
+      BACKEND.post('/register', userData).then(response => {
+        console.log(response.data);
+      });
+    } catch(error) {
+      console.log(error);
+    }
   };
 
 
@@ -58,8 +71,8 @@ export const Registration = () => {
         </div>
         <div className="timezone--wrapper">
           <TimezoneSelect
-            value={tz}
-            onChange={setTz}
+            value={timeZone}
+            onChange={setTimeZone}
             labelStyle="altName"
             timezones={{
               ...allTimezones

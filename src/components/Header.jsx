@@ -1,43 +1,26 @@
 import React from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { DEFAULT_URL, LOGGENID_ITEM, TOKEN_ITEM } from '../constants';
 
-export const Header = () => {
+export const Header = ({userData}) => {
   const location = useLocation();
-  const params = useParams();
   const pathname = location.pathname;
-
-  console.log('location', location)
-  console.log('params', params.userId)
   
-  const isUserAuthorized = true;
-  const shouldRenderHeaderForLoginPage = pathname === '/' || pathname === '/registration';
+  const isUserAuthorized = !!window.localStorage.getItem(LOGGENID_ITEM);
   const shouldShowEmployeeHeader = pathname.includes('/employee');
-  const shouldShowEmployeePersonal = pathname === '/employee/' && isUserAuthorized;
+  const shouldShowEmployeePersonal = (pathname === '/employee' || pathname === '/employee/') && isUserAuthorized;
   const shouldShowEmployeeHome = shouldShowEmployeeHeader && pathname.includes('/employee/personal');
   const shouldShowEmployerHeader = pathname.includes('/employer');
-  const shouldShowEmployerPersonal = pathname === '/employer/' && isUserAuthorized;
+  const shouldShowEmployerPersonal = (pathname === '/employer' || pathname === '/employer/') && isUserAuthorized;
   const shouldShowEmployerHome = shouldShowEmployerHeader && pathname.includes('/employer/personal');
 
-  const renderLoginRegistrationLinks = () => {
-    return (
-      <>
-        <li>
-          <Link to="/">Увійти</Link>
-        </li>
-        <li>
-          <Link to="/registration">Зареєструватися</Link>
-        </li>
-        <li>
-          <Link to="/employee/">Робітник</Link>
-        </li>
-        <li>
-          <Link to="/employer/">Роботодавець</Link>
-        </li>
-      </>
-    )
+  const logOut = () => {
+    window.localStorage.removeItem(TOKEN_ITEM);
+    window.localStorage.removeItem(LOGGENID_ITEM);
+    window.location.replace(DEFAULT_URL);
   }
 
-  const renderHeaderForLoginPage = () => {
+  const renderLoginRegistrationLinks = () => {
     return (
       <>
         <li>
@@ -61,14 +44,16 @@ export const Header = () => {
         ) : null }
         { shouldShowEmployeePersonal ? (
           <li>
-            <Link to="/employee/personal">Особистий кабінет робітника</Link>
+            <Link to="/employee/personal">Особистий кабінет робітника {userData ? userData.username : ''}</Link>
           </li>
         ) : null }
         <li>
           <Link to="/employer/">Роботодавець</Link>
         </li>
         <li>
-          <Link to="/">Вийти</Link>
+          <button onClick={logOut}>
+            Вийти
+          </button>
         </li>
       </>
     );
@@ -85,14 +70,16 @@ export const Header = () => {
         ) : null }
         { shouldShowEmployerPersonal ? (
           <li>
-            <Link to="/employer/personal">Особистий кабінет роботодавця</Link>
+            <Link to="/employer/personal">Особистий кабінет роботодавця {userData ? userData.username : ''}</Link>
           </li>
         ) : null }
         <li>
           <Link to="/employee/">Робітник</Link>
         </li>
         <li>
-          <Link to="/">Вийти</Link>
+          <button onClick={logOut}>
+            Вийти
+          </button>
         </li>
       </>
     );
@@ -107,7 +94,6 @@ export const Header = () => {
           { isUserAuthorized ? null : renderLoginRegistrationLinks() }
           { shouldShowEmployeeHeader ? renderEmployeeHeader() : null }
           { shouldShowEmployerHeader ? renderEmployerHeader() : null }
-          { shouldRenderHeaderForLoginPage ? renderHeaderForLoginPage() : null }
         </ul>
       </nav>
     </div>
