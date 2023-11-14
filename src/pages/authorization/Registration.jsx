@@ -31,7 +31,7 @@ export const Registration = () => {
 
     try {
       BACKEND.post('/register', userData).then(response => {
-        console.log(response.data);
+        setState({username: '', email: '', password: ''});
       });
     } catch(error) {
       console.log(error);
@@ -42,48 +42,48 @@ export const Registration = () => {
   return (
     <div className='registration'>
         <form onSubmit={handleSubmit}>
-        <div className="form-control">
-          <label>Імʼя</label>
-          <input
-            type="text"
-            name="username"
-            value={state.username}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-control">
-          <label>Електронна пошта</label>
-          <input
-            type="text"
-            name="email"
-            value={state.email}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-control">
-          <label>Пароль</label>
-          <input
-            type="password"
-            name="password"
-            value={state.password}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="timezone--wrapper">
-          <TimezoneSelect
-            value={timeZone}
-            onChange={setTimeZone}
-            labelStyle="altName"
-            timezones={{
-              ...allTimezones
-            }}
-          />
-        </div>
-        <div className="form-control">
-          <label></label>
-          <button type="submit">Зареєструватися</button>
-        </div>
-        <Link to='/'>Перейти до авторизації</Link>
+          <div className="form-control">
+            <label>Імʼя</label>
+            <input
+              type="text"
+              name="username"
+              value={state.username}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-control">
+            <label>Електронна пошта</label>
+            <input
+              type="text"
+              name="email"
+              value={state.email}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-control">
+            <label>Пароль</label>
+            <input
+              type="password"
+              name="password"
+              value={state.password}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="timezone--wrapper">
+            <TimezoneSelect
+              value={timeZone}
+              onChange={setTimeZone}
+              labelStyle="altName"
+              timezones={{
+                ...allTimezones
+              }}
+            />
+          </div>
+          <div className="form-control">
+            <label></label>
+            <button type="submit">Зареєструватися</button>
+          </div>
+          <Link to='/'>Перейти до авторизації</Link>
       </form>
     </div>
   )

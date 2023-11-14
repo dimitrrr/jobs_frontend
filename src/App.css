@@ -6,3 +6,69 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: flex-end;
+
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.navbar li {
+  padding: 20px;
+  border: 1px solid #e7e7e7;
+  background-color: #f3f3f3;
+  transition: all .5s ease-out;
+}
+
+.navbar li a {
+  color: #000;
+  text-decoration: none;
+}
+
+.navbar li:hover {
+  background-color: #000;
+}
+
+.navbar li:hover a {
+  color: #e7e7e7;
+}
+
+main {
+
+}
+
+.sidebar-page {
+  display: flex;
+}
+
+.sidebar-page aside {
+  width: 20%;
+  border-right: 1px solid #e7e7e7;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-page aside .view {
+  border: 1px solid #e7e7e7;
+  padding: 20px;
+
+  transition: all .5s ease-out;
+  cursor: pointer;
+}
+
+.sidebar-page aside .view:hover, .sidebar-page aside .view-active {
+  background-color: #000;
+  color: #e7e7e7;
+}
+
+.sidebar-page article {
+  width: 80%;
+  padding: 10px;
+}

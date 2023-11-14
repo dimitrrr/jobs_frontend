@@ -1,23 +1,27 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { DEFAULT_URL, LOGGENID_ITEM, TOKEN_ITEM } from '../constants';
+import React, { useContext } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from '../constants';
+import { AppContext } from '../context/context';
 
-export const Header = ({userData}) => {
+export const Header = () => {
+  const CONTEXT = useContext(AppContext);
+  const userData = CONTEXT.user;
   const location = useLocation();
   const pathname = location.pathname;
+  const navigate = useNavigate();
   
   const isUserAuthorized = !!window.localStorage.getItem(LOGGENID_ITEM);
   const shouldShowEmployeeHeader = pathname.includes('/employee');
   const shouldShowEmployeePersonal = (pathname === '/employee' || pathname === '/employee/') && isUserAuthorized;
   const shouldShowEmployeeHome = shouldShowEmployeeHeader && pathname.includes('/employee/personal');
-  const shouldShowEmployerHeader = pathname.includes('/employer');
+  const shouldShowEmployerHeader = pathname.includes('/employer') || pathname.includes('/vacancyCreator');
   const shouldShowEmployerPersonal = (pathname === '/employer' || pathname === '/employer/') && isUserAuthorized;
-  const shouldShowEmployerHome = shouldShowEmployerHeader && pathname.includes('/employer/personal');
+  const shouldShowEmployerHome = shouldShowEmployerHeader && (pathname.includes('/employer/personal') || pathname === '/vacancyCreator');
 
   const logOut = () => {
     window.localStorage.removeItem(TOKEN_ITEM);
     window.localStorage.removeItem(LOGGENID_ITEM);
-    window.location.replace(DEFAULT_URL);
+    navigate(START_PAGE_URL);
   }
 
   const renderLoginRegistrationLinks = () => {
@@ -90,7 +94,7 @@ export const Header = ({userData}) => {
   return (
     <div className='header'>
       <nav>
-        <ul>
+        <ul className='navbar'>
           { isUserAuthorized ? null : renderLoginRegistrationLinks() }
           { shouldShowEmployeeHeader ? renderEmployeeHeader() : null }
           { shouldShowEmployerHeader ? renderEmployerHeader() : null }

@@ -1,45 +1,74 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Header } from './components';
 import { Login, Registration } from './pages/authorization';
 import { EmployeeHome, EmployeePersonal } from './pages/employee';
-import { EmployerHome, EmployerPersonal } from './pages/employer';
+import { EmployerHome, EmployerPersonal, VacancyCreator } from './pages/employer';
 import { Error } from './pages/Error/Error';
 import { BACKEND } from './axios';
-import { DEFAULT_URL, LOGGENID_ITEM, TOKEN_ITEM } from './constants';
+import { LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from './constants';
 import { EmployeeProfile, EmployerProfile } from './pages/profile';
 import { Vacancy } from './pages/vacancy';
+import { AppContext } from './context/context';
 
 function App() {
-  const [userData, setUserData] = useState(null);
+  const CONTEXT = useContext(AppContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = window.localStorage.getItem(TOKEN_ITEM);
-    if(!token) return;
+    async function fetchData() {
+      const token = window.localStorage.getItem(TOKEN_ITEM);
+      if(!token) return;
+  
+      let updatedContext = {...CONTEXT};
+  
+      try {
+        await BACKEND.post('/userData', { token })
+        .then(({data}) => {
+          if(data.data === 'token expired') {
+            alert('token expired');
+            window.localStorage.removeItem(TOKEN_ITEM);
+            window.localStorage.removeItem(LOGGENID_ITEM);
+            navigate(START_PAGE_URL);
+          } else {
+            updatedContext = {...updatedContext, user: data.data};
 
-    try {
-      BACKEND.post('/userData', { token })
-      .then(({data}) => {
-        if(data.data === 'token expired') {
-          alert('token expired');
-          window.localStorage.removeItem(TOKEN_ITEM);
-          window.localStorage.removeItem(LOGGENID_ITEM);
-          window.location.replace(DEFAULT_URL);
-        } else {
-          setUserData(data.data);
-        }
-      });
-    } catch(error) {
-      console.log(error)
-    };
+            // try {
+            // } 
+            // catch(error) {
+            //   console.log(error)
+            // };
+          }
+        });
+      } catch(error) {
+        console.log(error);
+      };
+
+      try {
+        await BACKEND.post('/postedVacancies', { token })
+        .then(({data}) => {
+          if(data && data.status === 'ok') {
+            updatedContext = {...updatedContext, vacancies: data.data};
+          } else {
+            console.log('error when loading vacancies', data);
+          }
+        });
+      } catch(error) {
+        console.log(error);
+      }
+  
+      CONTEXT.updateState({...CONTEXT, ...updatedContext});
+    }
+
+    fetchData();
     
   }, []);
 
   return (
-    <Router>
-      <div className='app'>
-        <Header userData={userData} />
+    <div className='app'>
+      <Header />
+      <main>
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/registration' element={<Registration />} />
@@ -50,10 +79,11 @@ function App() {
           <Route path='/employer/personal' element={<EmployerPersonal />} />
           <Route path='/employees' element={<EmployeeProfile />} />
           <Route path='/vacancies' element={<Vacancy />} />
+          <Route path='/vacancyCreator' element={<VacancyCreator />} />
           <Route path='*' element={<Error />} />
         </Routes>
-      </div>
-    </Router>
+      </main>
+    </div>
   );
 }
 

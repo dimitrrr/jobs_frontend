@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BACKEND } from '../../axios';
-import { DEFAULT_PAGE_AFTER_LOGIN, LOGGENID_ITEM, TOKEN_ITEM } from '../../constants';
+import { DEFAULT_PAGE_AFTER_LOGIN_URL, LOGGENID_ITEM, TOKEN_ITEM } from '../../constants';
 
 export const Login = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -13,7 +14,7 @@ export const Login = () => {
 
   useEffect(() => {
     if(isLoggedIn) {
-      window.location.replace(DEFAULT_PAGE_AFTER_LOGIN);
+      navigate(DEFAULT_PAGE_AFTER_LOGIN_URL);
     }
   }, [isLoggedIn]);
 
@@ -35,7 +36,7 @@ export const Login = () => {
           alert('login successful');
           window.localStorage.setItem(TOKEN_ITEM, response.data.data);
           window.localStorage.setItem('loggedIn', true);
-          window.location.replace(DEFAULT_PAGE_AFTER_LOGIN);
+          navigate(DEFAULT_PAGE_AFTER_LOGIN_URL);
         }
       });
     } catch(error) {
