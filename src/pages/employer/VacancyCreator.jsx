@@ -24,11 +24,14 @@ export const VacancyCreator = () => {
   useEffect(() => {
     if(!isNewVacancy) {
       const vacancy = CONTEXT.vacancies.find(v => v._id === vacancyId);
+
       if(vacancy) {
         setVacancy(vacancy);
-      } 
+      } else {
+        return navigate(EMPLOYER_PERSONAL_URL);
+      }
     }
-  }, [CONTEXT.vacancies, vacancyId, isNewVacancy]);
+  }, [CONTEXT.vacancies, vacancyId, isNewVacancy, navigate]);
 
 
   const handleInputChange = (event) => {
@@ -99,7 +102,7 @@ export const VacancyCreator = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="status">Статус: {vacancy.status}</div>
+          { !isNewVacancy ? <div className="status">Статус: {vacancy.status}</div> : null }
           <div className="form-control">
             <label>Опис</label>
             <textarea
@@ -126,14 +129,34 @@ export const VacancyCreator = () => {
             <label></label>
             <button type="button" onClick={returnToPersonal}>Скасувати</button>
           </div>
-          <div className="form-control">
-            <label></label>
-            <button type="button" onClick={() => setStatusForVacancy('archived')}>Позначити як закриту</button>
-          </div>
-          <div className="form-control">
-            <label></label>
-            <button type="button" onClick={() => setStatusForVacancy('removed')}>Позначити як непотрібну</button>
-          </div>
+          {!isNewVacancy ? (
+            <>
+              {
+                vacancy.status !== 'active' ? (
+                  <div className="form-control">
+                    <label></label>
+                    <button type="button" onClick={() => setStatusForVacancy('active')}>Позначити як відкриту</button>
+                  </div>
+                ) : null
+              }
+              {
+                vacancy.status !== 'archived' ? (
+                  <div className="form-control">
+                    <label></label>
+                    <button type="button" onClick={() => setStatusForVacancy('archived')}>Позначити як закриту</button>
+                  </div>
+                ) : null
+              }
+              {
+                vacancy.status !== 'removed' ? (
+                  <div className="form-control">
+                    <label></label>
+                    <button type="button" onClick={() => setStatusForVacancy('removed')}>Позначити як непотрібну</button>
+                  </div>
+                ) : null
+              }
+            </>
+          ) : null}
       </form>
     </div>
   )

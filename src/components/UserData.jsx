@@ -71,7 +71,7 @@ export const UserData = () => {
           </div>
         <button type='submit'>Зберегти</button>
         <button type='button' onClick={() => setCurrentMode(1)}>Скасувати</button>
-    </form>
+      </form>
     )
   }
 
@@ -79,7 +79,7 @@ export const UserData = () => {
     event.preventDefault();
     
     const updatedUser = { ...CONTEXT.user, ...userState, timeZone: JSON.stringify(timeZone) };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser });
+    CONTEXT.updateState({ ...CONTEXT, user: updatedUser, lastUpdateTime: Date.now() });
  
     BACKEND.post('/updateUser', updatedUser).then(response => {
       setCurrentMode(1);

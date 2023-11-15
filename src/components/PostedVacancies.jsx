@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { AppContext } from '../context/context';
 import { VACANCY_CREATOR_URL } from '../constants';
 import { useNavigate } from 'react-router-dom';
+import { VacancyRow } from './VacancyRow';
 
 export const PostedVacancies = () => {
   const CONTEXT = useContext(AppContext);
@@ -10,15 +11,9 @@ export const PostedVacancies = () => {
   const renderVacancies = () => {
     if(!CONTEXT || !CONTEXT.vacancies || !CONTEXT.vacancies.length) return <></>
 
-    return CONTEXT.vacancies.map(v => (
-      <div className="vacancy" key={v._id}>
-        <div className="name">{v.name}</div>
-        <div className='status'>{v.status}</div>
-        <button type='button' onClick={() => moveToVacancyCreator(v._id)}>Редагувати</button>
-        <button type='button'>Позначити як закриту</button>
-        <button type='button'>Позначити як непотрібну</button>
-      </div>
-    ));
+    const employerVacancies = CONTEXT.vacancies.filter(v => v.employer._id === CONTEXT.user._id);
+
+    return employerVacancies.map(v => <VacancyRow key={v._id} isForEmployer={true} vacancy={v}/>);
   }
 
   const moveToVacancyCreator = id => {

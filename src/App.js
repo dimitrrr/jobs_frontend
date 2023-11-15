@@ -8,7 +8,7 @@ import { EmployerHome, EmployerPersonal, VacancyCreator } from './pages/employer
 import { Error } from './pages/Error/Error';
 import { BACKEND } from './axios';
 import { LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from './constants';
-import { EmployeeProfile, EmployerProfile } from './pages/profile';
+import { EmployerProfile } from './pages/profile';
 import { Vacancy } from './pages/vacancy';
 import { AppContext } from './context/context';
 
@@ -18,44 +18,58 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const token = window.localStorage.getItem(TOKEN_ITEM);
-      if(!token) return;
-  
       let updatedContext = {...CONTEXT};
+
+      const token = window.localStorage.getItem(TOKEN_ITEM);
+
+      if(token) {
+        try {
+          await BACKEND.post('/userData', { token })
+          .then(({data}) => {
+            if(data.data === 'token expired') {
+              alert('token expired');
+              window.localStorage.removeItem(TOKEN_ITEM);
+              window.localStorage.removeItem(LOGGENID_ITEM);
+              navigate(START_PAGE_URL);
+            } else {
+              updatedContext = {...updatedContext, user: data.data};
   
-      try {
-        await BACKEND.post('/userData', { token })
-        .then(({data}) => {
-          if(data.data === 'token expired') {
-            alert('token expired');
-            window.localStorage.removeItem(TOKEN_ITEM);
-            window.localStorage.removeItem(LOGGENID_ITEM);
-            navigate(START_PAGE_URL);
-          } else {
-            updatedContext = {...updatedContext, user: data.data};
+              // try {
+              // } 
+              // catch(error) {
+              //   console.log(error)
+              // };
+            }
+          });
+        } catch(error) {
+          console.log(error);
+        };
 
-            // try {
-            // } 
-            // catch(error) {
-            //   console.log(error)
-            // };
-          }
-        });
-      } catch(error) {
-        console.log(error);
-      };
+        try {
+          await BACKEND.post('/postedVacancies', { token })
+          .then(({data}) => {
+            if(data && data.status === 'ok') {
+              updatedContext = {...updatedContext, vacancies: data.data};
+            } else {
+              console.log('error when loading vacancies', data);
+            }
+          });
+        } catch(error) {
+          console.log(error);
+        }
 
-      try {
-        await BACKEND.post('/postedVacancies', { token })
-        .then(({data}) => {
-          if(data && data.status === 'ok') {
-            updatedContext = {...updatedContext, vacancies: data.data};
-          } else {
-            console.log('error when loading vacancies', data);
-          }
-        });
-      } catch(error) {
-        console.log(error);
+        try {
+          await BACKEND.post('/candidates', { token })
+          .then(({data}) => {
+            if(data && data.status === 'ok') {
+              updatedContext = {...updatedContext, candidates: data.data};
+            } else {
+              console.log('error when loading vacancies', data);
+            }
+          });
+        } catch(error) {
+          console.log(error);
+        }
       }
   
       CONTEXT.updateState({...CONTEXT, ...updatedContext});
@@ -63,7 +77,7 @@ function App() {
 
     fetchData();
     
-  }, []);
+  }, [CONTEXT.lastUpdateTime, navigate]);
 
   return (
     <div className='app'>
@@ -77,7 +91,6 @@ function App() {
           <Route path='/employers' element={<EmployerProfile />} />
           <Route path='/employer' element={<EmployerHome />} />
           <Route path='/employer/personal' element={<EmployerPersonal />} />
-          <Route path='/employees' element={<EmployeeProfile />} />
           <Route path='/vacancies' element={<Vacancy />} />
           <Route path='/vacancyCreator' element={<VacancyCreator />} />
           <Route path='*' element={<Error />} />

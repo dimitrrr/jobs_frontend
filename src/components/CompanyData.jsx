@@ -98,7 +98,7 @@ export const CompanyData = () => {
     event.preventDefault();
     
     const updatedUser = { ...CONTEXT.user, company: JSON.stringify(companyState) };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser });
+    CONTEXT.updateState({ ...CONTEXT, user: updatedUser, lastUpdateTime: Date.now() });
  
     BACKEND.post('/updateUser', updatedUser).then(response => {
       setCurrentMode(1);

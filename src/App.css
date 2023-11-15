@@ -40,7 +40,7 @@ body {
 }
 
 main {
-
+  margin: 0 20px;
 }
 
 .sidebar-page {
@@ -71,4 +71,56 @@ main {
 .sidebar-page article {
   width: 80%;
   padding: 10px;
+}
+
+.search-page {
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.searchRow {
+  width: 100%;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.searchRow input {
+  flex-grow: 1;
+  height: 32px;
+}
+
+.posted {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.posted .vacancy {
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #e7e7e7;
+  padding: 10px;
+}
+
+.posted .vacancy .name {
+  width: 50%;
+}
+
+.posted .vacancy .status {
+  width: 10%;
+}
+
+.posted .vacancy .buttons {
+  width: 40%;
+  display: flex;
+  gap: 10px;
 }

@@ -16,7 +16,7 @@ export const Login = () => {
     if(isLoggedIn) {
       navigate(DEFAULT_PAGE_AFTER_LOGIN_URL);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
