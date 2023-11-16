@@ -23,7 +23,7 @@ export const SavedVacancies = () => {
     }
 
     const updatedUser = { ...CONTEXT.user, savedVacancies: list };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser, lastUpdateTime: Date.now() });
+    CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
     setSavedVacancies(list);
  
     BACKEND.post('/updateUser', updatedUser).then(response => {

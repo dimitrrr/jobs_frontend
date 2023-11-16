@@ -11,7 +11,7 @@ export const HiddenVacancies = () => {
       if(CONTEXT.user && CONTEXT.user.hiddenVacancies) {
         setHiddenVacancies(CONTEXT.user.hiddenVacancies);
       }
-    }, [CONTEXT.user]);
+    }, [CONTEXT.user._id]);
     
     const setVacancyToList = (type = 'hiddenVacancies', vacancyId) => {
       let list = [...CONTEXT.user.hiddenVacancies];
@@ -23,7 +23,7 @@ export const HiddenVacancies = () => {
       }
   
       const updatedUser = { ...CONTEXT.user, hiddenVacancies: list };
-      CONTEXT.updateState({ ...CONTEXT, user: updatedUser, lastUpdateTime: Date.now() });
+      CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
    
       BACKEND.post('/updateUser', updatedUser).then(response => {
       });

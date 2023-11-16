@@ -4,7 +4,6 @@ import { BACKEND } from '../axios';
 
 export const CompanyData = () => {
   const CONTEXT = useContext(AppContext);
-  // console.log(CONTEXT.user.company)
   const companyData = JSON.parse(CONTEXT.user.company || "{}");
 
   const [companyState, setCompanyState] = useState({
@@ -98,7 +97,7 @@ export const CompanyData = () => {
     event.preventDefault();
     
     const updatedUser = { ...CONTEXT.user, company: JSON.stringify(companyState) };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser, lastUpdateTime: Date.now() });
+    CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
  
     BACKEND.post('/updateUser', updatedUser).then(response => {
       setCurrentMode(1);

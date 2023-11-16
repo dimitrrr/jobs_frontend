@@ -20,14 +20,9 @@ export const defaultVacancy = {
 
 const defaultState = {
     user: {},
-    vacancies: [],
-    CVs: [],
-    feedback: [],
-    candidates: [],
     vacanciesSearchResults: [],
     employeeSearchResults: [],
     updateState: (newState) => {},
-    lastUpdateTime: null,
 };
 
 export const AppContext = React.createContext(defaultState);

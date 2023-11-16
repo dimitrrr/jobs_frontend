@@ -3,30 +3,41 @@ import { useNavigate } from 'react-router-dom';
 import { VACANCY_CREATOR_URL, VACANCY_URL } from '../constants';
 import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
+import { CandidatesForVacancy } from './CandidatesForVacancy';
 
-export const VacancyRow = ({ vacancy, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true }) => {
+export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true }) => {
   const CONTEXT = useContext(AppContext);
   const [state, setState] = useState({
     isVacancySaved: CONTEXT.user.savedVacancies ? CONTEXT.user.savedVacancies.find(v => v._id === vacancy._id) : false,
     isVacancyHidden: CONTEXT.user.savedVacancies ? CONTEXT.user.hiddenVacancies.find(v => v._id === vacancy._id) : false,
+    candidates: vacancy.candidates,
+    candidatesVisible: false,
+    status: vacancy.status,
   });
   const navigate = useNavigate();
 
-  const setStatusForVacancy = (_id, status) => {
-    const vacancy = CONTEXT.vacancies.find(v => v._id === _id);
-    const newVacancy = {...vacancy, status};
+  const setStatus = (event) => {
+    const { value: status } = event.target;
+    setState({...state, status});
+  }
 
-    const newVacancies = CONTEXT.vacancies.filter(v => v._id !== _id);
-    newVacancies.push(newVacancy);
+  const setStatusForVacancy = (event, _id) => {
+    event.preventDefault();
+
+    const newVacancy = {...vacancy, status: state.status};
 
     try {
       BACKEND.post('/updateVacancy', newVacancy).then(response => {
-        CONTEXT.updateState({...CONTEXT, vacancies: newVacancies, lastUpdateTime: Date.now()});
+        updateVacancyStatus(_id, newVacancy.status);
       });
     } catch(error) {
       console.log(error);
     }
 
+  }
+
+  const setCandidatesVisible = () => {
+    setState({...state, candidatesVisible: !state.candidatesVisible});
   }
 
   const moveToVacancy = (id) => {
@@ -75,15 +86,24 @@ export const VacancyRow = ({ vacancy, isForEmployer = false, setVacancyToList = 
 
   const renderVacancyForEmployer = () => {
     return (
-      <div className="vacancy">
-        <div className="name" onClick={() => moveToVacancy(vacancy._id)}>{vacancy.name}</div>
-        <div className='status'>{vacancy.status}</div>
-        <div className="buttons">
-         <button type='button' onClick={() => moveToVacancyCreator(vacancy._id)}>Редагувати</button>
-          { vacancy.status !== 'active' ? <button type='button' onClick={() => setStatusForVacancy(vacancy._id, 'active')}>Позначити як відкриту</button> : null }
-          { vacancy.status !== 'archived' ? <button type='button' onClick={() => setStatusForVacancy(vacancy._id, 'archived')}>Позначити як закриту</button> : null }
-          { vacancy.status !== 'removed' ? <button type='button' onClick={() => setStatusForVacancy(vacancy._id, 'removed')}>Позначити як непотрібну</button> : null }
+      <div>
+        <div className="vacancy">
+          <div className="name" onClick={() => moveToVacancy(vacancy._id)}>{vacancy.name}</div>
+          <div className='status'>{vacancy.status}</div>
+          <div className="buttons">
+            <button type='button' onClick={() => moveToVacancyCreator(vacancy._id)}>Редагувати</button>
+          </div>
+          <form onSubmit={(event) => setStatusForVacancy(event, vacancy._id)} >
+            <select value={state.status} onChange={(event) => setStatus(event)}>
+              <option value="active">Відкрита</option>
+              <option value="archived">Закрита</option>
+              <option value="removed">Непотрібна</option>
+            </select>
+            <button type='submit'>Прийняти зміну</button>
+          </form>
+          <div className='candidates' onClick={() => setCandidatesVisible()}>Відгукнулися: {state.candidates.length}</div>
         </div>
+        { state.candidatesVisible ? <CandidatesForVacancy candidates={state.candidates}/> : null }
       </div>
     );
   }

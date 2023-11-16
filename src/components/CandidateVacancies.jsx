@@ -8,12 +8,14 @@ export const CandidateVacancies = () => {
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
-    if(CONTEXT && CONTEXT.candidates && CONTEXT.candidates.length) {
-      const currentUserVacancies = CONTEXT.candidates.filter(c => c.employee._id === CONTEXT.user._id);
-      setCandidates(currentUserVacancies);
-    }
+    BACKEND.post('/getCandidatesByEmployeeId', { _id: CONTEXT.user._id }).then(response => {
+      if(response.data.status === 'ok' && response.data.data.length) {
+        const currentUserVacancies = response.data.data;
+        setCandidates(currentUserVacancies);
+      }
+    });
 
-  }, [CONTEXT.candidates]);
+  }, [CONTEXT.user._id]);
 
   const removeCandidate = (_id) => {
     const newCandidates = candidates.filter(c => c._id !== _id);

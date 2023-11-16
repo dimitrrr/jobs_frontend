@@ -79,7 +79,7 @@ export const UserData = () => {
     event.preventDefault();
     
     const updatedUser = { ...CONTEXT.user, ...userState, timeZone: JSON.stringify(timeZone) };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser, lastUpdateTime: Date.now() });
+    CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
  
     BACKEND.post('/updateUser', updatedUser).then(response => {
       setCurrentMode(1);

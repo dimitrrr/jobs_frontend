@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { AppContext } from '../../context/context';
-import { EmployerData } from '../../components';
+import React, { useEffect, useState } from 'react'
+import { EmployerData, Feedback } from '../../components';
+import { BACKEND } from '../../axios';
 
-export const EmployerProfile = (props) => {
-  const CONTEXT = useContext(AppContext);
+export const EmployerProfile = () => {
   const [employer, setEmployer] = useState({
     name: '',
     testTaskLink: '',
@@ -13,23 +12,26 @@ export const EmployerProfile = (props) => {
     _id: null,
   });
 
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const employerId = urlParams.get('employer_id');
 
   useEffect(() => {
-    const vacancy = CONTEXT.vacancies.find(v => v.employer._id === employerId);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const employerId = urlParams.get('employer_id');
 
-    if(vacancy && vacancy.employer && vacancy.employer._id) {
-      const company = JSON.parse(vacancy.employer.company);
-      const _id = vacancy.employer._id;
-      setEmployer({...company, _id});
-    }
-  }, [employerId, CONTEXT.vacancies]);
+    BACKEND.post('/getUserById', { _id: employerId }).then(response => {
+      if(response.data.status === 'ok') {
+        const user = response.data.data;
+        const company = JSON.parse(user.company || "{}");
+        setEmployer({...company, _id: user._id});
+      }
+    });
 
-  return (
+  }, []);
+
+  return employer && employer._id ? (
     <div className='employer-page'>
-      <EmployerData employerId={employer._id} company={employer} shortForm={false} />
+      <EmployerData timeZone={employer.timeZone} employerId={employer._id} company={employer} shortForm={false} />
+      <Feedback userId={employer._id} />
     </div>
-  )
+  ) : null
 }

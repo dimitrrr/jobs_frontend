@@ -41,7 +41,7 @@ export const Registration = () => {
 
   return (
     <div className='registration'>
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label>Імʼя</label>
             <input

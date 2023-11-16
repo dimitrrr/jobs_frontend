@@ -8,7 +8,7 @@ import { EmployerHome, EmployerPersonal, VacancyCreator } from './pages/employer
 import { Error } from './pages/Error/Error';
 import { BACKEND } from './axios';
 import { LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from './constants';
-import { EmployerProfile } from './pages/profile';
+import { EmployeeProfile, EmployerProfile } from './pages/profile';
 import { Vacancy } from './pages/vacancy';
 import { AppContext } from './context/context';
 
@@ -33,43 +33,12 @@ function App() {
               navigate(START_PAGE_URL);
             } else {
               updatedContext = {...updatedContext, user: data.data};
-  
-              // try {
-              // } 
-              // catch(error) {
-              //   console.log(error)
-              // };
             }
           });
         } catch(error) {
           console.log(error);
         };
 
-        try {
-          await BACKEND.post('/postedVacancies', { token })
-          .then(({data}) => {
-            if(data && data.status === 'ok') {
-              updatedContext = {...updatedContext, vacancies: data.data};
-            } else {
-              console.log('error when loading vacancies', data);
-            }
-          });
-        } catch(error) {
-          console.log(error);
-        }
-
-        try {
-          await BACKEND.post('/candidates', { token })
-          .then(({data}) => {
-            if(data && data.status === 'ok') {
-              updatedContext = {...updatedContext, candidates: data.data};
-            } else {
-              console.log('error when loading vacancies', data);
-            }
-          });
-        } catch(error) {
-          console.log(error);
-        }
       }
   
       CONTEXT.updateState({...CONTEXT, ...updatedContext});
@@ -77,7 +46,7 @@ function App() {
 
     fetchData();
     
-  }, [CONTEXT.lastUpdateTime, navigate]);
+  }, []);
 
   return (
     <div className='app'>
@@ -88,6 +57,7 @@ function App() {
           <Route path='/registration' element={<Registration />} />
           <Route path='/employee' element={<EmployeeHome />} />
           <Route path='/employee/personal' element={<EmployeePersonal />} />
+          <Route path='/employees' element={<EmployeeProfile />} />
           <Route path='/employers' element={<EmployerProfile />} />
           <Route path='/employer' element={<EmployerHome />} />
           <Route path='/employer/personal' element={<EmployerPersonal />} />

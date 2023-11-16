@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/context';
-import { EMPLOYER_PERSONAL_URL } from '../../constants';
+import { EMPLOYER_PERSONAL_URL, ERROR_PAGE_URL } from '../../constants';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,15 +23,16 @@ export const VacancyCreator = () => {
 
   useEffect(() => {
     if(!isNewVacancy) {
-      const vacancy = CONTEXT.vacancies.find(v => v._id === vacancyId);
-
-      if(vacancy) {
-        setVacancy(vacancy);
-      } else {
-        return navigate(EMPLOYER_PERSONAL_URL);
-      }
+      BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+        if(response.data.status === 'ok' && response.data.data) {
+          const vacancy = response.data.data;
+          setVacancy(vacancy);
+        } else {
+          navigate(ERROR_PAGE_URL);
+        }
+      })
     }
-  }, [CONTEXT.vacancies, vacancyId, isNewVacancy, navigate]);
+  }, [vacancyId]);
 
 
   const handleInputChange = (event) => {

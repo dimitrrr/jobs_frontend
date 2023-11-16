@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/context';
-import { useNavigate } from 'react-router-dom';
 import { EmployerData } from '../../components';
 import { BACKEND } from '../../axios';
+import { useNavigate } from 'react-router-dom';
+import { ERROR_PAGE_URL } from '../../constants';
 
 export const Vacancy = () => {
   const navigate = useNavigate();
@@ -20,22 +21,33 @@ export const Vacancy = () => {
     vacancy: null,
     CV: null,
     text: '',
-    expectations: { type: 'hourly', value: '' },
+    expectations: { type: 'hourly', min: 0, max: 0 },
     testTaskLink: '',
   });
-
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const vacancyId = urlParams.get('vacancy_id');
+  const [canBeCandidate, setCanBeCandidate] = useState(false);
 
   useEffect(() => {
-    const vacancy = CONTEXT.vacancies.find(v => v._id === vacancyId);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const vacancyId = urlParams.get('vacancy_id');
 
-    if(vacancy) {
-      setVacancy(vacancy);
-      setCandidate({...candidate, vacancy: vacancy._id, employee: CONTEXT.user._id});
+    const userId = CONTEXT.user._id;
+
+    if(CONTEXT.user && CONTEXT.user._id) {
+      BACKEND.post('/getVacancyAndCandidateById', { _id: vacancyId, userId }).then(response => {
+        if(response.data.status === 'ok') {
+          const { vacancy, candidate: can } = response.data.data;
+          setVacancy(vacancy);
+          setCandidate({...candidate, vacancy: vacancy._id, employee: userId});
+
+          const cbc = !can && vacancy.employer._id !== CONTEXT.user._id; 
+          setCanBeCandidate(cbc);
+        } else {
+          navigate(ERROR_PAGE_URL);
+        }
+      });
     }
-  }, [CONTEXT.vacancies, vacancyId, navigate, CONTEXT.user._id]);
+  }, [CONTEXT.user._id]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -43,9 +55,9 @@ export const Vacancy = () => {
     const newCandidate = { ...candidate, expectations: JSON.stringify(candidate.expectations) };
 
     BACKEND.post('/addCandidate', newCandidate).then((response) => {
-      console.log(response)
-      if(response.data.status === 'Ok') {
-        alert('candidate');
+      if(response.data.status === 'ok') {
+        setCandidate({...candidate, text: '', testTaskLink: '', expectations: { type: 'hourly', min: 0, max: 0 } });
+        setCanBeCandidate(false);
       }
     })
   }
@@ -77,11 +89,11 @@ export const Vacancy = () => {
       </div>
       {
         vacancy.employer && vacancy.employer.company ? (
-          <EmployerData shortForm={true} company={JSON.parse(vacancy.employer.company)} employerId={vacancy.employer._id} />
+          <EmployerData timeZone={vacancy.employer.timeZone} shortForm={true} company={JSON.parse(vacancy.employer.company)} employerId={vacancy.employer._id} />
         ) : null
       }
       {
-        vacancy.status === 'active' ? (
+        vacancy.status === 'active' && canBeCandidate ? (
           <div className="candidate">
             <form onSubmit={handleSubmit}>
               <div className="form-control">
@@ -144,15 +156,28 @@ export const Vacancy = () => {
                 </div>
                 <input 
                   type='text' 
-                  name='value' 
-                  placeholder='Очікуваний рівень оплати' 
-                  value={candidate.expectations.value}
+                  name='min' 
+                  placeholder='Мінімальний очікуваний рівень оплати' 
+                  value={candidate.expectations.min}
                   onChange={handleExpectationsChange}
-                />
+                />-<input 
+                type='text' 
+                name='max' 
+                placeholder='Максимальний очікуваний рівень оплати' 
+                value={candidate.expectations.max}
+                onChange={handleExpectationsChange}
+              />
               </div>
               <button type='submit'>Відгукнутися</button>
             </form>
           </div>
+        ) : null
+      }
+      {
+        !canBeCandidate ? 
+        !vacancy.employer || vacancy.employer._id === CONTEXT.user._id ? 
+        null : (
+          <div>Ви вже подали заявку на цю вакансію</div>
         ) : null
       }
     </div>
