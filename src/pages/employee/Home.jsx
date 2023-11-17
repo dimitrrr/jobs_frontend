@@ -3,18 +3,25 @@ import { SearchFilters, SearchResults, SearchRow } from '../../components'
 import { AppContext } from '../../context/context';
 import { BACKEND } from '../../axios';
 
+const VACANCIES_SEARCH_RESULTS = 'vacanciesSearchResults';
+
 export const EmployeeHome = () => {
   const CONTEXT = useContext(AppContext);
   const [searchState, setSearchState] = useState({
     query: '',
     filters: [],
-    results: CONTEXT.vacanciesSearchResults || [],
-    firstSearch: CONTEXT.vacanciesSearchResults && CONTEXT.vacanciesSearchResults.length ? false : true,
+    results: [],
     error: ''
   });
   const [vacancies, setVacancies] = useState([]);
 
   useEffect(() => {
+    const VSR = window.localStorage.getItem(VACANCIES_SEARCH_RESULTS);
+
+    if(VSR) {
+      setSearchState(JSON.parse(VSR));
+    }
+
     try {
       BACKEND.post('/postedVacancies')
       .then((response) => {
@@ -51,10 +58,8 @@ export const EmployeeHome = () => {
         v.name.toLowerCase().includes(searchState.query.toLowerCase())
       );
     if(filteredVacancies.length) {
-      CONTEXT.updateState({...CONTEXT, vacanciesSearchResults: filteredVacancies});
       setSearchState({...searchState, firstSearch: false, error: '', results: filteredVacancies });
     } else {
-      CONTEXT.updateState({...CONTEXT, vacanciesSearchResults: []});
       setSearchState({...searchState, error: 'За вашим запитом нічого не знайдено.' });
     }
     
@@ -77,19 +82,27 @@ export const EmployeeHome = () => {
     });
   };
 
+  const clearLocalStorage = () => {
+    window.localStorage.removeItem(VACANCIES_SEARCH_RESULTS);
+  }
+
+  const saveToLocalStorage = () => {
+    window.localStorage.setItem(VACANCIES_SEARCH_RESULTS, JSON.stringify(searchState));
+  }
+
   return (
     <div className="search-page">
-      <SearchRow query={searchState.query} onChange={handleInputChange} onSubmit={handleSearchSubmit}/>
+      <SearchRow query={searchState.query} onChange={handleInputChange} onSubmit={handleSearchSubmit} onClear={clearLocalStorage} />
       { searchState.error ? <div className='error'>{searchState.error}</div> : (
         <>
           {
-            !searchState.firstSearch ? (
+            searchState.results.length ? (
               <div className='sidebar-page'>
                 <aside>
                   <SearchFilters filters={searchState.filters} onChange={handleFiltersChange} />
                 </aside>
                 <article>
-                  <SearchResults results={searchState.results} setVacancyToList={setVacancyToList} />
+                  <SearchResults results={searchState.results} setVacancyToList={setVacancyToList} onMoveToVacancy={saveToLocalStorage}/>
                 </article>
               </div>
             ) : null

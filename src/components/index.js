@@ -15,6 +15,7 @@ import { CandidatesForVacancy } from './CandidatesForVacancy.jsx';
 import { Candidate } from './Candidate.jsx';
 import { Feedback } from './Feedback.jsx';
 import { SendFeedback } from './SendFeedback.jsx';
+import { AddedCVs } from './AddedCVs.jsx';
 
 export {
     Header,
@@ -34,4 +35,5 @@ export {
     Candidate,
     Feedback,
     SendFeedback,
+    AddedCVs,
 };

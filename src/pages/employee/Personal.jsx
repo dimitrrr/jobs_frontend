@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { CandidateVacancies, Feedback, HiddenVacancies, SavedVacancies, UserData } from '../../components';
+import { AddedCVs, CandidateVacancies, Feedback, HiddenVacancies, SavedVacancies, UserData } from '../../components';
 import { AppContext } from '../../context/context';
 
 export const EmployeePersonal = () => {
@@ -8,7 +8,7 @@ export const EmployeePersonal = () => {
 
   const renderByCurrentView = () => {
     if(currentView === 0) return <CandidateVacancies />
-    // if(currentView === 1) return <CompanyData />
+    if(currentView === 1) return <AddedCVs />
     if(currentView === 2) return <UserData />
     if(currentView === 3) return <SavedVacancies />
     if(currentView === 4) return <HiddenVacancies />

@@ -5,6 +5,7 @@ export const DEFAULT_PAGE_AFTER_LOGIN_URL = '/employee';
 export const EMPLOYER_PERSONAL_URL = '/employer/personal';
 export const VACANCY_URL = '/vacancies';
 export const VACANCY_CREATOR_URL = '/vacancyCreator';
+export const CV_CREATOR_URL = '/CVCreator';
 export const EMPLOYER_PROFILE_PAGE_URL = '/employers';
 export const EMPLOYEE_PROFILE_PAGE_URL = '/employees';
 export const ERROR_PAGE_URL = '/error';

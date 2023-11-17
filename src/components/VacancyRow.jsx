@@ -5,7 +5,7 @@ import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
 import { CandidatesForVacancy } from './CandidatesForVacancy';
 
-export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true }) => {
+export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true, onMoveToVacancy = null }) => {
   const CONTEXT = useContext(AppContext);
   const [state, setState] = useState({
     isVacancySaved: CONTEXT.user.savedVacancies ? CONTEXT.user.savedVacancies.find(v => v._id === vacancy._id) : false,
@@ -41,6 +41,7 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
   }
 
   const moveToVacancy = (id) => {
+    if(onMoveToVacancy) onMoveToVacancy();
     navigate(`${VACANCY_URL}?vacancy_id=${id}`);
   }
 

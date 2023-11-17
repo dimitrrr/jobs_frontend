@@ -29,9 +29,7 @@ export const PostedVacancies = () => {
   const renderVacancies = () => {
     if(!postedVacancies || !postedVacancies.length) return <></>
 
-    const employerVacancies = postedVacancies.filter(v => v.employer._id === CONTEXT.user._id);
-
-    return employerVacancies.map(v => <VacancyRow key={v._id} isForEmployer={true} vacancy={v} updateVacancyStatus={updateVacancyStatus} />);
+    return postedVacancies.map(v => <VacancyRow key={v._id} isForEmployer={true} vacancy={v} updateVacancyStatus={updateVacancyStatus} />);
   }
 
   const updateVacancyStatus = (vacancyId, status) => {

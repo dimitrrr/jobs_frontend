@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from '../constants';
+import { DEFAULT_URL, LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from '../constants';
 import { AppContext } from '../context/context';
 
 export const Header = () => {
@@ -21,7 +21,8 @@ export const Header = () => {
   const logOut = () => {
     window.localStorage.removeItem(TOKEN_ITEM);
     window.localStorage.removeItem(LOGGENID_ITEM);
-    navigate(START_PAGE_URL);
+    CONTEXT.updateState({...CONTEXT, user: {}});
+    window.location.replace(DEFAULT_URL + START_PAGE_URL);
   }
 
   const renderLoginRegistrationLinks = () => {
