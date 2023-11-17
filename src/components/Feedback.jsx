@@ -7,6 +7,7 @@ export const Feedback = ({userId, sender = '', showAddFeedback = true}) => {
   
   useEffect(() => {
     BACKEND.post('/getFeedbackAboutUserById', { userId }).then(response => {
+      console.log(response)
       if(response.data.status === 'ok') {
         let fetchedFeedback = response.data.data;
         if(sender && sender !== '') {

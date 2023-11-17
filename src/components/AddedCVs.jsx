@@ -11,7 +11,7 @@ export const AddedCVs = () => {
   
     useEffect(() => {
       if(CONTEXT.user && CONTEXT.user._id) {
-        BACKEND.post('/getAddedCVsById', { _id: CONTEXT.user._id }).then(response => {
+        BACKEND.post('/getAddedCVsById', { employee: CONTEXT.user._id }).then(response => {
           if(response.data.status === 'ok' && response.data.data) {
             const CVs = response.data.data;
   
@@ -21,21 +21,34 @@ export const AddedCVs = () => {
       }
     }, [CONTEXT.user._id]);
   
-    // const renderCVs = () => {
-    //   if(!addedCVs || !addedCVs.length) return <></>
+    const renderCVs = () => {
+      if(!addedCVs || !addedCVs.length) return <></>
   
-    //   return employerVacancies.map(v => <VacancyRow key={v._id} isForEmployer={true} vacancy={v} updateVacancyStatus={updateVacancyStatus} />);
-    // }
+      return addedCVs.map(cv => (
+      <div key={cv._id}>
+        <div>{cv.CVData.role}</div>
+        <div>Додано: {cv.timestamp}</div>
+        <button onClick={() => removeCV(cv._id)}>Видалити резюме</button>
+      </div>
+      ));
+    }
   
     const moveToCVCreator = id => {
       navigate(`${CV_CREATOR_URL}?CV_id=${id}`);
+    }
+
+    const removeCV = (_id) => {
+      BACKEND.post('/removeCV', { employeeId: CONTEXT.user._id, CVid: _id }).then(response => {
+        const newCVs = addedCVs.filter(cv => cv._id !== _id);
+        setAddedCVs(newCVs);
+      });
     }
   
     return (
       <div className='vacancies'>
         <button onClick={() => moveToCVCreator('new')}>Створити резюме</button>
         <div className="posted">
-          {/* {renderCVs()} */}
+          {renderCVs()}
         </div>
       </div>
     )

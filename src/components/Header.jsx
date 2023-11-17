@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { DEFAULT_URL, LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from '../constants';
+import { DEFAULT_URL, EMPLOYEE_SEARCH_RESULTS, LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM, VACANCIES_SEARCH_RESULTS } from '../constants';
 import { AppContext } from '../context/context';
 
 export const Header = () => {
@@ -21,6 +21,8 @@ export const Header = () => {
   const logOut = () => {
     window.localStorage.removeItem(TOKEN_ITEM);
     window.localStorage.removeItem(LOGGENID_ITEM);
+    window.localStorage.removeItem(VACANCIES_SEARCH_RESULTS);
+    window.localStorage.removeItem(EMPLOYEE_SEARCH_RESULTS);
     CONTEXT.updateState({...CONTEXT, user: {}});
     window.location.replace(DEFAULT_URL + START_PAGE_URL);
   }

@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SearchFilters, SearchResults, SearchRow } from '../../components'
 import { AppContext } from '../../context/context';
 import { BACKEND } from '../../axios';
-
-const VACANCIES_SEARCH_RESULTS = 'vacanciesSearchResults';
+import { VACANCIES_SEARCH_RESULTS } from '../../constants';
 
 export const EmployeeHome = () => {
   const CONTEXT = useContext(AppContext);
@@ -84,6 +83,12 @@ export const EmployeeHome = () => {
 
   const clearLocalStorage = () => {
     window.localStorage.removeItem(VACANCIES_SEARCH_RESULTS);
+    setSearchState({
+      query: '',
+      filters: [],
+      results: [],
+      error: ''
+    });
   }
 
   const saveToLocalStorage = () => {

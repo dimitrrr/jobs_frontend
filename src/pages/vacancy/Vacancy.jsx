@@ -24,6 +24,7 @@ export const Vacancy = () => {
     expectations: { type: 'hourly', min: 0, max: 0 },
     testTaskLink: '',
   });
+  const [CVs, setCVs] = useState([]);
   const [canBeCandidate, setCanBeCandidate] = useState(false);
 
   useEffect(() => {
@@ -44,6 +45,14 @@ export const Vacancy = () => {
           setCanBeCandidate(cbc);
         } else {
           navigate(ERROR_PAGE_URL);
+        }
+      });
+
+      BACKEND.post('/getAddedCVsById', { employee: CONTEXT.user._id }).then(response => {
+        if(response.data.status === 'ok') {
+          const CVs = response.data.data;
+          setCVs(CVs);
+          setCandidate({...candidate, CV: CVs[0]._id});
         }
       });
     }
@@ -78,6 +87,17 @@ export const Vacancy = () => {
     }))
   }
 
+  const findCVRoleById = (_id) => {
+    if(!_id) return null;
+    return CVs && CVs.length ? CVs.find(cv => cv._id === _id).CVData.role : null;
+  }
+
+  const handleCVChange = (event) => {
+    const {value} = event.target;
+
+    setCandidate({...candidate, CV: value});
+  }
+
   return (
     <div className="vacancy-page">
       <div className='vacancy'>
@@ -104,6 +124,16 @@ export const Vacancy = () => {
                   value={candidate.text}
                   onChange={handleInputChange}
                 />
+              </div>
+              <div className="form-control">
+                <label>Резюме</label>
+                <select value={candidate.CV || ''} onChange={handleCVChange}>
+                  {
+                    CVs.map(cv => (
+                      <option key={cv._id} value={cv._id}>{findCVRoleById(cv._id)}</option>
+                    ))
+                  }
+                </select>
               </div>
               { vacancy.testTaskLink ? (
               <div className="form-control">

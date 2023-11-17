@@ -3,7 +3,7 @@ import './App.css';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { Header } from './components';
 import { Login, Registration } from './pages/authorization';
-import { EmployeeHome, EmployeePersonal } from './pages/employee';
+import { CVCreator, EmployeeHome, EmployeePersonal } from './pages/employee';
 import { EmployerHome, EmployerPersonal, VacancyCreator } from './pages/employer';
 import { Error } from './pages/Error/Error';
 import { BACKEND } from './axios';
@@ -63,6 +63,7 @@ function App() {
           <Route path='/employer/personal' element={<EmployerPersonal />} />
           <Route path='/vacancies' element={<Vacancy />} />
           <Route path='/vacancyCreator' element={<VacancyCreator />} />
+          <Route path='/CVCreator' element={<CVCreator />} />
           <Route path='*' element={<Error />} />
         </Routes>
       </main>
