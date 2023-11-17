@@ -20,8 +20,6 @@ export const defaultVacancy = {
 
 const defaultState = {
     user: {},
-    vacanciesSearchResults: [],
-    employeeSearchResults: [],
     updateState: (newState) => {},
 };
 

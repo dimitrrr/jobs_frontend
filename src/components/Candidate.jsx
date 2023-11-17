@@ -59,10 +59,10 @@ export const Candidate = ({candidate}) => {
   }
 
   const downloadCV = () => {
-    BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response2 => {
+    BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response => {
           
-      if(response2.data instanceof Blob) {
-        const pdfBlob = new Blob([response2.data], { type: 'application/pdf' });
+      if(response.data instanceof Blob) {
+        const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
 
         saveAs(pdfBlob, 'CV.pdf');
       }
