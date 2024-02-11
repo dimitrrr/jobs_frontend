@@ -129,8 +129,8 @@ export const CVCreator = () => {
             <input type='text' name='graduation_year' value={CVData.graduation_year || ''} onChange={handleInputChange} />
           </div>
           <div>
-            <label>Додатковий опис</label>
-            <textarea name='school_description' value={CVData.school_description || ''} onChange={handleInputChange} />
+            <label>Середній бал</label>
+            <input type='text' name='school_mark' value={CVData.school_mark || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>
