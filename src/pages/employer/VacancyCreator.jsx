@@ -124,11 +124,11 @@ export const VacancyCreator = () => {
           </div>
           <div className="form-control">
             <label></label>
-            <div className='button primary-button'>{isNewVacancy ? 'Створити' : 'Зберегти'}</div>
+            <button type='submit' className='button primary-button'>{isNewVacancy ? 'Створити' : 'Зберегти'}</button>
           </div>
           <div className="form-control">
             <label></label>
-            <div className='button secondary-button' onClick={returnToPersonal}>Скасувати</div>
+            <button className='button secondary-button' onClick={returnToPersonal}>Скасувати</button>
           </div>
           {!isNewVacancy ? (
             <>
@@ -136,7 +136,7 @@ export const VacancyCreator = () => {
                 vacancy.status !== 'active' ? (
                   <div className="form-control">
                     <label></label>
-                    <div className='button secondary-button' onClick={() => setStatusForVacancy('active')}>Позначити як відкриту</div>
+                    <button className='button secondary-button' onClick={() => setStatusForVacancy('active')}>Позначити як відкриту</button>
                   </div>
                 ) : null
               }
@@ -144,7 +144,7 @@ export const VacancyCreator = () => {
                 vacancy.status !== 'archived' ? (
                   <div className="form-control">
                     <label></label>
-                    <div className='button secondary-button' onClick={() => setStatusForVacancy('archived')}>Позначити як закриту</div>
+                    <button className='button secondary-button' onClick={() => setStatusForVacancy('archived')}>Позначити як закриту</button>
                   </div>
                 ) : null
               }
@@ -152,7 +152,7 @@ export const VacancyCreator = () => {
                 vacancy.status !== 'removed' ? (
                   <div className="form-control">
                     <label></label>
-                    <div className='button secondary-button' onClick={() => setStatusForVacancy('removed')}>Позначити як непотрібну</div>
+                    <button className='button secondary-button' onClick={() => setStatusForVacancy('removed')}>Позначити як непотрібну</button>
                   </div>
                 ) : null
               }

@@ -52,7 +52,9 @@ export const Vacancy = () => {
         if(response.data.status === 'ok') {
           const CVs = response.data.data;
           setCVs(CVs);
-          setCandidate({...candidate, CV: CVs[0]._id});
+          if(CVs.length) {
+            setCandidate({...candidate, CV: CVs[0]._id});
+          }
         }
       });
     }
@@ -198,7 +200,7 @@ export const Vacancy = () => {
                 onChange={handleExpectationsChange}
               />
               </div>
-              <div className='button primary-button'>Відгукнутися</div>
+              <button type='submit' className='button primary-button'>Відгукнутися</button>
             </form>
           </div>
         ) : null

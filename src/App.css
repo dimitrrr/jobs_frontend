@@ -108,29 +108,94 @@ main {
   flex-direction: column;
 }
 
-.posted .vacancy {
-  height: 40px;
+/* Основні стилі сторінки вакансії */
+.vacancy-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
+/* Стилі для блоку з інформацією про вакансію */
+.vacancy {
+  margin-bottom: 20px;
+}
+
+.vacancy .name {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+}
+
+.vacancy .status {
+  font-size: 18px;
+  color: grey;
+}
+
+.vacancy .tags {
+  margin-top: 10px;
+  color: darkgrey;
+}
+
+.vacancy .text {
+  margin-top: 20px;
+  color: black;
+}
+
+.vacancy .testTaskLink {
+  color: blue;
+  text-decoration: underline;
+  margin-top: 10px;
+}
+
+/* Стилі для блоку з даними про роботодавця */
+.employer-data {
+  margin-top: 20px;
+}
+
+/* Стилі для блоку кандидата */
+.candidate {
+  margin-top: 20px;
+}
+
+.candidate form {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
 
-  border: 1px solid #e7e7e7;
+.candidate .form-control {
+  margin-bottom: 15px;
+}
+
+.candidate label {
+  font-weight: bold;
+  color: black;
+}
+
+.candidate textarea,
+.candidate select,
+.candidate input[type="text"] {
+  width: 100%;
   padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 5px;
 }
 
-.posted .vacancy .name {
-  width: 50%;
+.candidate .radio {
+  margin-top: 10px;
 }
 
-.posted .vacancy .status {
-  width: 10%;
+.candidate .button.primary-button {
+  margin-top: 20px;
 }
 
-.posted .vacancy .buttons {
-  width: 40%;
-  display: flex;
-  gap: 10px;
+/* Стилі для повідомлення про подану заявку */
+.applied-message {
+  margin-top: 20px;
+  color: green;
 }
+
 
 .button {
   display: inline-block;
@@ -170,4 +235,49 @@ main {
   color: darkgrey;
   border: 2px solid lightgrey;
   cursor: not-allowed;
+}
+
+.timezone--wrapper {
+  margin-bottom: 20px;
+}
+
+.registration {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.registration form {
+  display: flex;
+  flex-direction: column;
+}
+
+.registration .form-control {
+  margin-bottom: 15px;
+}
+
+.registration label {
+  font-weight: bold;
+  color: black;
+}
+
+.registration input[type="text"],
+.registration input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.registration a {
+  display: block;
+  margin-top: 10px;
+  color: blue;
+  text-decoration: underline;
+}
+
+.registration a:hover {
+  color: darkblue;
 }

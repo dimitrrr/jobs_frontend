@@ -70,12 +70,12 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
           <div className="buttons">
             {
               isSavedVacancy ? (
-                <div className='button secondary-button' onClick={() => updateVacancyIsSavedStatus(vacancy._id)}>{state.isVacancySaved ? 'Видалити зі збережених' : 'Зберегти'}</div>
+                <button className='button secondary-button' onClick={() => updateVacancyIsSavedStatus(vacancy._id)}>{state.isVacancySaved ? 'Видалити зі збережених' : 'Зберегти'}</button>
               ) : null
             }
             {
               isHiddenVacancy ? (
-                <div className='button secondary-button' onClick={() => updateVacancyIsHiddenStatus(vacancy._id)}>{state.isVacancyHidden ? 'Видалити із прихованих' : 'Приховати'}</div>
+                <button className='button secondary-button' onClick={() => updateVacancyIsHiddenStatus(vacancy._id)}>{state.isVacancyHidden ? 'Видалити із прихованих' : 'Приховати'}</button>
               ) : null
             }
           </div>
@@ -92,7 +92,7 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
           <div className="name" onClick={() => moveToVacancy(vacancy._id)}>{vacancy.name}</div>
           <div className='status'>{vacancy.status}</div>
           <div className="buttons">
-            <div className='button primary-button' onClick={() => moveToVacancyCreator(vacancy._id)}>Редагувати</div>
+            <button className='button primary-button' onClick={() => moveToVacancyCreator(vacancy._id)}>Редагувати</button>
           </div>
           <form onSubmit={(event) => setStatusForVacancy(event, vacancy._id)} >
             <select value={state.status} onChange={(event) => setStatus(event)}>
@@ -100,7 +100,7 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
               <option value="archived">Закрита</option>
               <option value="removed">Непотрібна</option>
             </select>
-            <div className='button secondary-button'>Прийняти зміну</div>
+            <button type='submit' className='button secondary-button'>Прийняти зміну</button>
           </form>
           <div className='candidates' onClick={() => setCandidatesVisible()}>Відгукнулися: {state.candidates.length}</div>
         </div>

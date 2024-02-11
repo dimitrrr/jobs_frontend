@@ -28,7 +28,7 @@ export const AddedCVs = () => {
       <div key={cv._id}>
         <div>{cv.CVData.role}</div>
         <div>Додано: {cv.timestamp}</div>
-        <div className='button primary-button' onClick={() => removeCV(cv._id)}>Видалити резюме</div>
+        <button className='button primary-button' onClick={() => removeCV(cv._id)}>Видалити резюме</button>
       </div>
       ));
     }
@@ -46,7 +46,7 @@ export const AddedCVs = () => {
   
     return (
       <div className='vacancies'>
-        <div className='button primary-button' onClick={() => moveToCVCreator('new')}>Створити резюме</div>
+        <button className='button primary-button' onClick={() => moveToCVCreator('new')}>Створити резюме</button>
         <div className="posted">
           {renderCVs()}
         </div>

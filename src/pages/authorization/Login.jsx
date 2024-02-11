@@ -68,7 +68,7 @@ export const Login = () => {
         </div>
         <div className="form-control">
           <label></label>
-          <div className='button primary-button'>Увійти</div>
+          <button type='submit' className='button primary-button'>Увійти</button>
         </div>
         <Link to='/registration'>Перейти до реєстрації</Link>
       </form>

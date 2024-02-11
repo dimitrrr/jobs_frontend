@@ -29,7 +29,7 @@ export const UserData = () => {
   const renderShowMode = () => {
     return (
       <>
-      <div className='button primary-button' onClick={() => setCurrentMode(2)}>Редагувати</div>
+      <button className='button primary-button' onClick={() => setCurrentMode(2)}>Редагувати</button>
       <div>{ userData && userData.username }</div>
       <div>{ userData && userData.email }</div>
       <div>{ timeZone && timeZone.label ? timeZone.label : timeZone }</div>
@@ -69,8 +69,8 @@ export const UserData = () => {
               }}
             />
           </div>
-        <div className='button primary-button'>Зберегти</div>
-        <div className='button secondary-button' onClick={() => setCurrentMode(1)}>Скасувати</div>
+        <button type='submit' className='button primary-button'>Зберегти</button>
+        <button className='button secondary-button' onClick={() => setCurrentMode(1)}>Скасувати</button>
       </form>
     )
   }

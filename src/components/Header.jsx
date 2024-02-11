@@ -11,9 +11,9 @@ export const Header = () => {
   const navigate = useNavigate();
   
   const isUserAuthorized = !!window.localStorage.getItem(LOGGENID_ITEM);
-  const shouldShowEmployeeHeader = pathname.includes('/employee');
+  const shouldShowEmployeeHeader = pathname.includes('/employee') || pathname.includes('/vacancies');
   const shouldShowEmployeePersonal = (pathname === '/employee' || pathname === '/employee/') && isUserAuthorized;
-  const shouldShowEmployeeHome = shouldShowEmployeeHeader && pathname.includes('/employee/personal');
+  const shouldShowEmployeeHome = shouldShowEmployeeHeader && (pathname.includes('/employee/personal') || pathname.includes('/vacancies'));
   const shouldShowEmployerHeader = pathname.includes('/employer') || pathname.includes('/vacancyCreator');
   const shouldShowEmployerPersonal = (pathname === '/employer' || pathname === '/employer/') && isUserAuthorized;
   const shouldShowEmployerHome = shouldShowEmployerHeader && (pathname.includes('/employer/personal') || pathname === '/vacancyCreator');
@@ -36,11 +36,15 @@ export const Header = () => {
         <li>
           <Link to="/employer/">Роботодавець</Link>
         </li>
+        <li>
+          <Link to='/'>Увійти</Link>
+        </li>
       </>
     )
   }
 
   const renderEmployeeHeader = () => {
+    if(!isUserAuthorized) return <></>
 
     return (
       <>
@@ -58,15 +62,16 @@ export const Header = () => {
           <Link to="/employer/">Роботодавець</Link>
         </li>
         <li className='logout'>
-          <div className='button primary-button' onClick={logOut}>
+          <button className='button primary-button' onClick={logOut}>
             Вийти
-          </div>
+          </button>
         </li>
       </>
     );
   }
 
   const renderEmployerHeader = () => {
+    if(!isUserAuthorized) return <></>
 
     return (
       <>
@@ -84,9 +89,9 @@ export const Header = () => {
           <Link to="/employee/">Робітник</Link>
         </li>
         <li className='logout'>
-          <div className='button primary-button' onClick={logOut}>
+          <button className='button primary-button' onClick={logOut}>
             Вийти
-          </div>
+          </button>
         </li>
       </>
     );

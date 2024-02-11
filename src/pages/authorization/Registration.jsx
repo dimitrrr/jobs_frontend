@@ -81,7 +81,7 @@ export const Registration = () => {
           </div>
           <div className="form-control">
             <label></label>
-            <div className='button primary-button'>Зареєструватися</div>
+            <button type='submit' className='button primary-button'>Зареєструватися</button>
           </div>
           <Link to='/'>Перейти до авторизації</Link>
       </form>

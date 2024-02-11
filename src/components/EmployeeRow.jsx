@@ -59,7 +59,7 @@ export const EmployeeRow = ({CV, onMoveToEmployee = null, setEmployeeToList, hid
         <div onClick={downloadCV}>CV: {CV._id}</div>
       ) : null }
       <div>Різниця в часі: {getTimeOffset()} годин</div>
-      <div className='button primary-button' onClick={() => updateEmployeeIsSavedStatus(CV.employee._id)}>{isSaved ? 'Видалити зі збережених' : 'Зберегти'}</div>
+      <button className='button primary-button' onClick={() => updateEmployeeIsSavedStatus(CV.employee._id)}>{isSaved ? 'Видалити зі збережених' : 'Зберегти'}</button>
       </div>
   )
 }
