@@ -2,10 +2,15 @@ import React, { useContext, useState } from 'react'
 import { AppContext } from '../context/context'
 import { BACKEND } from '../axios';
 import TimezoneSelect, { allTimezones } from "react-timezone-select";
+import { useLocation } from 'react-router-dom';
 
 export const UserData = () => {
   const CONTEXT = useContext(AppContext);
   const userData = CONTEXT.user;
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const isEmployer = pathname && pathname.includes('/employer');
 
   const [timeZone, setTimeZone] = useState(
     userData.timeZone ? JSON.parse(userData.timeZone) : Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -29,10 +34,10 @@ export const UserData = () => {
   const renderShowMode = () => {
     return (
       <>
-      <button className='button primary-button' onClick={() => setCurrentMode(2)}>Редагувати</button>
-      <div>{ userData && userData.username }</div>
-      <div>{ userData && userData.email }</div>
-      <div>{ timeZone && timeZone.label ? timeZone.label : timeZone }</div>
+      <button className='button secondary-button' onClick={() => setCurrentMode(2)}>Редагувати</button>
+      <div className='user-data'>{ userData && userData.username }</div>
+      <div className='user-data'>{ userData && userData.email }</div>
+      <div className='user-data'>{ timeZone && timeZone.label ? timeZone.label : timeZone }</div>
       </>
     )
   }
@@ -40,7 +45,7 @@ export const UserData = () => {
   const renderEditMode = () => {
     return (
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='edit-mode-form'>
         <div className="form-control">
           <label>Імʼя</label>
           <input
@@ -69,8 +74,10 @@ export const UserData = () => {
               }}
             />
           </div>
-        <button type='submit' className='button primary-button'>Зберегти</button>
-        <button className='button secondary-button' onClick={() => setCurrentMode(1)}>Скасувати</button>
+          <div className="buttons">
+            <button type='submit' className='button primary-button'>Зберегти</button>
+            <button className='button secondary-button' onClick={() => setCurrentMode(1)}>Скасувати</button>
+          </div>
       </form>
     )
   }
@@ -87,8 +94,8 @@ export const UserData = () => {
   };
 
   return (
-    <div>
-      <div>Для того, щоб відкрити всі можливості роботодавця, вкажіть інформацію про свою компанію.</div>
+    <div className='worker-page'>
+      {isEmployer ? <div>Для того, щоб відкрити всі можливості роботодавця, вкажіть інформацію про свою компанію.</div> : null}
       { currentMode === 1 ? renderShowMode() : null }
       { currentMode === 2 ? renderEditMode() : null }
     </div>

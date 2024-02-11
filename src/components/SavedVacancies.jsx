@@ -30,10 +30,9 @@ export const SavedVacancies = () => {
     });
   };
 
-  return (
+  return savedVacancies ? (
     <div>
-      Збережені вакансії
       {savedVacancies.map(sv => <VacancyRow key={sv._id} isForEmployer={false} isSavedVacancy={true} isHiddenVacancy={false} setVacancyToList={setVacancyToList} vacancy={sv} />)}
     </div>
-  )
+  ) : <div>Поки немає жодної збереженої вакансії</div>
 }

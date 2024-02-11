@@ -209,7 +209,7 @@ export const Vacancy = () => {
         !canBeCandidate ? 
         !vacancy.employer || vacancy.employer._id === CONTEXT.user._id ? 
         null : (
-          <div>Ви вже подали заявку на цю вакансію</div>
+          <div className='already-candidate'>Ви вже подали заявку на цю вакансію</div>
         ) : null
       }
     </div>

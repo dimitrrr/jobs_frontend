@@ -92,7 +92,7 @@ export const VacancyCreator = () => {
 
   return (
     <div className='createVacancy'>
-      <div>{isNewVacancy ? 'Створити' : 'Редагувати'} вакансію</div>
+      <div className='creator-header'>{isNewVacancy ? 'Створити' : 'Редагувати'} вакансію</div>
       <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label>Назва</label>
@@ -122,16 +122,12 @@ export const VacancyCreator = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-control">
-            <label></label>
+          <div className="buttons">
             <button type='submit' className='button primary-button'>{isNewVacancy ? 'Створити' : 'Зберегти'}</button>
-          </div>
-          <div className="form-control">
-            <label></label>
             <button className='button secondary-button' onClick={returnToPersonal}>Скасувати</button>
           </div>
           {!isNewVacancy ? (
-            <>
+            <div className='additional-buttons'>
               {
                 vacancy.status !== 'active' ? (
                   <div className="form-control">
@@ -156,7 +152,7 @@ export const VacancyCreator = () => {
                   </div>
                 ) : null
               }
-            </>
+            </div>
           ) : null}
       </form>
     </div>

@@ -49,7 +49,7 @@ export const SendFeedback = ({aboutUser, addFeedback}) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='feedback-form'>
       <div className="form-control">
         <div className="radio">
           <label>

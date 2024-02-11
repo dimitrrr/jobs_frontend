@@ -26,7 +26,7 @@ export const CompanyData = () => {
   const renderShowMode = () => {
     return (
       <>
-      <button className='button primary-button' onClick={() => setCurrentMode(2)}>Редагувати</button>
+      <button className='button secondary-button' onClick={() => setCurrentMode(2)}>Редагувати</button>
       <div>{ companyData && companyData.logo ? <img src={companyData.logo} width={100} height={100} alt='logo' /> : null }</div>
       <div>{ companyData && companyData.name }</div>
       <div>{ companyData && companyData.area }</div>

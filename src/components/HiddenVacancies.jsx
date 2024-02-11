@@ -31,10 +31,9 @@ export const HiddenVacancies = () => {
       setHiddenVacancies(list);
     };
   
-    return (
+    return hiddenVacancies ? (
       <div>
-        Приховані вакансії
         {hiddenVacancies.map(sv => <VacancyRow key={sv._id} isForEmployer={false} isSavedVacancy={false} isHiddenVacancy={true} setVacancyToList={setVacancyToList} vacancy={sv} />)}
       </div>
-    )
+    ) : <div>Поки немає жодної прихованої вакансії</div>
 }

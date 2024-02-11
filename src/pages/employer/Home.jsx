@@ -77,7 +77,7 @@ export const EmployerHome = () => {
     CONTEXT.updateState({ ...CONTEXT, user: updatedUser });
  
     BACKEND.post('/updateUser', updatedUser).then(response => {
-      console.log(response)
+      // console.log(response)
     });
   };
 
@@ -97,7 +97,7 @@ export const EmployerHome = () => {
 
   return (
     <div className="search-page">
-      <SearchRow query={searchState.query} onChange={handleInputChange} onSubmit={handleSearchSubmit} onClear={clearLocalStorage} />
+      <SearchRow type='employer' query={searchState.query} onChange={handleInputChange} onSubmit={handleSearchSubmit} onClear={clearLocalStorage} />
       { searchState.error ? <div className='error'>{searchState.error}</div> : (
         <>
           {

@@ -97,7 +97,7 @@ export const EmployeeHome = () => {
 
   return (
     <div className="search-page">
-      <SearchRow query={searchState.query} onChange={handleInputChange} onSubmit={handleSearchSubmit} onClear={clearLocalStorage} />
+      <SearchRow type='employee' query={searchState.query} onChange={handleInputChange} onSubmit={handleSearchSubmit} onClear={clearLocalStorage} />
       { searchState.error ? <div className='error'>{searchState.error}</div> : (
         <>
           {

@@ -21,13 +21,17 @@ export const AddedCVs = () => {
       }
     }, [CONTEXT.user._id]);
   
+    const toCVDate = (timestamp) => {
+      const date = new Date(timestamp);
+      return date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
+    }
     const renderCVs = () => {
       if(!addedCVs || !addedCVs.length) return <></>
   
       return addedCVs.map(cv => (
-      <div key={cv._id}>
-        <div>{cv.CVData.role}</div>
-        <div>Додано: {cv.timestamp}</div>
+      <div className='resume-item' key={cv._id}>
+        <div className='role'>{cv.CVData.role}</div>
+        <div className='timestamp'>Додано: {toCVDate(cv.timestamp)}</div>
         <button className='button primary-button' onClick={() => removeCV(cv._id)}>Видалити резюме</button>
       </div>
       ));
@@ -47,7 +51,7 @@ export const AddedCVs = () => {
     return (
       <div className='vacancies'>
         <button className='button primary-button' onClick={() => moveToCVCreator('new')}>Створити резюме</button>
-        <div className="posted">
+        <div className="posted-resumes">
           {renderCVs()}
         </div>
       </div>

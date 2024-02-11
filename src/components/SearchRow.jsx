@@ -1,9 +1,11 @@
 import React from 'react'
 
-export const SearchRow = ({query, onChange, onSubmit, onClear}) => {
+export const SearchRow = ({query, onChange, onSubmit, onClear, type}) => {
+  const label = type === 'employee' ? 'Знайти роботу' : 'Знайти робітника';
+
   return (
     <div className="searchRow">
-      <div className="label">Знайти роботу</div>
+      <div className="label">{label}</div>
       <input
         type="text"
         name="query"

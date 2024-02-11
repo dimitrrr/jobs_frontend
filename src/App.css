@@ -102,12 +102,6 @@ main {
   font-size: 16px;
 }
 
-.posted {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Основні стилі сторінки вакансії */
 .vacancy-page {
   max-width: 800px;
@@ -190,12 +184,10 @@ main {
   margin-top: 20px;
 }
 
-/* Стилі для повідомлення про подану заявку */
 .applied-message {
   margin-top: 20px;
   color: green;
 }
-
 
 .button {
   display: inline-block;
@@ -280,4 +272,458 @@ main {
 
 .registration a:hover {
   color: darkblue;
+}
+
+.vacancy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid lightgrey;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.vacancy-row:hover {
+  background-color: #f5f5f5;
+}
+
+.vacancy-row .name {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+}
+
+.vacancy-row .status {
+  font-size: 16px;
+  color: grey;
+}
+
+.worker-page {
+  max-width: 600px;
+  /* margin: 0 auto; */
+  padding: 20px;
+}
+
+.worker-page .user-data {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.worker-page .edit-mode-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.worker-page .edit-mode-form .form-control {
+  margin-bottom: 15px;
+}
+
+.worker-page .edit-mode-form label {
+  font-weight: bold;
+  color: black;
+}
+
+.worker-page .edit-mode-form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.worker-page .edit-mode-form .timezone--wrapper {
+  margin-bottom: 15px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.createVacancy {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.createVacancy .creator-header {
+  font-size: 24px;
+}
+
+.createVacancy div {
+  font-weight: bold;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.createVacancy form {
+  display: flex;
+  flex-direction: column;
+}
+
+.createVacancy .form-control {
+  margin-bottom: 15px;
+}
+
+.createVacancy label {
+  font-weight: bold;
+  color: black;
+}
+
+.createVacancy input[type="text"],
+.createVacancy textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.createVacancy .additional-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.select-and-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.select-and-button form {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-and-button select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.resume-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.resume-section {
+  margin-bottom: 20px;
+}
+
+.resume-section label {
+  font-weight: bold;
+  color: black;
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.resume-section input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.resume-section .buttons {
+  margin-top: 10px;
+}
+
+.resume-section textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 5px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.resume-section .add-field {
+  margin-top: 10px;
+}
+
+.feedback-form {
+  max-width: 400px;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.feedback-form .form-control {
+  margin-bottom: 20px;
+}
+
+.feedback-form label {
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.feedback-form input[type="text"],
+.feedback-form textarea {
+  width: 90%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.feedback-form .radio label {
+  margin-left: 10px;
+  color: #333;
+}
+
+.feedback-list {
+  max-width: 400px;
+  padding: 20px;
+}
+
+.feedback-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.feedback-item .mark {
+  font-weight: bold;
+  color: #007bff;
+  font-size: 18px;
+}
+
+.feedback-item .text {
+  margin-top: 10px;
+  color: #333;
+}
+
+.feedback-item .timestamp {
+  color: #777;
+  font-size: 12px;
+}
+
+.feedback-item + .feedback-item {
+  margin-top: 20px;
+}
+
+.employer {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.vacancy-page .employer {
+  margin: 0;
+}
+
+.employer img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.employer .company {
+  font-weight: bold;
+  font-size: 20px;
+  
+  margin-bottom: 10px;
+}
+
+.employer .area,
+.employer .description,
+.employer .link {
+  margin-top: 10px;
+  color: #333;
+}
+
+.employer .link {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.employer .link:hover {
+  color: #0056b3;
+}
+
+.employer .time-offset {
+  margin-top: 10px;
+  color: #777;
+  font-size: 12px;
+}
+
+.employee-page {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.employee-page div {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.employee-page div:last-child {
+  margin-bottom: 0;
+}
+
+.posted-resumes {
+  margin-top: 20px;
+  max-width: 400px;
+}
+
+.posted-vacancies {
+  margin-top: 20px;
+  /* max-width: 400px; */
+}
+
+.posted-resumes .resume-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.posted-resumes .resume-item .role {
+  font-weight: bold;
+  font-size: 18px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.posted-resumes .resume-item .timestamp {
+  color: #777;
+  font-size: 12px;
+}
+
+.posted-resumes .resume-item .button {
+  margin-top: 10px;
+}
+
+.already-candidate {
+  margin-top: 20px;
+}
+
+.applied-vacancies {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.applied-vacancies .applied-vacancy {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.applied-vacancies .applied-vacancy .status {
+  color: #333;
+  margin-top: 10px;
+}
+
+.applied-vacancies .applied-vacancy .button {
+  margin-top: 10px;
+}
+
+.searched-employees {
+  /* max-width: 600px;
+  margin: 0 auto; */
+}
+
+.searched-employees .employee-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.searched-employees .employee-item:hover {
+  background-color: #f8f8f8;
+}
+
+.searched-employees .employee-item div {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.searched-employees .employee-item .download-cv {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.searched-employees .employee-item .download-cv:hover {
+  color: #0056b3;
+}
+
+.searched-employees .employee-item .time-offset {
+  color: #777;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.candidates-list {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.candidates-list .candidate {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.candidates-list .candidate:hover {
+  background-color: #e0e0e0;
+}
+
+.candidates-list .candidate div {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.candidates-list .candidate .download-cv {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.candidates-list .candidate .download-cv:hover {
+  color: #0056b3;
+}
+
+.candidates-list .candidate .time-offset {
+  color: #777;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.candidates-list .candidate .expectations {
+  margin-top: 10px;
+  color: #333;
 }

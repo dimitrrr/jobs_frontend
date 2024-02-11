@@ -30,10 +30,9 @@ export const SavedUsers = () => {
     });
   };
 
-  return (
-    <div>
-      Збережені робітники
-      {savedUsers.map(su => <EmployeeRow key={su._id} setEmployeeToList={setEmployeeToList} hideCV={true} CV={{employee: su}} />)}
+  return savedUsers ? (
+    <div className='searched-employees'>
+      {savedUsers.map((su, i) => <EmployeeRow key={su._id + '_' + i} setEmployeeToList={setEmployeeToList} hideCV={true} CV={{employee: su}} />)}
     </div>
-  )
+  ) : <div>Поки немає жодного збереженого робітника</div>
 }

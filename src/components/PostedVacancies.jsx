@@ -51,7 +51,7 @@ export const PostedVacancies = () => {
   return (
     <div className='vacancies'>
       <button className='button primary-button' onClick={() => moveToVacancyCreator('new')}>Додати вакансію</button>
-      <div className="posted">
+      <div className="posted-vacancies">
         {renderVacancies()}
       </div>
     </div>

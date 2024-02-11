@@ -60,11 +60,19 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
   }
 
   const renderVacancyForEmployee = () => {
+    if(!vacancy) return <></>
+
+    const employer = vacancy.employer;
+    let company = null;
+    if(employer.company && employer.company.length) {
+      company = JSON.parse(employer.company);
+    }
+    const companyName = company ? company.name : employer.username;
 
     return (
-      <div className="vacancy">
+      <div className="vacancy-row">
         <div className="name" onClick={() => moveToVacancy(vacancy._id)}>{vacancy.name}</div>
-        <div className='status'>{vacancy.status}</div>
+        <div className='status'>{companyName}</div>
         { 
         CONTEXT.user._id ? (
           <div className="buttons">
@@ -86,15 +94,17 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
   }
 
   const renderVacancyForEmployer = () => {
+    if(!vacancy) return <></>
+
     return (
       <div>
-        <div className="vacancy">
+        <div className="vacancy-row">
           <div className="name" onClick={() => moveToVacancy(vacancy._id)}>{vacancy.name}</div>
           <div className='status'>{vacancy.status}</div>
           <div className="buttons">
-            <button className='button primary-button' onClick={() => moveToVacancyCreator(vacancy._id)}>Редагувати</button>
+            <button className='button secondary-button' onClick={() => moveToVacancyCreator(vacancy._id)}>Редагувати</button>
           </div>
-          <form onSubmit={(event) => setStatusForVacancy(event, vacancy._id)} >
+          <form onSubmit={(event) => setStatusForVacancy(event, vacancy._id)} className='select-and-button'>
             <select value={state.status} onChange={(event) => setStatus(event)}>
               <option value="active">Відкрита</option>
               <option value="archived">Закрита</option>

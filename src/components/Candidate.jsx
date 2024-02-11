@@ -48,6 +48,8 @@ export const Candidate = ({candidate}) => {
   }
 
   const getTimeOffset = () => {
+    if(!CONTEXT.user || !CONTEXT.user.timeZone || !candidate || !candidate.employee || !candidate.employee.timeZone) return 0;
+
     const firstUserTime = JSON.parse(CONTEXT.user.timeZone);
     const secondUserTime = JSON.parse(candidate.employee.timeZone);
 
@@ -59,6 +61,11 @@ export const Candidate = ({candidate}) => {
   }
 
   const downloadCV = () => {
+    if(!candidate || !candidate.CV || !candidate.CV._id) {
+      console.log('NO CV');
+      return;
+    }
+
     BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response => {
           
       if(response.data instanceof Blob) {
@@ -75,10 +82,10 @@ export const Candidate = ({candidate}) => {
       <div>{candidate.employee.email}</div>
       <div>{candidate.text}</div>
       <div>{candidate.testTaskLink}</div>
-      <div onClick={downloadCV}>CV: {candidate.CV._id}</div>
-      <div>Різниця в часі: {getTimeOffset()} годин</div>
-      <div>{expectations.type} {expectations.min}-{expectations.max}</div>
-      <form onSubmit={updateCandidateStatus} >
+      <div className='download-cv' onClick={downloadCV}>Завантажити резюме</div>
+      <div className='time-offset'>Різниця в часі: {getTimeOffset()} годин</div>
+      <div className='expectations'>{expectations.type} {expectations.min}-{expectations.max}</div>
+      <form onSubmit={updateCandidateStatus} className='select-and-button'>
         <select value={candidateStatus} onChange={handleStatusChange}>
           <option value="accepted">Прийнято</option>
           <option value="denied">Відхилено</option>

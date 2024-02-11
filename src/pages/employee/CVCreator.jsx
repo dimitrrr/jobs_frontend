@@ -60,7 +60,7 @@ export const CVCreator = () => {
   const renderSectionById = (section) => {
     if(section === 0) {
       return (
-        <div>
+        <div className='resume-section'>
           <div>
             <label>Імʼя</label>
             <input type='text' name='first_name' value={CVData.first_name || ''} onChange={handleInputChange} />
@@ -103,7 +103,7 @@ export const CVCreator = () => {
 
     if(section === 1) {
       return (
-        <div>
+        <div className='resume-section'>
           <div>
             <label>Рівень освіти</label>
             <input type='text' name='degree' value={CVData.degree || ''} onChange={handleInputChange} />
@@ -142,7 +142,7 @@ export const CVCreator = () => {
 
     if(section === 2) {
       return (
-        <div>
+        <div className='resume-section'>
           <div>
             <label>Назва посади</label>
             <input type='text' name='job_title' value={CVData.job_title || ''} onChange={handleInputChange} />
@@ -177,7 +177,7 @@ export const CVCreator = () => {
 
     if(section === 3) {
       return (
-        <div>
+        <div className='resume-section'>
           <div>
             <label>Професійні навички</label>
             <textarea name='professional_skills' value={CVData.professional_skills || ''} onChange={handleInputChange} />
@@ -192,7 +192,7 @@ export const CVCreator = () => {
 
     if(section === 4) {
       return (
-        <div>
+        <div className='resume-section'>
           <div>
             <label>Характеристика</label>
             <textarea name='self_characteristics' value={CVData.self_characteristics || ''} onChange={handleInputChange} />
@@ -207,7 +207,7 @@ export const CVCreator = () => {
 
     if(section === 5) {
       return (
-        <div>
+        <div className='resume-section'>
           <div>
             <label>Знання мов</label>
             <input type='text' name='languages' value={CVData.languages || ''} onChange={handleInputChange} />
@@ -220,7 +220,9 @@ export const CVCreator = () => {
             <label>Посилання на портфоліо</label>
             <input type='text' name='portfolio' value={CVData.portfolio || ''} onChange={handleInputChange} />
           </div>
-          <button className='button secondary-button' >Додати поле</button>
+          <div className="add-field">
+            <button className='button secondary-button' >Додати поле</button>
+          </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>
             <button className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>
@@ -231,13 +233,13 @@ export const CVCreator = () => {
 
     if(section === 6) {
       return (
-        <div>
+        <div className='resume-section'>
           <div>
-            <button className='button secondary-button' onClick={createAndDownloadPdf}>Згенерувати резюме</button>
+            <button className='button primary-button' onClick={createAndDownloadPdf}>Згенерувати резюме</button>
           </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>
-            <button className='button primary-button' onClick={handleBackToPersonal}>Повернутися в особистий кабінет</button>
+            <button className='button secondary-button' onClick={handleBackToPersonal}>Повернутися в особистий кабінет</button>
           </div>
         </div>
       );
@@ -246,7 +248,7 @@ export const CVCreator = () => {
 
 
   return (
-    <div>
+    <div className='resume-page'>
       <h2>{SECTIONS[currentSection]}</h2>
       { renderSectionById(currentSection) }
     </div>

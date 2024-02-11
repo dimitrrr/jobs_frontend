@@ -7,7 +7,7 @@ export const Feedback = ({userId, sender = '', showAddFeedback = true}) => {
   
   useEffect(() => {
     BACKEND.post('/getFeedbackAboutUserById', { userId }).then(response => {
-      console.log(response)
+      // console.log(response)
       if(response.data.status === 'ok') {
         let fetchedFeedback = response.data.data;
         if(sender && sender !== '') {
@@ -23,18 +23,23 @@ export const Feedback = ({userId, sender = '', showAddFeedback = true}) => {
     setFeedback(newFeedback);
   }
 
-  return (
+  const toFeedbackDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
+  }
+
+  return feedback.length ? (
     <div>
-      <div>
-        {feedback.map((f, i) => (
-          <div key={f._id || `feedback-${i}`}>
-            {f.mark}
-            {f.text}
-            {f.timestamp}
+      <div className='feedback-list'>
+        {feedback.slice(0, 3).map((f, i) => (
+          <div key={f._id || `feedback-${i}`} className='feedback-item'>
+            <div className='mark'>{f.mark}</div>
+            <div className='text'>{f.text}</div>
+            <div className='timestamp'>{toFeedbackDate(f.timestamp)}</div>
           </div>
         ))}
       </div>
       { showAddFeedback ? <SendFeedback aboutUser={userId} addFeedback={addFeedbackToList} /> : null }
     </div>
-  )
+  ) : <div>Немає жодного відгука</div>
 }

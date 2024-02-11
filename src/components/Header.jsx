@@ -11,9 +11,9 @@ export const Header = () => {
   const navigate = useNavigate();
   
   const isUserAuthorized = !!window.localStorage.getItem(LOGGENID_ITEM);
-  const shouldShowEmployeeHeader = pathname.includes('/employee') || pathname.includes('/vacancies');
+  const shouldShowEmployeeHeader = pathname.includes('/employee') || pathname.includes('/vacancies') || pathname === '/CVCreator';
   const shouldShowEmployeePersonal = (pathname === '/employee' || pathname === '/employee/') && isUserAuthorized;
-  const shouldShowEmployeeHome = shouldShowEmployeeHeader && (pathname.includes('/employee/personal') || pathname.includes('/vacancies'));
+  const shouldShowEmployeeHome = shouldShowEmployeeHeader && (pathname.includes('/employee/personal') || pathname.includes('/vacancies') || pathname === '/CVCreator');
   const shouldShowEmployerHeader = pathname.includes('/employer') || pathname.includes('/vacancyCreator');
   const shouldShowEmployerPersonal = (pathname === '/employer' || pathname === '/employer/') && isUserAuthorized;
   const shouldShowEmployerHome = shouldShowEmployerHeader && (pathname.includes('/employer/personal') || pathname === '/vacancyCreator');

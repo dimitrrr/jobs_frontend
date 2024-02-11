@@ -31,7 +31,7 @@ export const Login = () => {
     
     try {
       BACKEND.post('/login', state).then(response => {
-        console.log(response);
+        // console.log(response);
         if(response.data.status === 'ok') {
           alert('login successful');
           window.localStorage.setItem(TOKEN_ITEM, response.data.data);

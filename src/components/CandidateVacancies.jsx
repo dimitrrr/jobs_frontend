@@ -28,12 +28,12 @@ export const CandidateVacancies = () => {
   }
 
   return candidates.length ? (
-      <div>
+      <div className='applied-vacancies'>
         {
           candidates.map(c => (
-          <div key={c._id}>
+          <div className='applied-vacancy' key={c._id}>
             <VacancyRow vacancy={c.vacancy} isHiddenVacancy={false} isSavedVacancy={false} />
-            Статус: {c.status}
+            <div className="status">Статус: {c.status}</div>
             <button className='button primary-button' onClick={() => removeCandidate(c._id)}>Видалити заявку</button>
           </div>
           ))

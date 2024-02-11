@@ -12,6 +12,8 @@ export const EmployerData = ({timeZone, company, employerId, shortForm = false})
   };
 
   const getTimeOffset = () => {
+    if(!timeZone || !CONTEXT.user || !CONTEXT.user.timeZone) return 0;
+
     const firstUserTime = JSON.parse(CONTEXT.user.timeZone);
     const secondUserTime = JSON.parse(timeZone);
 
@@ -24,16 +26,16 @@ export const EmployerData = ({timeZone, company, employerId, shortForm = false})
 
   return (
     <div className="employer" onClick={shortForm ? moveToEmployerPage : null}>
-        { company.logo ? <img width={100} height={100} src={company.logo} alt={'company logo'} /> : null }
-        { company.name ? <div className="company">{company.name}</div> : null }
-        Різниця в часі: {getTimeOffset()}
-        { !shortForm ? (
-            <>
-                { company.area ? <div className="area">{company.area}</div> : null }
-                { company.description ? <div className="description">{company.description}</div> : null }
-                { company.link ? <div className="link">{company.link}</div> : company.link }
-            </>
-        ) : null }
+      { company.logo ? <img width={100} height={100} src={company.logo} alt={'company logo'} /> : null }
+      { company.name ? <div className="company">{company.name}</div> : null }
+      <div className='time-offset'>Різниця в часі: {getTimeOffset()}</div>
+      { !shortForm ? (
+          <>
+              { company.area ? <div className="area">{company.area}</div> : null }
+              { company.description ? <div className="description">{company.description}</div> : null }
+              { company.link ? <div className="link">{company.link}</div> : company.link }
+          </>
+      ) : null }
     </div>
   )
 }
