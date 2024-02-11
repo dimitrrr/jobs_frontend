@@ -10,8 +10,8 @@ export const SearchRow = ({query, onChange, onSubmit, onClear}) => {
         value={query}
         onChange={onChange}
       />
-      <button onClick={onSubmit}>Знайти</button>
-      <button onClick={onClear}>Очистити</button>
+      <div className='button primary-button' onClick={onSubmit}>Знайти</div>
+      <div className='button secondary-button' onClick={onClear}>Очистити</div>
     </div>
   )
 }

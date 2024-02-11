@@ -84,7 +84,7 @@ export const Candidate = ({candidate}) => {
           <option value="denied">Відхилено</option>
           <option value="pending">Очікування</option>
         </select>
-        <button type='submit'>Прийняти зміну</button>
+        <div className='button secondary-button'>Прийняти зміну</div>
       </form>
     </div>
   )

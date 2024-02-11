@@ -94,8 +94,8 @@ export const CVCreator = () => {
             <input type='text' name='role' value={CVData.role || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">
-            <button onClick={handlePrevious}>Скасувати</button>
-            <button onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>
+            <div className='button secondary-button' onClick={handlePrevious}>Скасувати</div>
+            <div className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</div>
           </div>
         </div>
       );
@@ -133,8 +133,8 @@ export const CVCreator = () => {
             <textarea name='school_description' value={CVData.school_description || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">
-            <button onClick={handlePrevious}>Назад</button>
-            <button onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>
+            <div className='button secondary-button' onClick={handlePrevious}>Назад</div>
+            <div className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</div>
           </div>
         </div>
       );
@@ -168,8 +168,8 @@ export const CVCreator = () => {
             <textarea name='job_description' value={CVData.job_description || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">
-            <button onClick={handlePrevious}>Назад</button>
-            <button onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>
+            <div className='button secondary-button' onClick={handlePrevious}>Назад</div>
+            <div className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</div>
           </div>
         </div>
       );
@@ -183,8 +183,8 @@ export const CVCreator = () => {
             <textarea name='professional_skills' value={CVData.professional_skills || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">
-            <button onClick={handlePrevious}>Назад</button>
-            <button onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>
+            <div className='button secondary-button' onClick={handlePrevious}>Назад</div>
+            <div className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</div>
           </div>
         </div>
       );
@@ -198,8 +198,8 @@ export const CVCreator = () => {
             <textarea name='self_characteristics' value={CVData.self_characteristics || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">
-            <button onClick={handlePrevious}>Назад</button>
-            <button onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>
+            <div className='button secondary-button' onClick={handlePrevious}>Назад</div>
+            <div className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</div>
           </div>
         </div>
       );
@@ -220,10 +220,10 @@ export const CVCreator = () => {
             <label>Посилання на портфоліо</label>
             <input type='text' name='portfolio' value={CVData.portfolio || ''} onChange={handleInputChange} />
           </div>
-          <button >Додати поле</button>
+          <div className='button secondary-button' >Додати поле</div>
           <div className="buttons">
-            <button onClick={handlePrevious}>Назад</button>
-            <button onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>
+            <div className='button secondary-button' onClick={handlePrevious}>Назад</div>
+            <div className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</div>
           </div>
         </div>
       );
@@ -233,11 +233,11 @@ export const CVCreator = () => {
       return (
         <div>
           <div>
-            <button onClick={createAndDownloadPdf}>Згенерувати резюме</button>
+            <div className='button secondary-button' onClick={createAndDownloadPdf}>Згенерувати резюме</div>
           </div>
           <div className="buttons">
-            <button onClick={handlePrevious}>Назад</button>
-            <button onClick={handleBackToPersonal}>Повернутися в особистий кабінет</button>
+            <div className='button secondary-button' onClick={handlePrevious}>Назад</div>
+            <div className='button primary-button' onClick={handleBackToPersonal}>Повернутися в особистий кабінет</div>
           </div>
         </div>
       );

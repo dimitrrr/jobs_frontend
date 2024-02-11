@@ -198,7 +198,7 @@ export const Vacancy = () => {
                 onChange={handleExpectationsChange}
               />
               </div>
-              <button type='submit'>Відгукнутися</button>
+              <div className='button primary-button'>Відгукнутися</div>
             </form>
           </div>
         ) : null

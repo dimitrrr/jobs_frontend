@@ -50,7 +50,7 @@ export const PostedVacancies = () => {
 
   return (
     <div className='vacancies'>
-      <button onClick={() => moveToVacancyCreator('new')}>Додати вакансію</button>
+      <div className='button primary-button' onClick={() => moveToVacancyCreator('new')}>Додати вакансію</div>
       <div className="posted">
         {renderVacancies()}
       </div>

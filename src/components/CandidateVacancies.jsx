@@ -34,7 +34,7 @@ export const CandidateVacancies = () => {
           <div key={c._id}>
             <VacancyRow vacancy={c.vacancy} isHiddenVacancy={false} isSavedVacancy={false} />
             Статус: {c.status}
-            <button onClick={() => removeCandidate(c._id)}>Видалити заявку</button>
+            <div className='button primary-button' onClick={() => removeCandidate(c._id)}>Видалити заявку</div>
           </div>
           ))
         }

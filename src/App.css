@@ -22,11 +22,17 @@ body {
 .navbar li {
   padding: 20px;
   border: 1px solid #e7e7e7;
-  background-color: #f3f3f3;
   transition: all .5s ease-out;
+  cursor: pointer;
 }
 
-.navbar li a {
+.navbar li.logout {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.navbar li a, .navbar .logout {
   color: #000;
   text-decoration: none;
 }
@@ -35,7 +41,7 @@ body {
   background-color: #000;
 }
 
-.navbar li:hover a {
+.navbar li:hover a, .navbar li:hover .logout {
   color: #e7e7e7;
 }
 
@@ -93,6 +99,7 @@ main {
 .searchRow input {
   flex-grow: 1;
   height: 32px;
+  font-size: 16px;
 }
 
 .posted {
@@ -123,4 +130,44 @@ main {
   width: 40%;
   display: flex;
   gap: 10px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.primary-button {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+}
+
+.primary-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.secondary-button {
+  background-color: grey;
+  color: white;
+  border: 2px solid grey;
+}
+
+.secondary-button:hover {
+  background-color: white;
+  color: grey;
+}
+
+.disabled-button {
+  background-color: lightgrey;
+  color: darkgrey;
+  border: 2px solid lightgrey;
+  cursor: not-allowed;
 }

@@ -94,7 +94,7 @@ export const SendFeedback = ({aboutUser, addFeedback}) => {
           onChange={handleInputChange}
         />
       </div>
-      <button type='submit'>Відгукнутися</button>
+      <div className='button primary-button' type='submit'>Відгукнутися</div>
     </form>
   )
 }

@@ -26,7 +26,7 @@ export const CompanyData = () => {
   const renderShowMode = () => {
     return (
       <>
-      <button onClick={() => setCurrentMode(2)}>Редагувати</button>
+      <div className='button primary-button' onClick={() => setCurrentMode(2)}>Редагувати</div>
       <div>{ companyData && companyData.logo ? <img src={companyData.logo} width={100} height={100} alt='logo' /> : null }</div>
       <div>{ companyData && companyData.name }</div>
       <div>{ companyData && companyData.area }</div>
@@ -87,8 +87,8 @@ export const CompanyData = () => {
             onChange={handleInputChange}
           />
         </div>
-        <button type='submit'>Зберегти</button>
-        <button type='button' onClick={() => setCurrentMode(1)}>Скасувати</button>
+        <div className='button primary-button'>Зберегти</div>
+        <div className='button secondary-button' onClick={() => setCurrentMode(1)}>Скасувати</div>
     </form>
     )
   }
