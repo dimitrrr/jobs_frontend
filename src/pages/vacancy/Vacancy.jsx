@@ -105,7 +105,7 @@ export const Vacancy = () => {
       <div className='vacancy'>
         <div className="name">{vacancy.name}</div>
         <div className="status">{vacancy.status}</div>
-        <div className="tags">{vacancy.tags}</div>
+        <div className="tags">{vacancy.tags.map(tag => <div key={tag.id}>{tag.name}{tag.value ? `-${tag.value}` : ''}</div>)}</div>
         <div className="text">{vacancy.text}</div>
         <div className="testTaskLink">{vacancy.testTaskLink}</div>
       </div>

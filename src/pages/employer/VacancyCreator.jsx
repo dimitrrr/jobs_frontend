@@ -3,6 +3,7 @@ import { AppContext } from '../../context/context';
 import { EMPLOYER_PERSONAL_URL, ERROR_PAGE_URL } from '../../constants';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
+import { List } from '../../components';
 
 export const VacancyCreator = () => {
   const navigate = useNavigate();
@@ -90,6 +91,11 @@ export const VacancyCreator = () => {
 
   }
 
+  const onAfterTagsUpdate = (tags) => {
+    const newVacancy = { ...vacancy, tags };
+    setVacancy(newVacancy);
+  };
+
   return (
     <div className='createVacancy'>
       <div className='creator-header'>{isNewVacancy ? 'Створити' : 'Редагувати'} вакансію</div>
@@ -102,6 +108,10 @@ export const VacancyCreator = () => {
               value={vacancy.name}
               onChange={handleInputChange}
             />
+          </div>
+          <div className="form-control">
+            <label>Додайте кілька тегів, щоб зробити вакансію більш інформативною</label>
+            <List initialItems={vacancy.tags} onAfterUpdate={onAfterTagsUpdate} type='items' name='tags' />
           </div>
           { !isNewVacancy ? <div className="status">Статус: {vacancy.status}</div> : null }
           <div className="form-control">

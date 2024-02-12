@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { EMPLOYEE_PERSONAL_URL } from '../../constants';
 import { BACKEND } from '../../axios';
 import { AppContext } from '../../context/context';
+import { List } from '../../components';
 
 const SECTIONS = ['Контактні дані', 'Освіта', 'Досвід роботи', 'Навички', 'Характеристика', 'Додатково', 'Підсумок'];
 
@@ -12,6 +13,9 @@ export const CVCreator = () => {
   const CONTEXT = useContext(AppContext);
   const [currentSection, setCurrentSection] = useState(0);
   const [CVData, setCVData] = useState({});
+  const [additionalFields, setAdditionalFields] = useState([]);
+  const [languages, setLanguages] = useState([]);
+  const [skills, setSkills] = useState([]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -56,6 +60,24 @@ export const CVCreator = () => {
       }
     });
   }
+
+  const onAfterAdditionalFieldsUpdate = (newFields) => {
+    const newCVData = { ...CVData, additionalFields: newFields };
+    setAdditionalFields(newFields);
+    setCVData(newCVData);
+  };
+
+  const onAfterLanguagesUpdate = (newLanguages) => {
+    const newCVData = { ...CVData, languages: newLanguages };
+    setLanguages(newLanguages);
+    setCVData(newCVData);
+  };
+
+  const onAfterSkillsUpdate = (newSkills) => {
+    const newCVData = { ...CVData, skills: newSkills };
+    setSkills(newSkills);
+    setCVData(newCVData);
+  };
   
   const renderSectionById = (section) => {
     if(section === 0) {
@@ -176,11 +198,12 @@ export const CVCreator = () => {
     }
 
     if(section === 3) {
+      const skillLevels = ['1', '2', '3', '4', '5'];
       return (
         <div className='resume-section'>
           <div>
-            <label>Професійні навички</label>
-            <textarea name='professional_skills' value={CVData.professional_skills || ''} onChange={handleInputChange} />
+            <label>Професійні навички та рівень володіння</label>
+            <List initialItems={skills} onAfterUpdate={onAfterSkillsUpdate} type='itemswithselect' name='skills' values={skillLevels} initialValue={skillLevels[0]} />
           </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>
@@ -206,11 +229,12 @@ export const CVCreator = () => {
     }
 
     if(section === 5) {
+      const languageLevels = ['початковий', 'базовий', 'середній', 'вище середнього', 'просунутий', 'майстерний'];
       return (
         <div className='resume-section'>
           <div>
             <label>Знання мов</label>
-            <input type='text' name='languages' value={CVData.languages || ''} onChange={handleInputChange} />
+            <List initialItems={languages} onAfterUpdate={onAfterLanguagesUpdate} type='itemswithselect' name='languages' values={languageLevels} initialValue={languageLevels[0]} />
           </div>
           <div>
             <label>Посилання на сертифікати</label>
@@ -221,7 +245,8 @@ export const CVCreator = () => {
             <input type='text' name='portfolio' value={CVData.portfolio || ''} onChange={handleInputChange} />
           </div>
           <div className="add-field">
-            <button className='button secondary-button' >Додати поле</button>
+            <label>За необхідності додайте більше полів</label>
+            <List initialItems={additionalFields} onAfterUpdate={onAfterAdditionalFieldsUpdate} type='itemswithinput' name='additionalfields' />
           </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>

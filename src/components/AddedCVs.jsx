@@ -30,7 +30,7 @@ export const AddedCVs = () => {
   
       return addedCVs.map(cv => (
       <div className='resume-item' key={cv._id}>
-        <div className='role'>{cv.CVData.role}</div>
+        <div className='role'>{cv.CVData ? cv.CVData.role : ''}</div>
         <div className='timestamp'>Додано: {toCVDate(cv.timestamp)}</div>
         <button className='button primary-button' onClick={() => removeCV(cv._id)}>Видалити резюме</button>
       </div>

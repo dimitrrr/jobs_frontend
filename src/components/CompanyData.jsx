@@ -31,7 +31,9 @@ export const CompanyData = () => {
       <div>{ companyData && companyData.name }</div>
       <div>{ companyData && companyData.area }</div>
       <div>{ companyData && companyData.description }</div>
-      <div>{ companyData && companyData.link }</div>
+      {companyData && companyData.link ? (
+        <a href={companyData.link}>{ companyData.link }</a>
+      ) : null}
       </>
     )
   }

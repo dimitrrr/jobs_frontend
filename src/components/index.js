@@ -19,6 +19,7 @@ import { AddedCVs } from './AddedCVs.jsx';
 import { SearchEmployeeResults } from './SearchEmployeeResults.jsx';
 import { EmployeeRow } from './EmployeeRow.jsx';
 import { SavedUsers } from './SavedUsers.jsx';
+import { List } from './List.jsx';
 
 export {
     Header,
@@ -42,4 +43,5 @@ export {
     SearchEmployeeResults,
     EmployeeRow,
     SavedUsers,
+    List,
 };
