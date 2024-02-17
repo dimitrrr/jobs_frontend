@@ -1,11 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { DEFAULT_URL, EMPLOYEE_SEARCH_RESULTS, LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM, VACANCIES_SEARCH_RESULTS } from '../constants';
 import { AppContext } from '../context/context';
 
 export const Header = () => {
   const CONTEXT = useContext(AppContext);
-  const userData = CONTEXT.user;
+  const [ userData, setUserData ] = useState({});
+
+  useEffect(() => {
+    setUserData(CONTEXT.user);
+  }, [CONTEXT.user]);
+
   const location = useLocation();
   const pathname = location.pathname;
   const navigate = useNavigate();

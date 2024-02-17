@@ -8,7 +8,7 @@ export const EmployeeHome = () => {
   const CONTEXT = useContext(AppContext);
   const [searchState, setSearchState] = useState({
     query: '',
-    filters: [],
+    filters: {},
     results: [],
     error: ''
   });
@@ -43,7 +43,24 @@ export const EmployeeHome = () => {
   };
 
   const handleFiltersChange = (filters) => {
-    console.log('change', filters)
+    const { keywords, keywordsMatchLevel } = filters;
+
+    const processedKeywords = keywords.map(kw => kw.name.toLowerCase());
+
+    const vacanciesToShow = [];
+    for(let vacancy of searchState.results) {
+      const totalText = (vacancy.name + vacancy.tags.map(tag => tag) + vacancy.text).toLowerCase();
+      const matchesCount = processedKeywords.filter(key => totalText.includes(key)).length;
+      const percentage = matchesCount / keywords.length;
+
+      if(percentage >= keywordsMatchLevel) vacanciesToShow.push(vacancy);
+    }
+
+    if(vacanciesToShow.length) {
+      setSearchState({...searchState, firstSearch: false, error: '', filters, results: vacanciesToShow });
+    } else {
+      setSearchState({...searchState, error: 'За вашим запитом нічого не знайдено.' });
+    }
   }
 
   const handleSearchSubmit = (event) => {
@@ -54,7 +71,8 @@ export const EmployeeHome = () => {
     const filteredVacancies = vacancies
       .filter(
         v => v.employer._id !== CONTEXT.user._id && 
-        v.name.toLowerCase().includes(searchState.query.toLowerCase())
+        v.name.toLowerCase().includes(searchState.query.toLowerCase()) &&
+        v.status === 'active'
       );
     if(filteredVacancies.length) {
       setSearchState({...searchState, firstSearch: false, error: '', results: filteredVacancies });
@@ -85,7 +103,7 @@ export const EmployeeHome = () => {
     window.localStorage.removeItem(VACANCIES_SEARCH_RESULTS);
     setSearchState({
       query: '',
-      filters: [],
+      filters: {},
       results: [],
       error: ''
     });

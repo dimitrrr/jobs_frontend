@@ -5,7 +5,7 @@ import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
 import { CandidatesForVacancy } from './CandidatesForVacancy';
 
-export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true, onMoveToVacancy = null }) => {
+export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true, onMoveToVacancy = null, showEmployeeButtons = true }) => {
   const CONTEXT = useContext(AppContext);
   const [state, setState] = useState({
     isVacancySaved: CONTEXT.user.savedVacancies ? CONTEXT.user.savedVacancies.find(v => v._id === vacancy._id) : false,
@@ -74,7 +74,7 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
         <div className="name" onClick={() => moveToVacancy(vacancy._id)}>{vacancy.name}</div>
         <div className='status'>{companyName}</div>
         { 
-        CONTEXT.user._id ? (
+        CONTEXT.user._id && showEmployeeButtons ? (
           <div className="buttons">
             {
               isSavedVacancy ? (

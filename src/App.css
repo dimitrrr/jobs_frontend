@@ -532,6 +532,10 @@ main {
   margin: 0;
 }
 
+.vacancy-page .similar {
+  margin-top: 20px;
+}
+
 .employer img {
   width: 100px;
   height: 100px;

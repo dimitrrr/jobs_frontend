@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/context';
-import { EmployerData } from '../../components';
+import { EmployerData, VacancyRow } from '../../components';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
 import { ERROR_PAGE_URL } from '../../constants';
+import { checkSimilarity } from '../../helpers';
 
 export const Vacancy = () => {
   const navigate = useNavigate();
@@ -26,6 +27,36 @@ export const Vacancy = () => {
   });
   const [CVs, setCVs] = useState([]);
   const [canBeCandidate, setCanBeCandidate] = useState(false);
+  const [similarVacancies, setSimilarVacancies] = useState([]);
+
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const vacancyId = urlParams.get('vacancy_id');
+
+    const currentVacancyText = (vacancy.name + vacancy.text).toLowerCase();
+
+    try {
+      BACKEND.post('/postedVacancies')
+      .then((response) => {
+        if(response.data.status === 'ok' && response.data.data && response.data.data.length) {
+          const vacancies = response.data.data;
+
+          const vacanciesToCheck = vacancies.filter(v => v._id !== vacancyId && v.status === 'active');
+
+          const vacanciesWithSimilarity = vacanciesToCheck.map(v => ({ vacancy: v, similarity: checkSimilarity(currentVacancyText, (v.name + v.text).toLowerCase())}))
+          
+          vacanciesWithSimilarity.sort((a, b) => b.similarity - a.similarity);
+          
+          const vacanciesToShow = vacanciesWithSimilarity.filter(v => v.similarity > 0.5).slice(0, 3);
+
+          setSimilarVacancies(vacanciesToShow);
+        }
+      });
+    } catch(error) {
+      console.log(error);
+    }
+  }, [vacancy]);
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -112,6 +143,14 @@ export const Vacancy = () => {
       {
         vacancy.employer && vacancy.employer.company ? (
           <EmployerData timeZone={vacancy.employer.timeZone} shortForm={true} company={JSON.parse(vacancy.employer.company)} employerId={vacancy.employer._id} />
+        ) : null
+      }
+      {
+        similarVacancies.length ? (
+          <div className='similar'>
+            <div>Схожі вакансії</div>
+            { similarVacancies.map(sv => <VacancyRow vacancy={sv.vacancy} key={sv.vacancy._id} showEmployeeButtons={false}/>)}
+          </div>
         ) : null
       }
       {

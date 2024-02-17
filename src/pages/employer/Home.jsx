@@ -8,7 +8,7 @@ export const EmployerHome = () => {
   const CONTEXT = useContext(AppContext);
   const [searchState, setSearchState] = useState({
     query: '',
-    filters: [],
+    filters: {},
     results: [],
     error: ''
   });
@@ -43,7 +43,24 @@ export const EmployerHome = () => {
   };
 
   const handleFiltersChange = (filters) => {
-    console.log('change', filters)
+    const { keywords, keywordsMatchLevel } = filters;
+
+    const processedKeywords = keywords.map(kw => kw.name.toLowerCase());
+
+    const employeesToShow = [];
+    for(let employee of searchState.results) {
+      const totalText = JSON.stringify(employee.CVData || {}).toLowerCase();
+      const matchesCount = processedKeywords.filter(key => totalText.includes(key)).length;
+      const percentage = matchesCount / keywords.length;
+
+      if(percentage >= keywordsMatchLevel) employeesToShow.push(employee);
+    }
+
+    if(employeesToShow.length) {
+      setSearchState({...searchState, firstSearch: false, error: '', filters, results: employeesToShow });
+    } else {
+      setSearchState({...searchState, error: 'За вашим запитом нічого не знайдено.' });
+    }
   }
 
   const handleSearchSubmit = (event) => {
@@ -85,7 +102,7 @@ export const EmployerHome = () => {
     window.localStorage.removeItem(EMPLOYEE_SEARCH_RESULTS);
     setSearchState({
       query: '',
-      filters: [],
+      filters: {},
       results: [],
       error: ''
     });

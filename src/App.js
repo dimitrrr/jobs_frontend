@@ -46,7 +46,7 @@ function App() {
 
     fetchData();
     
-  }, []);
+  }, [window.localStorage.getItem(TOKEN_ITEM)]);
 
   return (
     <div className='app'>
