@@ -60,7 +60,7 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
   }
 
   const renderVacancyForEmployee = () => {
-    if(!vacancy) return <></>
+    if(!vacancy || !vacancy.employer) return <></>
 
     const employer = vacancy.employer;
     let company = null;

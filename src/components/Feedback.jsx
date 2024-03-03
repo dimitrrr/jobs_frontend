@@ -28,18 +28,21 @@ export const Feedback = ({userId, sender = '', showAddFeedback = true}) => {
     return date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
   }
 
-  return feedback.length ? (
+  return (
     <div>
-      <div className='feedback-list'>
-        {feedback.slice(0, 3).map((f, i) => (
-          <div key={f._id || `feedback-${i}`} className='feedback-item'>
-            <div className='mark'>{f.mark}</div>
-            <div className='text'>{f.text}</div>
-            <div className='timestamp'>{toFeedbackDate(f.timestamp)}</div>
-          </div>
-        ))}
+      {feedback.length ? (<div>
+        <div className='feedback-list'>
+          {feedback.slice(0, 3).map((f, i) => (
+            <div key={f._id || `feedback-${i}`} className='feedback-item'>
+              <div className='mark'>{f.mark}</div>
+              <div className='text'>{f.text}</div>
+              <div className='timestamp'>{toFeedbackDate(f.timestamp)}</div>
+            </div>
+          ))}
+        </div>
       </div>
-      { showAddFeedback ? <SendFeedback aboutUser={userId} addFeedback={addFeedbackToList} /> : null }
-    </div>
-  ) : <div>Немає жодного відгука</div>
+    ) : <div>Немає жодного відгука</div>}
+    { showAddFeedback ? <SendFeedback aboutUser={userId} addFeedback={addFeedbackToList} /> : null }
+  </div>
+  )
 }

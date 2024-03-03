@@ -48,7 +48,7 @@ export const Vacancy = () => {
           
           vacanciesWithSimilarity.sort((a, b) => b.similarity - a.similarity);
           
-          const vacanciesToShow = vacanciesWithSimilarity.filter(v => v.similarity > 0.5).slice(0, 3);
+          const vacanciesToShow = vacanciesWithSimilarity.slice(0, 3);
 
           setSimilarVacancies(vacanciesToShow);
         }

@@ -72,7 +72,8 @@ export const EmployeeHome = () => {
       .filter(
         v => v.employer._id !== CONTEXT.user._id && 
         v.name.toLowerCase().includes(searchState.query.toLowerCase()) &&
-        v.status === 'active'
+        v.status === 'active' &&
+        !CONTEXT.user.hiddenVacancies.map(hv => hv._id).includes(v._id)
       );
     if(filteredVacancies.length) {
       setSearchState({...searchState, firstSearch: false, error: '', results: filteredVacancies });
@@ -83,20 +84,29 @@ export const EmployeeHome = () => {
   };
 
   const setVacancyToList = (listName, vacancyId) => {
+    const update = (list) => {
+      const updatedUser = { ...CONTEXT.user, [listName]: list };
+      CONTEXT.updateState({ ...CONTEXT, user: updatedUser });
+   
+      BACKEND.post('/updateUser', updatedUser).then(response => {
+        console.log(response)
+      });
+    }
+
     let list = [...CONTEXT.user[listName]];
 
     if(list.find(v => v._id === vacancyId)) {
       list = list.filter(v => v._id !== vacancyId);
+      update(list);
     } else {
-      list.push(vacancyId);
+      BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+        if(response.data.status === 'ok' && response.data.data) {
+          const vacancy = response.data.data;
+          list.push(vacancy);
+          update(list);
+        }
+      });
     }
-
-    const updatedUser = { ...CONTEXT.user, [listName]: list };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser });
- 
-    BACKEND.post('/updateUser', updatedUser).then(response => {
-      console.log(response)
-    });
   };
 
   const clearLocalStorage = () => {

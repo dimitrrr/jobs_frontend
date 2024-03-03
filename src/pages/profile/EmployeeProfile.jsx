@@ -20,7 +20,7 @@ export const EmployeeProfile = () => {
   return userData && userData._id ? (
     <div>
       <EmployeeData employee={userData} />
-      <Feedback userId={userData._id} />
+      <Feedback userId={userData._id} sender='employer' />
     </div>
   ) : null
 }

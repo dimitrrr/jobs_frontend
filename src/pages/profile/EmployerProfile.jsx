@@ -31,7 +31,7 @@ export const EmployerProfile = () => {
   return employer && employer._id ? (
     <div className='employer-page'>
       <EmployerData timeZone={employer.timeZone} employerId={employer._id} company={employer} shortForm={false} />
-      <Feedback userId={employer._id} />
+      <Feedback userId={employer._id} sender='employee'/>
     </div>
   ) : null
 }

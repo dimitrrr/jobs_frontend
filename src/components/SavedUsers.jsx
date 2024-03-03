@@ -13,24 +13,34 @@ export const SavedUsers = () => {
     }
   }, [CONTEXT.user]);
   
-  const setEmployeeToList = (type = 'savedUsers', vacancyId) => {
-    let list = [...CONTEXT.user.savedUsers];
-
-    if(list.find(v => v._id === vacancyId)) {
-      list = list.filter(v => v._id !== vacancyId);
-    } else {
-      list.push(vacancyId);
+  const setEmployeeToList = (type = 'savedUsers', employeeId) => {
+    const update = (list) => {
+      const updatedUser = { ...CONTEXT.user, savedUsers: list };
+      CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
+      setSavedUsers(list);
+  
+      BACKEND.post('/updateUser', updatedUser).then(response => {
+      });
     }
 
-    const updatedUser = { ...CONTEXT.user, savedUsers: list };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
-    setSavedUsers(list);
- 
-    BACKEND.post('/updateUser', updatedUser).then(response => {
-    });
+    let list = [...CONTEXT.user.savedUsers];
+
+    if(list.find(e => e._id === employeeId)) {
+      list = list.filter(e => e._id !== employeeId);
+      update(list);
+    } else {
+      BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
+        if(response.data.status === 'ok') {
+          const employee = response.data.data;
+          list.push(employee);
+          update(list);
+        }
+      });
+    }
+
   };
 
-  return savedUsers ? (
+  return savedUsers && savedUsers.length ? (
     <div className='searched-employees'>
       {savedUsers.map((su, i) => <EmployeeRow key={su._id + '_' + i} setEmployeeToList={setEmployeeToList} hideCV={true} CV={{employee: su}} />)}
     </div>

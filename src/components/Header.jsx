@@ -29,6 +29,7 @@ export const Header = () => {
     window.localStorage.removeItem(VACANCIES_SEARCH_RESULTS);
     window.localStorage.removeItem(EMPLOYEE_SEARCH_RESULTS);
     CONTEXT.updateState({...CONTEXT, user: {}});
+    navigate(0);
     window.location.replace(DEFAULT_URL + START_PAGE_URL);
   }
 

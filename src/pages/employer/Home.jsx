@@ -82,20 +82,28 @@ export const EmployerHome = () => {
   };
 
   const setEmployeeToList = (listName, employeeId) => {
+    const update = (list) => {
+      const updatedUser = { ...CONTEXT.user, savedUsers: list };
+      CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
+  
+      BACKEND.post('/updateUser', updatedUser).then(response => {
+      });
+    }
+
     let list = [...CONTEXT.user.savedUsers];
 
     if(list.find(e => e._id === employeeId)) {
       list = list.filter(e => e._id !== employeeId);
+      update(list);
     } else {
-      list.push(employeeId);
+      BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
+        if(response.data.status === 'ok') {
+          const employee = response.data.data;
+          list.push(employee);
+          update(list);
+        }
+      });
     }
-
-    const updatedUser = { ...CONTEXT.user, [listName]: list };
-    CONTEXT.updateState({ ...CONTEXT, user: updatedUser });
- 
-    BACKEND.post('/updateUser', updatedUser).then(response => {
-      // console.log(response)
-    });
   };
 
   const clearLocalStorage = () => {

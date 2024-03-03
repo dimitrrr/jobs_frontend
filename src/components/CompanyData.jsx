@@ -25,28 +25,28 @@ export const CompanyData = () => {
 
   const renderShowMode = () => {
     return (
-      <>
-      <button className='button secondary-button' onClick={() => setCurrentMode(2)}>Редагувати</button>
-      <div>{ companyData && companyData.logo ? <img src={companyData.logo} width={100} height={100} alt='logo' /> : null }</div>
-      <div>{ companyData && companyData.name }</div>
-      <div>{ companyData && companyData.area }</div>
-      <div>{ companyData && companyData.description }</div>
-      {companyData && companyData.link ? (
-        <a href={companyData.link}>{ companyData.link }</a>
-      ) : null}
-      </>
+      <div className='companyDataView'>
+        <button className='button secondary-button' onClick={() => setCurrentMode(2)}>Редагувати</button>
+        <div>{ companyData && companyData.logo ? <img src={companyData.logo} width={100} height={100} alt='logo' /> : null }</div>
+        <div>{ companyData && companyData.name }</div>
+        <div>{ companyData && companyData.area }</div>
+        <div>{ companyData && companyData.description }</div>
+        {companyData && companyData.link ? (
+          <a href={companyData.link}>{ companyData.link }</a>
+        ) : null}
+      </div>
     )
   }
 
   const renderEditMode = () => {
     return (
 
-      <form onSubmit={handleSubmit}>
+      <form className='companyDataEdit' onSubmit={handleSubmit}>
         <div className="form-control">
           <label>Логотип</label>
           <input
             type="file"
-            accept='image/*'
+            accept=".png, .jpg, .jpeg"
             name="logo"
             onChange={convertToBase64}
           />
@@ -89,8 +89,10 @@ export const CompanyData = () => {
             onChange={handleInputChange}
           />
         </div>
-        <button type='submit' className='button primary-button'>Зберегти</button>
-        <button className='button secondary-button' onClick={() => setCurrentMode(1)}>Скасувати</button>
+        <div className="buttons">
+          <button type='submit' className='button primary-button'>Зберегти</button>
+          <button className='button secondary-button' onClick={() => setCurrentMode(1)}>Скасувати</button>
+        </div>
     </form>
     )
   }
@@ -122,7 +124,7 @@ export const CompanyData = () => {
 
   return (
     <div>
-      <div>Для того, щоб відкрити всі можливості роботодавця, вкажіть інформацію про свою компанію.</div>
+      <div className='companyDataInfo'>Для того, щоб відкрити всі можливості роботодавця, вкажіть інформацію про свою компанію.</div>
       { currentMode === 1 ? renderShowMode() : null }
       { currentMode === 2 ? renderEditMode() : null }
     </div>

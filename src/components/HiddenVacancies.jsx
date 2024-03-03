@@ -14,26 +14,36 @@ export const HiddenVacancies = () => {
     }, [CONTEXT.user._id]);
     
     const setVacancyToList = (type = 'hiddenVacancies', vacancyId) => {
+      const update = (list) => {
+        const updatedUser = { ...CONTEXT.user, hiddenVacancies: list };
+        CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
+     
+        BACKEND.post('/updateUser', updatedUser).then(response => {
+        });
+  
+        setHiddenVacancies(list);
+      } 
+
       let list = [...CONTEXT.user.hiddenVacancies];
   
       if(list.find(v => v._id === vacancyId)) {
         list = list.filter(v => v._id !== vacancyId);
+        update(list)
       } else {
-        list.push(vacancyId);
+        BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+          if(response.data.status === 'ok' && response.data.data) {
+            const vacancy = response.data.data;
+            list.push(vacancy);
+            update(list);
+          }
+        });
       }
   
-      const updatedUser = { ...CONTEXT.user, hiddenVacancies: list };
-      CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
-   
-      BACKEND.post('/updateUser', updatedUser).then(response => {
-      });
-
-      setHiddenVacancies(list);
     };
   
-    return hiddenVacancies ? (
+    return hiddenVacancies && hiddenVacancies.length ? (
       <div>
-        {hiddenVacancies.map(sv => <VacancyRow key={sv._id} isForEmployer={false} isSavedVacancy={false} isHiddenVacancy={true} setVacancyToList={setVacancyToList} vacancy={sv} />)}
+        {hiddenVacancies.map(sv => <VacancyRow key={sv._id + Date.now()} isForEmployer={false} isSavedVacancy={false} isHiddenVacancy={true} setVacancyToList={setVacancyToList} vacancy={sv} />)}
       </div>
     ) : <div>Поки немає жодної прихованої вакансії</div>
 }

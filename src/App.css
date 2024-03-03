@@ -7,6 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+textarea {
+  resize: vertical;
+}
+
 .navbar {
   list-style-type: none;
   margin: 0;
@@ -730,4 +734,29 @@ main {
 .candidates-list .candidate .expectations {
   margin-top: 10px;
   color: #333;
+}
+
+.companyDataEdit, .companyDataView {
+  width: 600px;
+}
+
+.companyDataView div {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.companyDataEdit .form-control {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.companyDataEdit .form-control input, .companyDataEdit.form-control textarea {
+  min-height: 20px;
+}
+
+.companyDataInfo {
+  margin-bottom: 20px;
 }
