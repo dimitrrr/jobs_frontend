@@ -1,5 +1,7 @@
 export const BACKEND_URL = 'http://localhost:1234';
 export const DEFAULT_URL = 'http://localhost:3000';
+export const OPENAI_API_KEY = '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';
+export const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 export const START_PAGE_URL = '/';
 export const DEFAULT_PAGE_AFTER_LOGIN_URL = '/employee';
 export const EMPLOYEE_PERSONAL_URL = '/employee/personal';

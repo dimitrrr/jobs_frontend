@@ -1,10 +1,15 @@
-import React, { useContext, useState } from 'react'
+import "react-datepicker/dist/react-datepicker.css";
+import 'react-phone-number-input/style.css';
+
+import React, { useContext, useEffect, useState } from 'react'
 import { saveAs } from 'file-saver';
 import { useNavigate } from 'react-router-dom';
 import { EMPLOYEE_PERSONAL_URL } from '../../constants';
-import { BACKEND } from '../../axios';
+import { BACKEND, OPENAI } from '../../axios';
 import { AppContext } from '../../context/context';
 import { List } from '../../components';
+import DatePicker from "react-datepicker";
+import PhoneInput from 'react-phone-number-input';
 
 const SECTIONS = ['Контактні дані', 'Освіта', 'Досвід роботи', 'Навички', 'Характеристика', 'Додатково', 'Підсумок'];
 
@@ -16,6 +21,75 @@ export const CVCreator = () => {
   const [additionalFields, setAdditionalFields] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [stillWorking, setStillWorking] = useState(false);
+  const [graduationDate, setGraduationDate] = useState(null);
+  const [phone, setPhone] = useState();
+  const [suggestedSkills, setSuggestedSkills] = useState([]);
+  const [suggestedCharacteristics, setSuggestedCharacteristics] = useState([]);
+
+  useEffect(() => {
+
+    if(currentSection === 3) {
+      const data = JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: `10 навичок, які потрібні для професії ${CVData.role || ''}. Навички розділяй за допомогою знаку '-' (мінус). Кожна навичка має складатися з 1-2 слів і бути іменником. У відповіді не використовуй нумерацію та маркеровані списки.`}],
+      });
+
+      OPENAI.post('', data).then(response => {
+        const result = response.data.choices[0]?.message?.content;
+        const skillsToSuggest = result.split('-').map(sk => sk.trim());
+        setSuggestedSkills(skillsToSuggest);
+      }).catch(error => {
+        console.error(error);
+      })
+    }
+
+    if(currentSection === 4) {
+      const data = JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: `Напиши 3 різні короткі абзаци (до 70 слів), які могли б охарактеризувати робітника з професією ${CVData.role || ''} у діловому стилі від першої особи без перерахування навичок. У кінці абзацу постав знак ";" (крапка з комою). У відповіді не використовуй нумерацію або маркеровані списки`}],
+      });
+
+      OPENAI.post('', data).then(response => {
+        const result = response.data.choices[0]?.message?.content;
+        const characteristicsToSuggest = result.split(';').map(ch => ch.trim()).filter((ch) => ch.length > 0);
+        setSuggestedCharacteristics(characteristicsToSuggest);
+      }).catch(error => {
+        console.error(error);
+      })
+    }
+
+
+  }, [currentSection]);
+
+  const handleSuggestedCharacteristicsSelect = (text) => {
+    const newCVData = { ...CVData, self_characteristics: CVData.self_characteristics && CVData.self_characteristics.length ? CVData.self_characteristics + '\n' + text : text };
+    setCVData(newCVData);
+  }
+
+  const handleDateChange = (date, type) => {
+    if(type === 'start') {
+      setStartDate(date);
+      const newCVData = { ...CVData, job_start_date: date.getTime() };
+      setCVData(newCVData);
+    } else if(type === 'end') {
+      setEndDate(date);
+      const newCVData = { ...CVData, job_end_date: date.getTime() };
+      setCVData(newCVData);
+    } else if(type === 'graduation') {
+      setGraduationDate(date);
+      const newCVData = { ...CVData, graduation_date: date.getTime() };
+      setCVData(newCVData);
+    }
+  }
+
+  const handleSetPhone = (value) => {
+    setPhone(value);
+    const newCVData = { ...CVData, phone: value };
+    setCVData(newCVData);
+  }
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -24,6 +98,21 @@ export const CVCreator = () => {
       [name]: value
     }));
   };
+
+  const handleCheckboxChange = (event) => {
+    const value = event.target.checked;
+
+    if(value) {
+      setStillWorking(true);
+      setEndDate(null);
+      const newCVData = { ...CVData, job_end_date: null, still_working: true };
+      setCVData(newCVData);
+    } else {
+      setStillWorking(false);
+      const newCVData = { ...CVData, still_working: false };
+      setCVData(newCVData);
+    }
+  }
 
   const handlePrevious = () => {
     if(currentSection === 0) {
@@ -101,7 +190,7 @@ export const CVCreator = () => {
           </div>
           <div>
             <label>Номер телефону</label>
-            <input type='text' name='phone' value={CVData.phone || ''} onChange={handleInputChange} />
+            <PhoneInput value={phone} onChange={handleSetPhone} />
           </div>
           <div>
             <label>Електронна пошта</label>
@@ -143,12 +232,8 @@ export const CVCreator = () => {
             <input type='text' name='school_location' value={CVData.school_location || ''} onChange={handleInputChange} />
           </div>
           <div>
-            <label>Місяць закінчення навчання</label>
-            <input type='text' name='graduation_month' value={CVData.graduation_month || ''} onChange={handleInputChange} />
-          </div>
-          <div>
-            <label>Рік завершення навчання</label>
-            <input type='text' name='graduation_year' value={CVData.graduation_year || ''} onChange={handleInputChange} />
+            <label>Місяць та рік закінчення навчання</label>
+            <DatePicker selected={graduationDate} onChange={(date) => handleDateChange(date, 'graduation')} dateFormat="MM/yyyy" showMonthYearPicker showFullMonthYearPicker/>
           </div>
           <div>
             <label>Середній бал</label>
@@ -175,16 +260,15 @@ export const CVCreator = () => {
           </div>
           <div>
             <label>Дата початку роботи</label>
-            <input type='text' name='job_start_date' value={CVData.job_start_date || ''} onChange={handleInputChange} />
+            <DatePicker selected={startDate} onChange={(date) => handleDateChange(date, 'start')} />
           </div>
           <div>
             <label>Дата завершення роботи</label>
-            <input type='text' name='job_end_date' value={CVData.job_end_date || ''} onChange={handleInputChange} />
+            <DatePicker selected={endDate} minDate={startDate || null} disabled={stillWorking} onChange={(date) => handleDateChange(date, 'end')} />
           </div>
-          {/* <div>
-            <label>Досі працюю тут</label>
-            <input type='checkbox' name='job_still_working' value={CVData.job_still_working || ''} onChange={handleInputChange} />
-          </div> */}
+          <div>
+            <input type='checkbox' checked={stillWorking} onChange={handleCheckboxChange} /> Досі працюю тут
+          </div>
           <div>
             <label>Додатковий опис</label>
             <textarea name='job_description' value={CVData.job_description || ''} onChange={handleInputChange} />
@@ -203,7 +287,7 @@ export const CVCreator = () => {
         <div className='resume-section'>
           <div>
             <label>Професійні навички та рівень володіння</label>
-            <List initialItems={skills} onAfterUpdate={onAfterSkillsUpdate} type='itemswithselect' name='skills' values={skillLevels} initialValue={skillLevels[0]} />
+            <List initialItems={skills} onAfterUpdate={onAfterSkillsUpdate} type='itemswithselect' name='skills' values={skillLevels} initialValue={skillLevels[0]} suggested={suggestedSkills} role={CVData.role || ''}/>
           </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>
@@ -217,7 +301,20 @@ export const CVCreator = () => {
       return (
         <div className='resume-section'>
           <div>
-            <label>Характеристика</label>
+            {
+              suggestedCharacteristics && suggestedCharacteristics.length ? (
+                <div className='typical'>
+                  Наприклад{CVData.role ? `, для ${CVData.role}` : ''}:
+                  <div className='typical-examples'>
+                  {
+                    suggestedCharacteristics.map((s, i) => (
+                      <div className='example characteristic' key={s+i+Date.now()} onClick={() => handleSuggestedCharacteristicsSelect(s)}>{s}</div>
+                    ))
+                  }
+                  </div>
+                </div>
+              ) : null
+            }
             <textarea name='self_characteristics' value={CVData.self_characteristics || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_URL } from "./constants";
+import { OPENAI_API_KEY, BACKEND_URL, OPENAI_API_URL } from "./constants";
 
 export const BACKEND = axios.create({
     baseURL: BACKEND_URL,
@@ -7,4 +7,12 @@ export const BACKEND = axios.create({
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
     }
-})
+});
+
+export const OPENAI = axios.create({
+    baseURL: OPENAI_API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+    }
+});

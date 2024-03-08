@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='', type='items', name='list' }) => {
+export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='', type='items', name='list', suggested=[], role='' }) => {
   const [items, setItems] = useState([]);
   const [inputText, setInputText] = useState('');
   const [inputValue, setInputValue] = useState(initialValue);
@@ -41,6 +41,20 @@ export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='
 
   return (
     <div>
+      {
+        suggested && suggested.length ? (
+          <div className='typical'>
+            Наприклад{role ? `, для ${role}` : ''}:
+            <div className='typical-examples'>
+            {
+              suggested.map((s, i) => (
+                <div className='example' key={s+i+Date.now()} onClick={() => setInputText(s)}>{s}</div>
+              ))
+            }
+            </div>
+          </div>
+        ) : null
+      }
       <div>
         <input
           type="text"

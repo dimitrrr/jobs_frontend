@@ -456,6 +456,10 @@ main {
   margin-top: 10px;
 }
 
+.resume-section .PhoneInput {
+  width: 200px;
+}
+
 .feedback-form {
   max-width: 400px;
   padding: 20px;
@@ -759,4 +763,32 @@ main {
 
 .companyDataInfo {
   margin-bottom: 20px;
+}
+
+.typical {
+  background-color: #eee;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.typical .typical-examples {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.typical .typical-examples .example {
+  max-width: 150px;
+  cursor: pointer;
+  background-color: #888;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.typical .typical-examples .example.characteristic {
+  max-width: 30%;
 }
