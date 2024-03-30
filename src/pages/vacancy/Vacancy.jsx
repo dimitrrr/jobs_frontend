@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/context';
-import { EmployerData, VacancyRow } from '../../components';
+import { EmployerData, PaymentExpectations, VacancyRow } from '../../components';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
 import { ERROR_PAGE_URL } from '../../constants';
@@ -112,12 +112,15 @@ export const Vacancy = () => {
     }));
   };
 
-  const handleExpectationsChange = (event) => {
-    const { name, value } = event.target;
+  const handleExpectationsChange = (event, type = null) => {
+    let { name, value } = event.target;
+    if(!!type) {
+      value = value.replace(/[^0-9]/g, "");
+    }
     setCandidate(prevProps => ({
       ...prevProps,
       expectations: { ...prevProps.expectations, [name]: value }
-    }))
+    }));
   }
 
   const findCVRoleById = (_id) => {
@@ -140,17 +143,21 @@ export const Vacancy = () => {
         <div className="text">{vacancy.text}</div>
         <div className="testTaskLink">{vacancy.testTaskLink}</div>
       </div>
+      <hr className='divider'/>
       {
         vacancy.employer && vacancy.employer.company ? (
-          <EmployerData timeZone={vacancy.employer.timeZone} shortForm={true} company={JSON.parse(vacancy.employer.company)} employerId={vacancy.employer._id} />
+          <EmployerData timeZone={vacancy.employer.timeZone} shortForm={false} company={JSON.parse(vacancy.employer.company)} employerId={vacancy.employer._id} />
         ) : null
       }
       {
         similarVacancies.length ? (
-          <div className='similar'>
-            <div>Схожі вакансії</div>
-            { similarVacancies.map(sv => <VacancyRow vacancy={sv.vacancy} key={sv.vacancy._id} showEmployeeButtons={false}/>)}
-          </div>
+          <>
+            <div className='similar'>
+              <div>Схожі вакансії</div>
+              { similarVacancies.map(sv => <VacancyRow vacancy={sv.vacancy} key={sv.vacancy._id} showEmployeeButtons={false}/>)}
+            </div>
+            <hr className='divider'/>
+          </>
         ) : null
       }
       {
@@ -187,58 +194,8 @@ export const Vacancy = () => {
                 />
               </div>
               ) : null}
-              <div className="form-control">
-                Вкажіть очікуваний тип та рівень оплати
-                <div className="radio">
-                  <label>
-                    <input 
-                      type="radio" 
-                      value="hourly"
-                      name='type'
-                      checked={candidate.expectations.type === 'hourly'} 
-                      onChange={handleExpectationsChange}
-                    />
-                    Ставка за годину
-                  </label>
-                </div>
-                <div className="radio">
-                  <label>
-                    <input 
-                      type="radio" 
-                      name='type'
-                      value="monthly" 
-                      checked={candidate.expectations.type === 'monthly'} 
-                      onChange={handleExpectationsChange}
-                    />
-                    Оплата за місяць
-                  </label>
-                </div>
-                <div className="radio">
-                  <label>
-                    <input 
-                      name='type'
-                      type="radio" 
-                      value="once" 
-                      checked={candidate.expectations.type === 'once'} 
-                      onChange={handleExpectationsChange}
-                    />
-                    Оплата за весь проєкт
-                  </label>
-                </div>
-                <input 
-                  type='text' 
-                  name='min' 
-                  placeholder='Мінімальний очікуваний рівень оплати' 
-                  value={candidate.expectations.min}
-                  onChange={handleExpectationsChange}
-                />-<input 
-                type='text' 
-                name='max' 
-                placeholder='Максимальний очікуваний рівень оплати' 
-                value={candidate.expectations.max}
-                onChange={handleExpectationsChange}
-              />
-              </div>
+              <hr className='divider'/>
+              <PaymentExpectations expectations={candidate.expectations} handleExpectationsChange={handleExpectationsChange} />
               <button type='submit' className='button primary-button'>Відгукнутися</button>
             </form>
           </div>

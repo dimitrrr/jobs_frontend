@@ -25,7 +25,12 @@ export const Feedback = ({userId, sender = '', showAddFeedback = true}) => {
 
   const toFeedbackDate = (timestamp) => {
     const date = new Date(timestamp);
-    return date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
+
+    const hours = date.getHours();
+    const minutes = "0" + date.getMinutes();
+
+    const formattedTime = hours + ':' + minutes.substr(-2);
+    return formattedTime + ", "+ date.toDateString();
   }
 
   return (

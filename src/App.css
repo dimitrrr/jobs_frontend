@@ -164,6 +164,17 @@ main {
   margin-bottom: 15px;
 }
 
+.form-control.expectations-inputs {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-control.expectations-inputs input {
+  width: 100px !important;
+}
+
 .candidate label {
   font-weight: bold;
   color: black;
@@ -656,11 +667,6 @@ main {
   margin-top: 10px;
 }
 
-.searched-employees {
-  /* max-width: 600px;
-  margin: 0 auto; */
-}
-
 .searched-employees .employee-item {
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -791,4 +797,13 @@ main {
 
 .typical .typical-examples .example.characteristic {
   max-width: 30%;
+}
+
+.divider {
+  height: 1px;
+  color: #000;
+  background-color: #000;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  width: 100%;
 }

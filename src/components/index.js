@@ -20,6 +20,7 @@ import { SearchEmployeeResults } from './SearchEmployeeResults.jsx';
 import { EmployeeRow } from './EmployeeRow.jsx';
 import { SavedUsers } from './SavedUsers.jsx';
 import { List } from './List.jsx';
+import { PaymentExpectations } from './PaymentExpectations.jsx';
 
 export {
     Header,
@@ -44,4 +45,5 @@ export {
     EmployeeRow,
     SavedUsers,
     List,
+    PaymentExpectations,
 };

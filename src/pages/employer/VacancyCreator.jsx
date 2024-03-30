@@ -3,7 +3,7 @@ import { AppContext } from '../../context/context';
 import { EMPLOYER_PERSONAL_URL, ERROR_PAGE_URL } from '../../constants';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
-import { List } from '../../components';
+import { List, PaymentExpectations } from '../../components';
 
 export const VacancyCreator = () => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ export const VacancyCreator = () => {
     status: '',
     tags: [],
     testTaskLink: '',
+    payment: { type: 'hourly', min: 0, max: 0 },
   });
 
   const queryString = window.location.search;
@@ -35,6 +36,16 @@ export const VacancyCreator = () => {
     }
   }, [vacancyId]);
 
+  const handlePaymentChange = (event, type = null) => {
+    let { name, value } = event.target;
+    if(!!type) {
+      value = value.replace(/[^0-9]/g, "");
+    }
+    setVacancy(prevProps => ({
+      ...prevProps,
+      payment: { ...prevProps.payment, [name]: value }
+    }));
+  }
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -50,6 +61,7 @@ export const VacancyCreator = () => {
     const newVacancy = {
       ...vacancy,
       employer: CONTEXT.user._id,
+      payment: JSON.stringify(vacancy.payment),
     };
 
     if(isNewVacancy) {
@@ -114,6 +126,7 @@ export const VacancyCreator = () => {
             <List initialItems={vacancy.tags} onAfterUpdate={onAfterTagsUpdate} type='items' name='tags' />
           </div>
           { !isNewVacancy ? <div className="status">Статус: {vacancy.status}</div> : null }
+          <PaymentExpectations expectations={vacancy.payment} handleExpectationsChange={handlePaymentChange} />
           <div className="form-control">
             <label>Опис</label>
             <textarea

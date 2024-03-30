@@ -30,6 +30,15 @@ export const CVCreator = () => {
   const [suggestedCharacteristics, setSuggestedCharacteristics] = useState([]);
 
   useEffect(() => {
+    // Anything in here is fired on component mount.
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+    return () => {
+        // Anything in here is fired on component unmount.
+    window.removeEventListener('beforeunload', beforeUnloadHandler);
+    }
+  }, []);
+
+  useEffect(() => {
 
     if(currentSection === 3) {
       const data = JSON.stringify({
@@ -63,6 +72,11 @@ export const CVCreator = () => {
 
 
   }, [currentSection]);
+
+  const beforeUnloadHandler = (e) => {
+    e.preventDefault();
+    e.returnValue = true;
+  }
 
   const handleSuggestedCharacteristicsSelect = (text) => {
     const newCVData = { ...CVData, self_characteristics: CVData.self_characteristics && CVData.self_characteristics.length ? CVData.self_characteristics + '\n' + text : text };
