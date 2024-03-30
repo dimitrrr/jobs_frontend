@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/context';
-import { EmployerData, PaymentExpectations, VacancyRow } from '../../components';
+import { EmployerData, PaymentExpectations, SalaryChart, VacancyRow } from '../../components';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
 import { ERROR_PAGE_URL } from '../../constants';
@@ -16,6 +16,7 @@ export const Vacancy = () => {
     tags: [],
     testTaskLink: '',
     employer: null,
+    payment: '',
   });
   const [candidate, setCandidate] = useState({
     employee: null,
@@ -28,6 +29,8 @@ export const Vacancy = () => {
   const [CVs, setCVs] = useState([]);
   const [canBeCandidate, setCanBeCandidate] = useState(false);
   const [similarVacancies, setSimilarVacancies] = useState([]);
+
+  const payment = JSON.parse(vacancy.payment || `{ "type": "", "min": "0", "max": "0" }`);
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -134,6 +137,14 @@ export const Vacancy = () => {
     setCandidate({...candidate, CV: value});
   }
 
+  const paymentTypes = {
+    hourly: 'Ставка за годину',
+    monthly: 'Оплата за місяць',
+    once: 'Оплата за весь проєкт',
+  };
+
+  const isVacancyPayment = !!(payment && payment.min && payment.min !== 0 && payment.max !== 0);
+
   return (
     <div className="vacancy-page">
       <div className='vacancy'>
@@ -142,11 +153,17 @@ export const Vacancy = () => {
         <div className="tags">{vacancy.tags.map(tag => <div key={tag.id}>{tag.name}{tag.value ? `-${tag.value}` : ''}</div>)}</div>
         <div className="text">{vacancy.text}</div>
         <div className="testTaskLink">{vacancy.testTaskLink}</div>
+        { isVacancyPayment ? <div className="payment">{paymentTypes[payment.type]}: {payment.min} - {payment.max}</div> : null }
       </div>
       <hr className='divider'/>
       {
         vacancy.employer && vacancy.employer.company ? (
           <EmployerData timeZone={vacancy.employer.timeZone} shortForm={false} company={JSON.parse(vacancy.employer.company)} employerId={vacancy.employer._id} />
+        ) : null
+      }
+      {
+        isVacancyPayment && payment.type !== 'once' ? (
+          <SalaryChart payment={payment} name={vacancy.name}/>
         ) : null
       }
       {

@@ -21,6 +21,7 @@ import { EmployeeRow } from './EmployeeRow.jsx';
 import { SavedUsers } from './SavedUsers.jsx';
 import { List } from './List.jsx';
 import { PaymentExpectations } from './PaymentExpectations.jsx';
+import { SalaryChart } from './SalaryChart.jsx';
 
 export {
     Header,
@@ -46,4 +47,5 @@ export {
     SavedUsers,
     List,
     PaymentExpectations,
+    SalaryChart,
 };
