@@ -29,6 +29,7 @@ export const Vacancy = () => {
   const [CVs, setCVs] = useState([]);
   const [canBeCandidate, setCanBeCandidate] = useState(false);
   const [similarVacancies, setSimilarVacancies] = useState([]);
+  const [totalCandidates, setTotalCandidates] = useState(0);
 
   const payment = JSON.parse(vacancy.payment || `{ "type": "", "min": "0", "max": "0" }`);
 
@@ -69,28 +70,50 @@ export const Vacancy = () => {
     const userId = CONTEXT.user._id;
 
     if(CONTEXT.user && CONTEXT.user._id) {
-      BACKEND.post('/getVacancyAndCandidateById', { _id: vacancyId, userId }).then(response => {
-        if(response.data.status === 'ok') {
-          const { vacancy, candidate: can } = response.data.data;
-          setVacancy(vacancy);
-          setCandidate({...candidate, vacancy: vacancy._id, employee: userId});
-
-          const cbc = !can && vacancy.employer._id !== CONTEXT.user._id; 
-          setCanBeCandidate(cbc);
-        } else {
-          navigate(ERROR_PAGE_URL);
-        }
-      });
-
-      BACKEND.post('/getAddedCVsById', { employee: CONTEXT.user._id }).then(response => {
-        if(response.data.status === 'ok') {
-          const CVs = response.data.data;
-          setCVs(CVs);
-          if(CVs.length) {
-            setCandidate({...candidate, CV: CVs[0]._id});
+      try {
+        BACKEND.post('/getVacancyAndCandidateById', { _id: vacancyId, userId }).then(response => {
+          if(response.data.status === 'ok') {
+            const { vacancy, candidate: can } = response.data.data;
+            setVacancy(vacancy);
+            setCandidate({...candidate, vacancy: vacancy._id, employee: userId});
+  
+            const cbc = !can && vacancy.employer._id !== CONTEXT.user._id; 
+            setCanBeCandidate(cbc);
+          } else {
+            navigate(ERROR_PAGE_URL);
           }
-        }
-      });
+        });
+      } catch(error) {
+        console.error(error)
+      }
+
+      try {
+        BACKEND.post('/getAddedCVsById', { employee: CONTEXT.user._id }).then(response => {
+          if(response.data.status === 'ok') {
+            const CVs = response.data.data;
+            setCVs(CVs);
+            if(CVs.length) {
+              setCandidate({...candidate, CV: CVs[0]._id});
+            }
+          }
+        });
+      } catch(error) {
+        console.error(error);
+      }
+
+      try {
+        BACKEND.post('/getPostedVacanciesById', { _id: CONTEXT.user._id }).then(response => {
+          if(response.data.status === 'ok' && response.data.data) {
+            const { candidates } = response.data.data;
+  
+            if(candidates && candidates.length) {
+              setTotalCandidates(candidates.length);
+            }
+          }
+        });
+      } catch(error) {
+        console.error(error)
+      }
     }
   }, [CONTEXT.user._id]);
 
@@ -150,6 +173,7 @@ export const Vacancy = () => {
       <div className='vacancy'>
         <div className="name">{vacancy.name}</div>
         <div className="status">{vacancy.status}</div>
+        { totalCandidates ? <div className='total-candidates'>Відгукнулися: {totalCandidates}</div> : null}
         <div className="tags">{vacancy.tags.map(tag => <div key={tag.id}>{tag.name}{tag.value ? `-${tag.value}` : ''}</div>)}</div>
         <div className="text">{vacancy.text}</div>
         <div className="testTaskLink">{vacancy.testTaskLink}</div>

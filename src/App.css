@@ -807,3 +807,8 @@ main {
   margin-bottom: 40px;
   width: 100%;
 }
+
+.recommended-header {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}

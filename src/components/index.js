@@ -22,6 +22,7 @@ import { SavedUsers } from './SavedUsers.jsx';
 import { List } from './List.jsx';
 import { PaymentExpectations } from './PaymentExpectations.jsx';
 import { SalaryChart } from './SalaryChart.jsx';
+import { RecommendedVacancies } from './RecommendedVacancies.jsx';
 
 export {
     Header,
@@ -48,4 +49,5 @@ export {
     List,
     PaymentExpectations,
     SalaryChart,
+    RecommendedVacancies,
 };

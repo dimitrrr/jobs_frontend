@@ -71,7 +71,8 @@ export const EmployerHome = () => {
     const filteredCVs = employees
       .filter(
         e => e.employee._id !== CONTEXT.user._id && 
-        e.CVData.role.toLowerCase().includes(searchState.query.toLowerCase())
+        e.CVData.role.toLowerCase().includes(searchState.query.toLowerCase()) &&
+        (e.visible == undefined || e.visible)
       );
     if(filteredCVs.length) {
       setSearchState({...searchState, firstSearch: false, error: '', results: filteredCVs });

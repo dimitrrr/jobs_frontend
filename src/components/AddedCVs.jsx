@@ -37,6 +37,9 @@ export const AddedCVs = () => {
       <div className='resume-item' key={cv._id}>
         <div className='role'>{cv.CVData ? cv.CVData.role : ''}</div>
         <div className='timestamp'>Додано: {toCVDate(cv.timestamp)}</div>
+        <div>
+          <input type='checkbox' checked={cv.visible == undefined ? true : cv.visible} onChange={(event) => handleCheckboxChange(event, cv._id)} /> Публічне
+        </div>
         <button className='button primary-button' onClick={() => removeCV(cv._id)}>Видалити резюме</button>
       </div>
       ));
@@ -52,10 +55,31 @@ export const AddedCVs = () => {
         setAddedCVs(newCVs);
       });
     }
+
+
+  const handleCheckboxChange = (event, id) => {
+    const value = event.target.checked;
+    const newCVs = [...addedCVs];
+
+    const CV = newCVs.find(cv => cv._id === id);
+
+    if(CV) {
+      CV.visible = value;
+      try {
+        BACKEND.post('/updateCV', CV).then(response => {
+          setAddedCVs(newCVs);
+        });
+      } catch(error) {
+
+      }
+    }
+    
+  }
   
     return (
       <div className='vacancies'>
         <button className='button primary-button' onClick={() => moveToCVCreator('new')}>Створити резюме</button>
+        <div>Для того, щоб приховати свої дані під час пошуку потенційних робітників роботодавцем, позначте резюме як непублічні.</div>
         <div className="posted-resumes">
           {renderCVs()}
         </div>
