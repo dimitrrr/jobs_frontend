@@ -18,6 +18,11 @@ export const defaultVacancy = {
     testTaskLink: '',
 };
 
+export const LANGUAGES = {
+    UKRAINIAN: 'UKRAINIAN',
+    ENGLISH: 'ENGLISH',
+}
+
 const defaultState = {
     user: {},
     updateState: (newState) => {},

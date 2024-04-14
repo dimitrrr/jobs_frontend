@@ -7,13 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { EMPLOYEE_PERSONAL_URL } from '../../constants';
 import { BACKEND, OPENAI } from '../../axios';
 import { AppContext } from '../../context/context';
-import { List } from '../../components';
+import { List, LanguageSelector } from '../../components';
 import DatePicker from "react-datepicker";
 import PhoneInput from 'react-phone-number-input';
+import { LANGUAGES } from '../../context/context.js';
 
 const SECTIONS = ['Контактні дані', 'Освіта', 'Досвід роботи', 'Навички', 'Характеристика', 'Додатково', 'Підсумок'];
 
 const testCVData = {
+  "CV_language": "ENGLISH",
   "first_name": "Дмитро",
   "last_name": "Романчук",
   "city": "Холодна Балка",
@@ -84,7 +86,7 @@ export const CVCreator = () => {
   const navigate = useNavigate();
   const CONTEXT = useContext(AppContext);
   const [currentSection, setCurrentSection] = useState(0);
-  const [CVData, setCVData] = useState({});
+  const [CVData, setCVData] = useState({CV_language: LANGUAGES.UKRAINIAN});
   const [additionalFields, setAdditionalFields] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -95,6 +97,7 @@ export const CVCreator = () => {
   const [phone, setPhone] = useState();
   const [suggestedSkills, setSuggestedSkills] = useState([]);
   const [suggestedCharacteristics, setSuggestedCharacteristics] = useState([]);
+  const [CVlanguage, setCVlanguage] = useState(LANGUAGES.UKRAINIAN);
 
   useEffect(() => {
     // Anything in here is fired on component mount.
@@ -213,7 +216,7 @@ export const CVCreator = () => {
 
   const createAndDownloadPdf = () => {
 
-    const CV = { CVData: testCVData, employee: CONTEXT.user._id, timestamp: Date.now() };
+    const CV = { CVData, employee: CONTEXT.user._id, timestamp: Date.now() };
 
     BACKEND.post('/createPdf', CV).then(response => {
 
@@ -249,6 +252,12 @@ export const CVCreator = () => {
     setSkills(newSkills);
     setCVData(newCVData);
   };
+
+  const onChangeLanguage = selectedLanguage => {
+    const newCVData = { ...CVData, CV_language: selectedLanguage };
+    setCVlanguage(selectedLanguage);
+    setCVData(newCVData);
+  }
   
   const renderSectionById = (section) => {
     if(section === 0) {
@@ -286,6 +295,7 @@ export const CVCreator = () => {
             <label>Бажана посада</label>
             <input type='text' name='role' value={CVData.role || ''} onChange={handleInputChange} />
           </div>
+          <LanguageSelector defaultLanguage={CVlanguage} onChangeLanguage={onChangeLanguage} />  
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Скасувати</button>
             <button className='button primary-button' onClick={handleNext}>Далі - {SECTIONS[currentSection + 1]}</button>

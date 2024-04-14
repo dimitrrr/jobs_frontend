@@ -23,6 +23,7 @@ import { List } from './List.jsx';
 import { PaymentExpectations } from './PaymentExpectations.jsx';
 import { SalaryChart } from './SalaryChart.jsx';
 import { RecommendedVacancies } from './RecommendedVacancies.jsx';
+import { LanguageSelector } from './LanguageSelector.jsx';
 
 export {
     Header,
@@ -50,4 +51,5 @@ export {
     PaymentExpectations,
     SalaryChart,
     RecommendedVacancies,
+    LanguageSelector,
 };
