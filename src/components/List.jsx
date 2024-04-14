@@ -40,7 +40,7 @@ export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='
   }
 
   return (
-    <div>
+    <div className='custom-list'>
       {
         suggested && suggested.length ? (
           <div className='typical'>
@@ -55,37 +55,47 @@ export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='
           </div>
         ) : null
       }
-      <div>
-        <input
-          type="text"
-          name="inputText"
-          value={inputText}
-          onChange={handleInputTextChange}
-        />
-        { type === 'itemswithinput' ? (
+      <div className='custom-list_input-holder'>
+        <div className="form-control input base">
           <input
             type="text"
-            name="inputValue"
-            value={inputValue}
-            onChange={handleInputValueChange}
+            name="inputText"
+            placeholder='Назва'
+            value={inputText}
+            onChange={handleInputTextChange}
           />
+        </div>
+        { type === 'itemswithinput' ? (
+          <div className="form-control input">
+            <input
+              type="text"
+              name="inputValue"
+              value={inputValue}
+              placeholder='Значення'
+              onChange={handleInputValueChange}
+            />
+          </div>
         ) : null }
         { type === 'itemswithselect' ? (
-          <select value={inputValue} onChange={handleInputValueChange}>
-            {values.map((v, i) => <option key={v + i} value={v}>{v}</option>)}
-          </select>
+          <div className="form-control input">
+            <select value={inputValue} onChange={handleInputValueChange}>
+              {values.map((v, i) => <option key={v + i} value={v}>{v}</option>)}
+            </select>
+          </div>
         ) : null }
-        <button type='button' onClick={handleAddItem}>+</button>
+        <button type='button' className='button secondary-button' onClick={handleAddItem}>+</button>
       </div>
-      <div>
+      <div className='custom-list_added'>
         {
           items.length ? items.map(item => (
-            <div key={item.id}>
-              <div>{item.name}</div>
-              {
-                type !== 'items' ? <div>{item.value}</div> : null
-              }
-              <button type='button' onClick={() => handleRemove(item.id)}>Trash</button>
+            <div key={item.id} className='custom-list_added-item'>
+              <div className='custom-list_item-text'>
+                <div>{item.name} </div>
+                {
+                  type !== 'items' ? <div>: {item.value}</div> : null
+                }
+              </div>
+              <button type='button' className='button' onClick={() => handleRemove(item.id)}>x</button>
             </div>
           )) : null
         }

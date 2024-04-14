@@ -13,6 +13,73 @@ import PhoneInput from 'react-phone-number-input';
 
 const SECTIONS = ['Контактні дані', 'Освіта', 'Досвід роботи', 'Навички', 'Характеристика', 'Додатково', 'Підсумок'];
 
+const testCVData = {
+  "first_name": "Дмитро",
+  "last_name": "Романчук",
+  "city": "Холодна Балка",
+  "country": "Ukraine",
+  "phone": "+0968517833",
+  "email": "dmytroromanchuk864@gmail.com",
+  "postal_code": "67660",
+  "role": "Фронтенд-розробник",
+  "degree": "Вища",
+  "field_of_study": "ІТ",
+  "school_name": "МАУП",
+  "school_location": "Одеса, Україна",
+  "graduation_date": 1717189200000,
+  "school_mark": "4.95",
+  "job_title": "Фронтенд-розробник",
+  "employer": "Юні",
+  "job_start_date": 1657746000000,
+  "job_end_date": null,
+  "still_working": true,
+  "job_description": "Робив сайти та веб-додатки",
+  "skills": [
+      {
+          "name": "CSS Preprocessors",
+          "value": "4",
+          "id": "skills-1713087035211"
+      },
+      {
+          "name": "Browser Developer Tools",
+          "value": "3",
+          "id": "skills-1713087038346"
+      },
+      {
+          "name": "Web Performance Optimization",
+          "value": "3",
+          "id": "skills-1713087042063"
+      },
+      {
+          "name": "HTML",
+          "value": "5",
+          "id": "skills-1713087046793"
+      }
+  ],
+  "self_characteristics": "Робота фронтенд-розробника вимагає від мене постійної уваги до деталей та бажання досягати ідеального результату. Постійно вдосконалюю свої навички, щоб забезпечити користувачам максимальний комфорт при використанні веб-сайтів\nРобота над проектами не завжди легка, але саме це мене мотивує до пошуку кращих рішень та технологій. Глибокий аналіз та пошук оптимального шляху досягнення результату - це моя філософія\nУ моїх руках веб-сайти стають не лише інтерактивними, але і зручними для користувачів. Я відданий своїй роботі, тому що вірю, що я можу зробити Інтернет кращим місцем для всіх.",
+  "languages": [
+      {
+          "name": "англійська",
+          "value": "просунутий",
+          "id": "languages-1713087080872"
+      },
+      {
+          "name": "французька",
+          "value": "базовий",
+          "id": "languages-1713087100826"
+      }
+  ],
+  "sertificates": "https://drive.google.com/drive/folders/1-GMQ79Umb-qsYtIX6mxonMsbLX69DmX_",
+  "portfolio": "https://github.com/dimitrrr",
+  "additionalFields": [
+      {
+          "name": "Тестове поле",
+          "value": "тестове значення",
+          "id": "additionalfields-1713087127071"
+      }
+  ]
+};
+
 export const CVCreator = () => {
   const navigate = useNavigate();
   const CONTEXT = useContext(AppContext);
@@ -145,7 +212,8 @@ export const CVCreator = () => {
   }
 
   const createAndDownloadPdf = () => {
-    const CV = { CVData, employee: CONTEXT.user._id, timestamp: Date.now() };
+
+    const CV = { CVData: testCVData, employee: CONTEXT.user._id, timestamp: Date.now() };
 
     BACKEND.post('/createPdf', CV).then(response => {
 

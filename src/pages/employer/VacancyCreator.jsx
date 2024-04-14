@@ -110,7 +110,7 @@ export const VacancyCreator = () => {
 
   return (
     <div className='createVacancy'>
-      <div className='creator-header'>{isNewVacancy ? 'Створити' : 'Редагувати'} вакансію</div>
+      <div className='creator-header header'>{isNewVacancy ? 'Створити' : 'Редагувати'} вакансію</div>
       <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label>Назва</label>
@@ -122,13 +122,13 @@ export const VacancyCreator = () => {
             />
           </div>
           <div className="form-control">
-            <label>Додайте кілька тегів, щоб зробити вакансію більш інформативною</label>
+            <label className='header'>Додайте кілька тегів, щоб зробити вакансію більш інформативною (наприклад, "Для студентів" або "Для ветеранів")</label>
             <List initialItems={vacancy.tags} onAfterUpdate={onAfterTagsUpdate} type='items' name='tags' />
           </div>
           { !isNewVacancy ? <div className="status">Статус: {vacancy.status}</div> : null }
           <PaymentExpectations expectations={vacancy.payment} handleExpectationsChange={handlePaymentChange} />
           <div className="form-control">
-            <label>Опис</label>
+            <label className='header'>Опис</label>
             <textarea
               type="text"
               name="text"
@@ -137,7 +137,7 @@ export const VacancyCreator = () => {
             />
           </div>
           <div className="form-control">
-            <label>Посилання на тестове завдання (не обовʼязково)</label>
+            <label className='header'>Посилання на тестове завдання (не обовʼязково)</label>
             <input
               type="text"
               name="testTaskLink"

@@ -2,8 +2,8 @@ import React from 'react'
 
 export const PaymentExpectations = ({expectations, handleExpectationsChange}) => {
   return (
-    <div className="form-control">
-      <div className='expectations-title'>
+    <div className="form-control payment-expectations">
+      <div className='expectations-title' style={{fontWeight: 'bold'}}>
         Вкажіть очікуваний тип та рівень оплати
       </div>
       <div className="radio">

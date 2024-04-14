@@ -165,7 +165,6 @@ main {
 }
 
 .form-control.expectations-inputs {
-  margin-top: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -367,7 +366,7 @@ main {
   font-size: 24px;
 }
 
-.createVacancy div {
+.createVacancy .header {
   font-weight: bold;
   color: black;
   margin-bottom: 20px;
@@ -673,6 +672,14 @@ main {
   padding: 15px;
   margin-bottom: 15px;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searched-employees .employee-item div:first-child {
+  width: 80%;
 }
 
 .searched-employees .employee-item:hover {
@@ -811,4 +818,83 @@ main {
 .recommended-header {
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.custom-list .custom-list_input-holder {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.custom-list .custom-list_input-holder .form-control {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.custom-list .custom-list_input-holder input {
+  width: auto;
+  margin-top: auto;
+}
+
+.custom-list .custom-list_input-holder .button {
+  height: 100%;
+  font-size: 26px;
+  padding: 5px 10px;
+}
+
+.custom-list .custom-list_input-holder .form-control .input {
+  width: 40%;
+}
+
+.custom-list .custom-list_input-holder .form-control select {
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.custom-list .custom-list_added {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.custom-list .custom-list_added div {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.custom-list .custom-list_added-item {
+  display: flex;
+  gap: 10px;
+  font-weight: normal;
+}
+
+.custom-list .custom-list_added-item button {
+  font-size: 26px;
+  padding: 5px 10px;
+}
+
+.custom-list .custom-list_item-text {
+  display: flex;
+}
+
+.payment-expectations {
+  margin-top: 20px;
+}
+
+.payment-expectations .radio {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.search-filters .form-control input {
+  height: 30px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.search-filters .form-control input.level {
+  width: 20px;
 }

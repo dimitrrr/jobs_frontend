@@ -24,21 +24,21 @@ export const SearchFilters = ({ filters: initialFilters, onChange }) => {
   }
 
   return (
-    <div>
-      <div>
-        <label>Ключові слова</label>
-        <div className="form-control">
-          <label>Мінімальний % наявності</label>
-          <input
-            type="text"
-            name="matchLevel"
-            value={matchLevel}
-            onChange={handleInputChange}
-          />
-        </div>
-        <List initialItems={keywords} onAfterUpdate={onAfterKeywordsUpdate} type='items' name='keywords' />
-        <button className='button primary-button' onClick={() => handleConfirm()}>Знайти</button>
+    <div className='search-filters'>
+      <label><h4>Ключові слова</h4></label>
+      <div className="form-control">
+        <label>Мінімум </label>
+        <input
+          className='level'
+          type="text"
+          name="matchLevel"
+          value={matchLevel}
+          onChange={handleInputChange}
+        />
+        <label>% наявності </label>
       </div>
+      <List initialItems={keywords} onAfterUpdate={onAfterKeywordsUpdate} type='items' name='keywords' />
+      <button style={{marginTop: '20px'}} className='button primary-button' onClick={() => handleConfirm()}>Оновити результати</button>
     </div>
   )
 }

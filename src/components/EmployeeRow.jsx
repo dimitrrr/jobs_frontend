@@ -58,13 +58,17 @@ export const EmployeeRow = ({CV, onMoveToEmployee = null, setEmployeeToList, hid
 
   return (
     <div className='employee-item'>
-      <div onClick={moveToEmployeePage}>{CV.employee.username}</div>
-      <div>{CV.employee.email}</div>
-      { !hideCV ? (
-        <div className='download-cv' onClick={downloadCV}>Завантажити резюме</div>
-      ) : null }
-      <div className='time-offset'>Різниця в часі: {getTimeOffset()} годин</div>
-      <button className='button primary-button' onClick={() => updateEmployeeIsSavedStatus(CV.employee._id)}>{isSaved ? 'Видалити зі збережених' : 'Зберегти'}</button>
+      <div>
+        <div onClick={moveToEmployeePage}>{CV.employee.username}</div>
+        <div>{CV.employee.email}</div>
+        { !hideCV ? (
+          <div className='download-cv' onClick={downloadCV}>Завантажити резюме</div>
+        ) : null }
+        <div className='time-offset'>Різниця в часі: {getTimeOffset()} годин</div>
+      </div>
+      <div>
+        <button className='button primary-button' onClick={() => updateEmployeeIsSavedStatus(CV.employee._id)}>{isSaved ? 'Видалити зі збережених' : 'Зберегти'}</button>
+      </div>
     </div>
   )
 }
