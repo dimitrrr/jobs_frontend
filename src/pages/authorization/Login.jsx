@@ -33,7 +33,7 @@ export const Login = () => {
       BACKEND.post('/login', state).then(response => {
         // console.log(response);
         if(response.data.status === 'ok') {
-          alert('login successful');
+          // alert('login successful');
           window.localStorage.setItem(TOKEN_ITEM, response.data.data);
           window.localStorage.setItem('loggedIn', true);
           navigate(DEFAULT_PAGE_AFTER_LOGIN_URL);
