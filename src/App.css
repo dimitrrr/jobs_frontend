@@ -311,6 +311,7 @@ main {
   font-weight: bold;
   color: black;
   cursor: pointer;
+  width: 300px;
 }
 
 .vacancy-row .status {
@@ -359,6 +360,11 @@ main {
 .buttons {
   display: flex;
   gap: 10px;
+}
+
+.buttons.searchButtons {
+  width: 500px;
+  justify-content: flex-end;
 }
 
 .createVacancy {
@@ -519,6 +525,11 @@ main {
   border-radius: 5px;
   padding: 15px;
   margin-bottom: 15px;
+}
+
+.feedback-item .from {
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .feedback-item .mark {

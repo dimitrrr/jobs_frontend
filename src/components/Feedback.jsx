@@ -47,6 +47,7 @@ export const Feedback = ({userId, sender = '', showAddFeedback = true}) => {
         <div className='feedback-list'>
           {feedback.slice(0, 3).map((f, i) => (
             <div key={f._id || `feedback-${i}`} className='feedback-item'>
+              <div className='from'>Від: {f.fromUser.username}</div>
               <div className='mark'>{f.mark}</div>
               <div className='text'>{f.text}</div>
               <div className='timestamp'>{toFeedbackDate(f.timestamp)}</div>

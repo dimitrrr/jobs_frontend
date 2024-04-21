@@ -82,7 +82,7 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
         <div className='status'>{companyName}</div>
         { 
         CONTEXT.user._id && showEmployeeButtons ? (
-          <div className="buttons">
+          <div className="buttons searchButtons">
             {
               isSavedVacancy ? (
                 <button className='button secondary-button' onClick={() => updateVacancyIsSavedStatus(vacancy._id)}>{state.isVacancySaved ? 'Видалити зі збережених' : 'Зберегти'}</button>

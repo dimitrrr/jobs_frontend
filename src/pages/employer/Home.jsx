@@ -52,8 +52,21 @@ export const EmployerHome = () => {
 
     const processedKeywords = keywords.map(kw => kw.name.toLowerCase());
 
+    const results = employees
+    .filter(
+      e => e.employee._id !== CONTEXT.user._id && 
+      e.CVData && e.CVData.role &&
+      e.CVData.role.toLowerCase().includes(searchState.query.toLowerCase()) &&
+      (e.visible == undefined || e.visible)
+    );
+
+    if(keywords.length === 0) {
+      setSearchState({...searchState, firstSearch: false, error: '', filters, results });
+      return;
+    }
+
     const employeesToShow = [];
-    for(let employee of searchState.results) {
+    for(let employee of results) {
       const totalText = JSON.stringify(employee.CVData || {}).toLowerCase();
       const matchesCount = processedKeywords.filter(key => totalText.includes(key)).length;
       const percentage = matchesCount / keywords.length;
@@ -76,6 +89,7 @@ export const EmployerHome = () => {
     const filteredCVs = employees
       .filter(
         e => e.employee._id !== CONTEXT.user._id && 
+        e.CVData && e.CVData.role &&
         e.CVData.role.toLowerCase().includes(searchState.query.toLowerCase()) &&
         (e.visible == undefined || e.visible)
       );

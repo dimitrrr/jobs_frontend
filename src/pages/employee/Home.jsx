@@ -52,6 +52,19 @@ export const EmployeeHome = () => {
 
     const processedKeywords = keywords.map(kw => kw.name.toLowerCase());
 
+    const results = vacancies
+    .filter(
+      v => v.employer._id !== CONTEXT.user._id && 
+      v.name.toLowerCase().includes(searchState.query.toLowerCase()) &&
+      v.status === 'active' &&
+      !CONTEXT.user.hiddenVacancies.map(hv => hv._id).includes(v._id)
+    );
+    
+    if(keywords.length === 0) {
+      setSearchState({...searchState, firstSearch: false, error: '', filters, results });
+      return;
+    }
+
     const vacanciesToShow = [];
     for(let vacancy of searchState.results) {
       const totalText = (vacancy.name + vacancy.tags.map(tag => tag) + vacancy.text).toLowerCase();
