@@ -130,6 +130,22 @@ export const Vacancy = () => {
         alertify.error('Не вдалося отримати вакансії');
         console.error(error);
       }
+    } else {
+      try {
+        BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+          if(response.data && response.data.status === 'ok' && response.data.data) {
+            const vacancy = response.data.data;
+            setVacancy(vacancy);
+          } else {
+            navigate(ERROR_PAGE_URL);
+            alertify.error('Не вдалося отримати вакансію');
+            console.error(response);
+          }
+        })
+      } catch(error) {
+        alertify.error('Не вдалося отримати вакансію');
+        console.error(error);
+      }
     }
   }, [CONTEXT.user._id]);
 
@@ -270,7 +286,7 @@ export const Vacancy = () => {
         !canBeCandidate ? 
         !vacancy.employer || vacancy.employer._id === CONTEXT.user._id ? 
         null : (
-          <div className='already-candidate'>Ви вже подали заявку на цю вакансію</div>
+          <div className='already-candidate'>{candidate && candidate.employee ? 'Ви вже подали заявку на цю вакансію' : ''}</div>
         ) : null
       }
     </div>

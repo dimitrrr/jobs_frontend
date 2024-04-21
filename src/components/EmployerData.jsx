@@ -28,7 +28,7 @@ export const EmployerData = ({timeZone, company, employerId, shortForm = false})
     <div className="employer" onClick={shortForm ? moveToEmployerPage : null}>
       { company.logo ? <img width={100} height={100} src={company.logo} alt={'company logo'} /> : null }
       { company.name ? <div className="company">{company.name}</div> : null }
-      <div className='time-offset'>Різниця в часі: {getTimeOffset()}</div>
+      <div className='time-offset'>Різниця в часі: {getTimeOffset()} годин</div>
       { !shortForm ? (
           <>
               { company.area ? <div className="area">{company.area}</div> : null }

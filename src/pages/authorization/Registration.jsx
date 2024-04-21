@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TimezoneSelect, { allTimezones } from "react-timezone-select";
 import { BACKEND } from '../../axios';
 import alertify from 'alertifyjs';
+import { START_PAGE_URL } from '../../constants';
 
 export const Registration = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     username: "",
     email: "",
@@ -34,6 +36,8 @@ export const Registration = () => {
       BACKEND.post('/register', userData).then(response => {
         if(response.data && response.data.status === 'ok') {
           setState({username: '', email: '', password: ''});
+          navigate(START_PAGE_URL);
+          alertify.success('Реєстрація пройшла успішно');
         } else {
           alertify.error('Не вдалося зареєструватися');
           console.error(response);

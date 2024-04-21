@@ -74,13 +74,57 @@ export const RecommendedVacancies = () => {
     }
   }, [CONTEXT.user._id]);
 
+  const setVacancyToList = (listName, vacancyId) => {
+    const update = (list) => {
+      const updatedUser = { ...CONTEXT.user, [listName]: list };
+      CONTEXT.updateState({ ...CONTEXT, user: updatedUser });
+
+      try {
+        BACKEND.post('/updateUser', updatedUser).then(response => {
+          if(response.data && response.data.status === 'ok') {
+
+          } else {
+            alertify.error('Не вдалося оновити дані');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося оновити дані');
+        console.error(error);
+      }
+    }
+
+    let list = [...CONTEXT.user[listName]];
+
+    if(list.find(v => v._id === vacancyId)) {
+      list = list.filter(v => v._id !== vacancyId);
+      update(list);
+    } else {
+      try {
+        BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+          if(response.data && response.data.status === 'ok' && response.data.data) {
+            const vacancy = response.data.data;
+            list.push(vacancy);
+            update(list);
+          } else {
+            alertify.error('Не вдалося оновити дані');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося оновити дані');
+        console.error(error);
+      }
+    }
+  };
+
   return recommendations && recommendations.length ? (
     <div>
       {recommendations.map((r, i) => (
         <div key={i + Date.now()}>
         <div className='recommended-header'>Рекомендовані вакансії для ролі <b>{r.role}</b></div>
 
-        {r.vacancies.map(rv => <VacancyRow key={rv._id + Date.now()} vacancy={rv} />)}
+        {r.vacancies.map(rv => <VacancyRow key={rv._id + Date.now()} vacancy={rv} setVacancyToList={setVacancyToList}/>)}
         </div> ))}
     </div>
   ) : <div>Поки що система не може порекомендувати жодної вакансії</div>

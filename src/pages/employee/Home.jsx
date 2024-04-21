@@ -57,7 +57,7 @@ export const EmployeeHome = () => {
       v => v.employer._id !== CONTEXT.user._id && 
       v.name.toLowerCase().includes(searchState.query.toLowerCase()) &&
       v.status === 'active' &&
-      !CONTEXT.user.hiddenVacancies.map(hv => hv._id).includes(v._id)
+      (CONTEXT?.user?.hiddenVacancies ? !CONTEXT.user.hiddenVacancies.map(hv => hv._id).includes(v._id) : true)
     );
     
     if(keywords.length === 0) {
@@ -91,7 +91,7 @@ export const EmployeeHome = () => {
         v => v.employer._id !== CONTEXT.user._id && 
         v.name.toLowerCase().includes(searchState.query.toLowerCase()) &&
         v.status === 'active' &&
-        !CONTEXT.user.hiddenVacancies.map(hv => hv._id).includes(v._id)
+        (CONTEXT?.user?.hiddenVacancies ? !CONTEXT.user.hiddenVacancies.map(hv => hv._id).includes(v._id) : true)
       );
     if(filteredVacancies.length) {
       setSearchState({...searchState, firstSearch: false, error: '', results: filteredVacancies });
