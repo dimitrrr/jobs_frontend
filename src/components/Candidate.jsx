@@ -4,6 +4,7 @@ import { AppContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 import { EMPLOYEE_PROFILE_PAGE_URL } from '../constants';
 import { saveAs } from 'file-saver';
+import alertify from 'alertifyjs';
 
 const possibleStatusValues = ['pending', 'accepted', 'denied'];
 
@@ -37,9 +38,19 @@ export const Candidate = ({candidate}) => {
 
     const newCandidate = { ...candidate, status: candidateStatus };
 
-    BACKEND.post('/updateCandidate', newCandidate).then(response => {
-      setColor(getColorByStatus(candidateStatus));
-    });
+    try {
+      BACKEND.post('/updateCandidate', newCandidate).then(response => {
+        if(response.data && response.data.status === 'ok') {
+          setColor(getColorByStatus(candidateStatus));
+        } else {
+          alertify.error('Не вдалося змінити статус');
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error('Не вдалося змінити статус');
+      console.error(error);
+    }
 
   }
 
@@ -62,18 +73,26 @@ export const Candidate = ({candidate}) => {
 
   const downloadCV = () => {
     if(!candidate || !candidate.CV || !candidate.CV._id) {
-      console.log('NO CV');
+      alertify.error('Не вдалося знайти резюме');
       return;
     }
 
-    BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response => {
-          
-      if(response.data instanceof Blob) {
-        const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
-
-        saveAs(pdfBlob, 'CV.pdf');
-      }
-    });
+    try {
+      BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response => {
+            
+        if(response.data instanceof Blob) {
+          const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+  
+          saveAs(pdfBlob, 'CV.pdf');
+        } else {
+          alertify.error('Не вдалося отримати файл');
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error('Не вдалося отримати файл');
+      console.error(error);
+    }
   }
 
   return (

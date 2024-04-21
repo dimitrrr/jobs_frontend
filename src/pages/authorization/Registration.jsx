@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TimezoneSelect, { allTimezones } from "react-timezone-select";
 import { BACKEND } from '../../axios';
+import alertify from 'alertifyjs';
 
 export const Registration = () => {
   const [state, setState] = useState({
@@ -31,10 +32,16 @@ export const Registration = () => {
 
     try {
       BACKEND.post('/register', userData).then(response => {
-        setState({username: '', email: '', password: ''});
+        if(response.data && response.data.status === 'ok') {
+          setState({username: '', email: '', password: ''});
+        } else {
+          alertify.error('Не вдалося зареєструватися');
+          console.error(response);
+        }
       });
     } catch(error) {
-      console.log(error);
+      alertify.error('Не вдалося зареєструватися');
+      console.error(error);
     }
   };
 

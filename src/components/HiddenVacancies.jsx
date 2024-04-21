@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
 import { VacancyRow } from './VacancyRow';
+import alertify from 'alertifyjs';
 
 export const HiddenVacancies = () => {
     const CONTEXT = useContext(AppContext);
@@ -17,9 +18,20 @@ export const HiddenVacancies = () => {
       const update = (list) => {
         const updatedUser = { ...CONTEXT.user, hiddenVacancies: list };
         CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
-     
-        BACKEND.post('/updateUser', updatedUser).then(response => {
-        });
+
+        try {
+          BACKEND.post('/updateUser', updatedUser).then(response => {
+            if(response.data.status === 'ok' && response.data.data) {
+
+            } else {
+              alertify.error('Не вдалося оновити дані');
+              console.error(response);
+            }
+          });
+        } catch(error) {
+          alertify.error('Не вдалося оновити дані');
+          console.error(error);
+        }
   
         setHiddenVacancies(list);
       } 
@@ -30,13 +42,21 @@ export const HiddenVacancies = () => {
         list = list.filter(v => v._id !== vacancyId);
         update(list)
       } else {
-        BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
-          if(response.data.status === 'ok' && response.data.data) {
-            const vacancy = response.data.data;
-            list.push(vacancy);
-            update(list);
-          }
-        });
+        try {
+          BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+            if(response.data && response.data.status === 'ok' && response.data.data) {
+              const vacancy = response.data.data;
+              list.push(vacancy);
+              update(list);
+            } else {
+              alertify.error("Не вдалося отримати дані вакансії");
+              console.error(response);
+            }
+          });
+        } catch(error) {
+          alertify.error("Не вдалося отримати дані вакансії");
+          console.error(error);
+        }
       }
   
     };

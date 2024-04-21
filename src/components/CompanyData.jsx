@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../context/context'
 import { BACKEND } from '../axios';
+import alertify from 'alertifyjs';
 
 export const CompanyData = () => {
   const CONTEXT = useContext(AppContext);
@@ -102,10 +103,20 @@ export const CompanyData = () => {
     
     const updatedUser = { ...CONTEXT.user, company: JSON.stringify(companyState) };
     CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
- 
-    BACKEND.post('/updateUser', updatedUser).then(response => {
-      setCurrentMode(1);
-    });
+
+    try {
+      BACKEND.post('/updateUser', updatedUser).then(response => {
+        if(response.data && response.data.status === 'ok') {
+          setCurrentMode(1);
+        } else {
+          alertify.error("Не вдалося оновити дані");
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error("Не вдалося оновити дані");
+      console.error(error);
+    }
   };
 
   const convertToBase64 = (e) => {
@@ -118,7 +129,8 @@ export const CompanyData = () => {
       }));
     }
     reader.onerror = error => {
-      console.log('error: ' + error);
+      alertify.error('Не вдалося обробити файл');
+      console.error(error);
     }
   } 
 

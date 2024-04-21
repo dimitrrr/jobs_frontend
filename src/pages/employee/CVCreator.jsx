@@ -11,6 +11,7 @@ import { List, LanguageSelector } from '../../components';
 import DatePicker from "react-datepicker";
 import PhoneInput from 'react-phone-number-input';
 import { LANGUAGES } from '../../context/context.js';
+import alertify from "alertifyjs";
 
 const SECTIONS = ['Контактні дані', 'Освіта', 'Досвід роботи', 'Навички', 'Характеристика', 'Додатково', 'Підсумок'];
 
@@ -103,8 +104,8 @@ export const CVCreator = () => {
     // Anything in here is fired on component mount.
     window.addEventListener('beforeunload', beforeUnloadHandler);
     return () => {
-        // Anything in here is fired on component unmount.
-    window.removeEventListener('beforeunload', beforeUnloadHandler);
+      // Anything in here is fired on component unmount.
+      window.removeEventListener('beforeunload', beforeUnloadHandler);
     }
   }, []);
 
@@ -218,21 +219,32 @@ export const CVCreator = () => {
 
     const CV = { CVData, employee: CONTEXT.user._id, timestamp: Date.now() };
 
-    BACKEND.post('/createPdf', CV).then(response => {
+    try {
+      BACKEND.post('/createPdf', CV).then(response => {
 
-      if(response.data.status === 'ok') {
-        const { employee: employeeId, _id: CVid } = response.data.data;
-        BACKEND.post('/fetchCreatedPdf', {employeeId, CVid,}, { responseType: 'blob' }).then(response2 => {
-          
-          if(response2.data instanceof Blob) {
-            const pdfBlob = new Blob([response2.data], { type: 'application/pdf' });
-  
-            saveAs(pdfBlob, 'CV.pdf');
-            setCVData({});
-          }
-        });
-      }
-    });
+        if(response.data && response.data.status === 'ok') {
+          const { employee: employeeId, _id: CVid } = response.data.data;
+          BACKEND.post('/fetchCreatedPdf', {employeeId, CVid,}, { responseType: 'blob' }).then(response2 => {
+            
+            if(response2.data instanceof Blob) {
+              const pdfBlob = new Blob([response2.data], { type: 'application/pdf' });
+    
+              saveAs(pdfBlob, 'CV.pdf');
+              setCVData({});
+            } else {
+              alertify.error("Не вдалося створити резюме");
+              console.error(response);
+            }
+          });
+        } else {
+          alertify.error("Не вдалося створити резюме");
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error("Не вдалося створити резюме");
+      console.error(error);
+    }
   }
 
   const onAfterAdditionalFieldsUpdate = (newFields) => {

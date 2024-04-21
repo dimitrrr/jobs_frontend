@@ -3,6 +3,7 @@ import { AppContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 import { CV_CREATOR_URL } from '../constants';
 import { BACKEND } from '../axios';
+import alertify from 'alertifyjs';
 
 export const AddedCVs = () => {
     const CONTEXT = useContext(AppContext);
@@ -11,13 +12,21 @@ export const AddedCVs = () => {
   
     useEffect(() => {
       if(CONTEXT.user && CONTEXT.user._id) {
-        BACKEND.post('/getAddedCVsById', { employee: CONTEXT.user._id }).then(response => {
-          if(response.data.status === 'ok' && response.data.data) {
-            const CVs = response.data.data;
-  
-            setAddedCVs(CVs);
-          }
-        });
+        try {
+          BACKEND.post('/getAddedCVsById', { employee: CONTEXT.user._id }).then(response => {
+            if(response.data && response.data.status === 'ok' && response.data.data) {
+              const CVs = response.data.data;
+    
+              setAddedCVs(CVs);
+            } else {
+              alertify.error('Не вдалося отримати резюме');
+              console.error(response);
+            }
+          });
+        } catch(error) {
+          alertify.error('Не вдалося отримати резюме');
+          console.error(error);
+        }
       }
     }, [CONTEXT.user._id]);
   
@@ -50,10 +59,20 @@ export const AddedCVs = () => {
     }
 
     const removeCV = (_id) => {
-      BACKEND.post('/removeCV', { employeeId: CONTEXT.user._id, CVid: _id }).then(response => {
-        const newCVs = addedCVs.filter(cv => cv._id !== _id);
-        setAddedCVs(newCVs);
-      });
+      try {
+        BACKEND.post('/removeCV', { employeeId: CONTEXT.user._id, CVid: _id }).then(response => {
+          if(response.data && response.data.status === 'ok') { 
+            const newCVs = addedCVs.filter(cv => cv._id !== _id);
+            setAddedCVs(newCVs);
+          } else {
+            alertify.error('Не вдалося видалити резюме');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося видалити резюме');
+        console.error(error);
+      }
     }
 
 
@@ -67,10 +86,16 @@ export const AddedCVs = () => {
       CV.visible = value;
       try {
         BACKEND.post('/updateCV', CV).then(response => {
-          setAddedCVs(newCVs);
+          if(response.data && response.data.status === 'ok') {
+            setAddedCVs(newCVs);
+          } else {
+            alertify.error('Не вдалося змінити статус резюме');
+            console.error(response);
+          }
         });
       } catch(error) {
-
+        alertify.error('Не вдалося змінити статус резюме');
+        console.error(error);
       }
     }
     

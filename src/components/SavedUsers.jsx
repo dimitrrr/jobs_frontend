@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
 import { EmployeeRow } from './EmployeeRow';
+import alertify from 'alertifyjs';
 
 export const SavedUsers = () => {
   const CONTEXT = useContext(AppContext);
@@ -19,8 +20,19 @@ export const SavedUsers = () => {
       CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
       setSavedUsers(list);
   
-      BACKEND.post('/updateUser', updatedUser).then(response => {
-      });
+      try {
+        BACKEND.post('/updateUser', updatedUser).then(response => {
+          if(response.data && response.data.status === 'ok') {
+
+          } else {
+            alertify.error("Не вдалося оновити дані");
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error("Не вдалося оновити дані");
+        console.error(error);
+      }
     }
 
     let list = [...CONTEXT.user.savedUsers];
@@ -29,13 +41,21 @@ export const SavedUsers = () => {
       list = list.filter(e => e._id !== employeeId);
       update(list);
     } else {
-      BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
-        if(response.data.status === 'ok') {
-          const employee = response.data.data;
-          list.push(employee);
-          update(list);
-        }
-      });
+      try {
+        BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
+          if(response.data && response.data.status === 'ok') {
+            const employee = response.data.data;
+            list.push(employee);
+            update(list);
+          } else {
+            console.error('Не вдалося оновити дані');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        console.error('Не вдалося оновити дані');
+        console.error(error);
+      }
     }
 
   };

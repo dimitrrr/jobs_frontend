@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/context'
 import { VacancyRow } from './VacancyRow';
 import { BACKEND } from '../axios';
+import alertify from 'alertifyjs';
 
 export const SavedVacancies = () => {
   const CONTEXT = useContext(AppContext);
@@ -18,9 +19,20 @@ export const SavedVacancies = () => {
       const updatedUser = { ...CONTEXT.user, savedVacancies: list };
       CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
       setSavedVacancies(list);
-   
-      BACKEND.post('/updateUser', updatedUser).then(response => {
-      });
+
+      try {
+        BACKEND.post('/updateUser', updatedUser).then(response => {
+          if(response.data && response.data.status === 'ok') {
+
+          } else {
+            alertify.error('Не вдалося оновити дані');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося оновити дані');
+        console.error(error);
+      }
     }
 
     let list = [...CONTEXT.user.savedVacancies];
@@ -29,13 +41,21 @@ export const SavedVacancies = () => {
       list = list.filter(v => v._id !== vacancyId);
       update(list);
     } else {
-      BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
-        if(response.data.status === 'ok' && response.data.data) {
-          const vacancy = response.data.data;
-          list.push(vacancy);
-          update(list);
-        }
-      });
+      try {
+        BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+          if(response.data && response.data.status === 'ok' && response.data.data) {
+            const vacancy = response.data.data;
+            list.push(vacancy);
+            update(list);
+          } else {
+            alertify.error('Не вдалося оновити дані');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося оновити дані');
+        console.error(error);
+      }
     }
 
   };

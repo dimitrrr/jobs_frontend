@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { BACKEND } from '../axios';
 import { saveAs } from 'file-saver';
 import { EMPLOYEE_PROFILE_PAGE_URL } from '../constants';
+import alertify from 'alertifyjs';
 
 export const EmployeeRow = ({CV, onMoveToEmployee = null, setEmployeeToList, hideCV = false}) => {
   const CONTEXT = useContext(AppContext);
@@ -32,18 +33,26 @@ export const EmployeeRow = ({CV, onMoveToEmployee = null, setEmployeeToList, hid
 
   const downloadCV = () => {
     if(!CV._id) {
-      console.log('NO CV');
+      alertify.error('Не вдалося знайти резюме');
       return;
     }
 
-    BACKEND.post('/fetchCreatedPdf', {employeeId: CV.employee._id, CVid: CV._id}, { responseType: 'blob' }).then(response => {
-          
-      if(response.data instanceof Blob) {
-        const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
-
-        saveAs(pdfBlob, 'CV.pdf');
-      }
-    });
+    try {
+      BACKEND.post('/fetchCreatedPdf', {employeeId: CV.employee._id, CVid: CV._id}, { responseType: 'blob' }).then(response => {
+            
+        if(response.data instanceof Blob) {
+          const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+  
+          saveAs(pdfBlob, 'CV.pdf');
+        } else {
+          alertify.error('Не вдалося отримати файл');
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error('Не вдалося отримати файл');
+      console.error(error);
+    }
   }
 
   const moveToEmployeePage = () => {

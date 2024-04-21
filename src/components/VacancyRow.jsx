@@ -4,6 +4,7 @@ import { VACANCY_CREATOR_URL, VACANCY_URL } from '../constants';
 import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
 import { CandidatesForVacancy } from './CandidatesForVacancy';
+import alertify from 'alertifyjs';
 
 export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true, onMoveToVacancy = null, showEmployeeButtons = true }) => {
   const CONTEXT = useContext(AppContext);
@@ -28,10 +29,16 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
 
     try {
       BACKEND.post('/updateVacancy', newVacancy).then(response => {
-        updateVacancyStatus(_id, newVacancy.status);
+        if(response.data && response.data.status === 'ok') {
+          updateVacancyStatus(_id, newVacancy.status);
+        } else {
+          alertify.error('Не вдалося оновити дані');
+          console.error(response);
+        }
       });
     } catch(error) {
-      console.log(error);
+      alertify.error('Не вдалося оновити дані');
+      console.error(error);
     }
 
   }

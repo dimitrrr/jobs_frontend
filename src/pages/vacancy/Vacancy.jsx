@@ -5,6 +5,7 @@ import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
 import { ERROR_PAGE_URL } from '../../constants';
 import { checkSimilarity } from '../../helpers';
+import alertify from 'alertifyjs';
 
 export const Vacancy = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export const Vacancy = () => {
     try {
       BACKEND.post('/postedVacancies')
       .then((response) => {
-        if(response.data.status === 'ok' && response.data.data && response.data.data.length) {
+        if(response.data && response.data.status === 'ok' && response.data.data && response.data.data) {
           const vacancies = response.data.data;
 
           const vacanciesToCheck = vacancies.filter(v => v._id !== vacancyId && v.status === 'active');
@@ -55,10 +56,14 @@ export const Vacancy = () => {
           const vacanciesToShow = vacanciesWithSimilarity.slice(0, 3);
 
           setSimilarVacancies(vacanciesToShow);
+        } else {
+          alertify.error('Не вдалося отримати вакансії');
+          console.error(response);
         }
       });
     } catch(error) {
-      console.log(error);
+      alertify.error('Не вдалося отримати вакансії');
+      console.error(error);
     }
   }, [vacancy]);
 
@@ -72,7 +77,7 @@ export const Vacancy = () => {
     if(CONTEXT.user && CONTEXT.user._id) {
       try {
         BACKEND.post('/getVacancyAndCandidateById', { _id: vacancyId, userId }).then(response => {
-          if(response.data.status === 'ok') {
+          if(response.data && response.data.status === 'ok') {
             const { vacancy, candidate: can } = response.data.data;
             setVacancy(vacancy);
             setCandidate({...candidate, vacancy: vacancy._id, employee: userId});
@@ -81,38 +86,49 @@ export const Vacancy = () => {
             setCanBeCandidate(cbc);
           } else {
             navigate(ERROR_PAGE_URL);
+            alertify.error('Не вдалося отримати вакансію');
+            console.error(response);
           }
         });
       } catch(error) {
-        console.error(error)
+        alertify.error('Не вдалося отримати вакансію');
+        console.error(error);
       }
 
       try {
         BACKEND.post('/getAddedCVsById', { employee: CONTEXT.user._id }).then(response => {
-          if(response.data.status === 'ok') {
+          if(response.data && response.data.status === 'ok') {
             const CVs = response.data.data;
             setCVs(CVs);
             if(CVs.length) {
               setCandidate({...candidate, CV: CVs[0]._id});
             }
+          } else {
+            alertify.error('Не вдалося отримати резюме');
+            console.error(response);
           }
         });
       } catch(error) {
+        alertify.error('Не вдалося отримати резюме');
         console.error(error);
       }
 
       try {
         BACKEND.post('/getPostedVacanciesById', { _id: CONTEXT.user._id }).then(response => {
-          if(response.data.status === 'ok' && response.data.data) {
+          if(response.data && response.data.status === 'ok' && response.data.data) {
             const { candidates } = response.data.data;
   
             if(candidates && candidates.length) {
               setTotalCandidates(candidates.length);
             }
+          } else {
+            alertify.error('Не вдалося отримати вакансії');
+            console.error(response);
           }
         });
       } catch(error) {
-        console.error(error)
+        alertify.error('Не вдалося отримати вакансії');
+        console.error(error);
       }
     }
   }, [CONTEXT.user._id]);
@@ -122,12 +138,20 @@ export const Vacancy = () => {
 
     const newCandidate = { ...candidate, expectations: JSON.stringify(candidate.expectations) };
 
-    BACKEND.post('/addCandidate', newCandidate).then((response) => {
-      if(response.data.status === 'ok') {
-        setCandidate({...candidate, text: '', testTaskLink: '', expectations: { type: 'hourly', min: 0, max: 0 } });
-        setCanBeCandidate(false);
-      }
-    })
+    try {
+      BACKEND.post('/addCandidate', newCandidate).then((response) => {
+        if(response.data && response.data.status === 'ok') {
+          setCandidate({...candidate, text: '', testTaskLink: '', expectations: { type: 'hourly', min: 0, max: 0 } });
+          setCanBeCandidate(false);
+        } else {
+          alertify.error('Не вдалося створити заявку');
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error('Не вдалося створити заявку');
+      console.error(error);
+    }
   }
 
   const handleInputChange = (event) => {

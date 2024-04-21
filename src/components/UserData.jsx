@@ -3,6 +3,7 @@ import { AppContext } from '../context/context'
 import { BACKEND } from '../axios';
 import TimezoneSelect, { allTimezones } from "react-timezone-select";
 import { useLocation } from 'react-router-dom';
+import alertify from 'alertifyjs';
 
 export const UserData = () => {
   const CONTEXT = useContext(AppContext);
@@ -87,10 +88,20 @@ export const UserData = () => {
     
     const updatedUser = { ...CONTEXT.user, ...userState, timeZone: JSON.stringify(timeZone) };
     CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
- 
-    BACKEND.post('/updateUser', updatedUser).then(response => {
-      setCurrentMode(1);
-    });
+
+    try {
+      BACKEND.post('/updateUser', updatedUser).then(response => {
+        if(response.data && response.data.status === 'ok') {
+          setCurrentMode(1);
+        } else {
+          alertify.error('Не вдалося оновити дані');
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error('Не вдалося оновити дані');
+      console.error(error);
+    }
   };
 
   return (

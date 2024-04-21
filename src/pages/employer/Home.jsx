@@ -3,6 +3,7 @@ import { SearchEmployeeResults, SearchFilters, SearchRow } from '../../component
 import { AppContext } from '../../context/context';
 import { BACKEND } from '../../axios';
 import { EMPLOYEE_SEARCH_RESULTS } from '../../constants';
+import alertify from 'alertifyjs';
 
 export const EmployerHome = () => {
   const CONTEXT = useContext(AppContext);
@@ -24,13 +25,17 @@ export const EmployerHome = () => {
     try {
       BACKEND.post('/postedCVs')
       .then((response) => {
-        if(response.data.status === 'ok' && response.data.data && response.data.data.length) {
+        if(response.data && response.data.status === 'ok' && response.data.data && response.data.data) {
           const employees = response.data.data;
           setEmployees(employees);
+        } else {
+          alertify.error('Не вдалося отримати резюме');
+          console.error(response);
         }
       });
     } catch(error) {
-      console.log(error);
+      alertify.error('Не вдалося отримати резюме');
+      console.error(error);
     }
   }, []);
 
@@ -87,8 +92,18 @@ export const EmployerHome = () => {
       const updatedUser = { ...CONTEXT.user, savedUsers: list };
       CONTEXT.updateState({ ...CONTEXT, user: updatedUser});
   
-      BACKEND.post('/updateUser', updatedUser).then(response => {
-      });
+      try {
+        BACKEND.post('/updateUser', updatedUser).then(response => {
+          if(response.data && response.data.status === 'ok') {
+          } else {
+            alertify.error('Не вдалося оновити дані');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося оновити дані');
+        console.error(error);
+      }
     }
 
     let list = [...CONTEXT.user.savedUsers];
@@ -97,13 +112,21 @@ export const EmployerHome = () => {
       list = list.filter(e => e._id !== employeeId);
       update(list);
     } else {
-      BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
-        if(response.data.status === 'ok') {
-          const employee = response.data.data;
-          list.push(employee);
-          update(list);
-        }
-      });
+      try {
+        BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
+          if(response.data && response.data.status === 'ok' && response.data.data) {
+            const employee = response.data.data;
+            list.push(employee);
+            update(list);
+          } else {
+            alertify.error('Не вдалося оновити дані');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося оновити дані');
+        console.error(error);
+      }
     }
   };
 

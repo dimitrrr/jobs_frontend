@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BACKEND } from '../../axios';
 import { EmployeeData, Feedback } from '../../components';
+import alertify from 'alertifyjs';
 
 export const EmployeeProfile = () => {
   const [userData, setUserData] = useState({});
@@ -10,11 +11,19 @@ export const EmployeeProfile = () => {
     const urlParams = new URLSearchParams(queryString);
     const employeeId = urlParams.get('employee_id');
 
-    BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
-      if(response.data.status === 'ok') {
-        setUserData(response.data.data);
-      }
-    });
+    try {
+      BACKEND.post('/getUserById', { _id: employeeId }).then(response => {
+        if(response.data && response.data.status === 'ok') {
+          setUserData(response.data.data);
+        } else {
+          alertify.error('Не вдалося отримати дані');
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error('Не вдалося отримати дані');
+      console.error(error);
+    }
   }, []);
 
   return userData && userData._id ? (

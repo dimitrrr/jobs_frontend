@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import './App.css';
+import 'alertifyjs/build/css/alertify.css';
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { Header } from './components';
 import { Login, Registration } from './pages/authorization';
@@ -11,6 +12,7 @@ import { LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM } from './constants';
 import { EmployeeProfile, EmployerProfile } from './pages/profile';
 import { Vacancy } from './pages/vacancy';
 import { AppContext } from './context/context';
+import alertify from 'alertifyjs';
 
 function App() {
   const CONTEXT = useContext(AppContext);
@@ -27,16 +29,18 @@ function App() {
           await BACKEND.post('/userData', { token })
           .then(({data}) => {
             if(data.data === 'token expired') {
-              alert('token expired');
-              window.localStorage.removeItem(TOKEN_ITEM);
-              window.localStorage.removeItem(LOGGENID_ITEM);
-              navigate(START_PAGE_URL);
+              alertify.alert('У токена завершився термін дії', () => {
+                window.localStorage.removeItem(TOKEN_ITEM);
+                window.localStorage.removeItem(LOGGENID_ITEM);
+                navigate(START_PAGE_URL);
+              });
             } else {
               updatedContext = {...updatedContext, user: data.data};
             }
           });
         } catch(error) {
-          console.log(error);
+          alertify.error('Не вдалося отримати токен');
+          console.error(error);
         };
 
       }

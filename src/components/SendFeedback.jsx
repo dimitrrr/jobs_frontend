@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
+import alertify from 'alertifyjs';
 
 export const SendFeedback = ({aboutUser, addFeedback}) => {
   const CONTEXT = useContext(AppContext);
@@ -38,13 +39,17 @@ export const SendFeedback = ({aboutUser, addFeedback}) => {
 
     try {
       BACKEND.post('/createFeedback', updatedFeedback).then(response => {
-        if(response.data.status === 'ok') {
+        if(response.data && response.data.status === 'ok') {
           addFeedback(updatedFeedback);
           setFeedback({...feedback, text: '', mark: 0, sender: 'employee'});
+        } else {
+          alertify.error('Не вдалося надіслати відгук');
+          console.error(response);
         }
       });
     } catch(error) {
-      console.log(error);
+      alertify.error('Не вдалося надіслати відгук');
+      console.error(error);
     }
   };
 

@@ -2,18 +2,27 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/context'
 import { VacancyRow } from './VacancyRow';
 import { BACKEND } from '../axios';
+import alertify from 'alertifyjs';
 
 export const CandidateVacancies = () => {
   const CONTEXT = useContext(AppContext);
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
-    BACKEND.post('/getCandidatesByEmployeeId', { _id: CONTEXT.user._id }).then(response => {
-      if(response.data.status === 'ok' && response.data.data.length) {
-        const currentUserVacancies = response.data.data;
-        setCandidates(currentUserVacancies);
-      }
-    });
+    try {
+      BACKEND.post('/getCandidatesByEmployeeId', { _id: CONTEXT.user._id }).then(response => {
+        if(response.data && response.data.status === 'ok' && response.data.data) {
+          const currentUserVacancies = response.data.data;
+          setCandidates(currentUserVacancies);
+        } else {
+          alertify.error('Не вдалося отримати список вакансій');
+          console.error(response);
+        }
+      });
+    } catch(error) {
+      alertify.error('Не вдалося отримати список вакансій');
+      console.error(error);
+    }
 
   }, [CONTEXT.user._id]);
 
@@ -21,9 +30,19 @@ export const CandidateVacancies = () => {
     const newCandidates = candidates.filter(c => c._id !== _id);
     setCandidates(newCandidates);
 
-    BACKEND.post('/removeCandidate', { _id }).then(response => {
-      // console.log(response.data)
-    });
+    try {
+      BACKEND.post('/removeCandidate', { _id }).then(response => {
+        if(response.data && response.data.status === 'ok') {
+        } else {
+          alertify.error('Не вдалося видалити заявку');
+          console.error(response);
+        }
+
+      });
+    } catch(error) {
+      alertify.error('Не вдалося видалити заявку');
+      console.error(error);
+    }
 
   }
 

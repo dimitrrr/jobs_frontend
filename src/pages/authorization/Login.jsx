@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BACKEND } from '../../axios';
 import { DEFAULT_PAGE_AFTER_LOGIN_URL, LOGGENID_ITEM, TOKEN_ITEM } from '../../constants';
+import alertify from 'alertifyjs';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -31,16 +32,18 @@ export const Login = () => {
     
     try {
       BACKEND.post('/login', state).then(response => {
-        // console.log(response);
-        if(response.data.status === 'ok') {
-          // alert('login successful');
+        if(response.data && response.data.status === 'ok') {
           window.localStorage.setItem(TOKEN_ITEM, response.data.data);
           window.localStorage.setItem('loggedIn', true);
           navigate(DEFAULT_PAGE_AFTER_LOGIN_URL);
+        } else {
+          alertify.error('Авторизація провалена');
+          console.error(response);
         }
       });
     } catch(error) {
-      console.log(error);
+      alertify.error('Авторизація провалена');
+      console.error(error);
     }
   };
 

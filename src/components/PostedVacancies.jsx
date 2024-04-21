@@ -4,6 +4,7 @@ import { VACANCY_CREATOR_URL } from '../constants';
 import { useNavigate } from 'react-router-dom';
 import { VacancyRow } from './VacancyRow';
 import { BACKEND } from '../axios';
+import alertify from 'alertifyjs';
 
 export const PostedVacancies = () => {
   const CONTEXT = useContext(AppContext);
@@ -12,17 +13,25 @@ export const PostedVacancies = () => {
 
   useEffect(() => {
     if(CONTEXT.user && CONTEXT.user._id) {
-      BACKEND.post('/getPostedVacanciesById', { _id: CONTEXT.user._id }).then(response => {
-        if(response.data.status === 'ok' && response.data.data) {
-          const { vacancies, candidates } = response.data.data;
-
-          vacancies.forEach(v => {
-            v.candidates = candidates.filter(c => c.vacancy._id === v._id);
-          });
-
-          setPostedVacancies(vacancies);
-        }
-      });
+      try {
+        BACKEND.post('/getPostedVacanciesById', { _id: CONTEXT.user._id }).then(response => {
+          if(response.data && response.data.status === 'ok' && response.data.data) {
+            const { vacancies, candidates } = response.data.data;
+  
+            vacancies.forEach(v => {
+              v.candidates = candidates.filter(c => c.vacancy._id === v._id);
+            });
+  
+            setPostedVacancies(vacancies);
+          } else {
+            alertify.error('Не вдалося отримати вакансії');
+            console.error(response);
+          }
+        });
+      } catch(error) {
+        alertify.error('Не вдалося отримати вакансії');
+        console.error(error);
+      }
     }
   }, [CONTEXT.user._id]);
 

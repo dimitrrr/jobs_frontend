@@ -4,6 +4,7 @@ import { EMPLOYER_PERSONAL_URL, ERROR_PAGE_URL } from '../../constants';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
 import { List, PaymentExpectations } from '../../components';
+import alertify from 'alertifyjs';
 
 export const VacancyCreator = () => {
   const navigate = useNavigate();
@@ -25,14 +26,21 @@ export const VacancyCreator = () => {
 
   useEffect(() => {
     if(!isNewVacancy) {
-      BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
-        if(response.data.status === 'ok' && response.data.data) {
-          const vacancy = response.data.data;
-          setVacancy(vacancy);
-        } else {
-          navigate(ERROR_PAGE_URL);
-        }
-      })
+      try {
+        BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
+          if(response.data && response.data.status === 'ok' && response.data.data) {
+            const vacancy = response.data.data;
+            setVacancy(vacancy);
+          } else {
+            navigate(ERROR_PAGE_URL);
+            alertify.error('Не вдалося отримати вакансію');
+            console.error(response);
+          }
+        })
+      } catch(error) {
+        alertify.error('Не вдалося отримати вакансію');
+        console.error(error);
+      }
     }
   }, [vacancyId]);
 
@@ -67,19 +75,31 @@ export const VacancyCreator = () => {
     if(isNewVacancy) {
       try {
         BACKEND.post('/createVacancy', newVacancy).then(response => {
-          navigate(EMPLOYER_PERSONAL_URL);
+          if(response.data && response.data.status === 'ok') {
+            navigate(EMPLOYER_PERSONAL_URL);
+          } else {
+            alertify.error('Не вдалося створити вакансію');
+            console.error(response);
+          }
         });
       } catch(error) {
-        console.log(error);
+        alertify.error('Не вдалося створити вакансію');
+        console.error(error);
       }
     } else {
 
       try {
         BACKEND.post('/updateVacancy', newVacancy).then(response => {
-          navigate(EMPLOYER_PERSONAL_URL);
+          if(response.data && response.data.status === 'ok') {
+            navigate(EMPLOYER_PERSONAL_URL);
+          } else {
+            alertify.error('Не вдалося оновити вакансію');
+            console.error(response);
+          }
         });
       } catch(error) {
-        console.log(error);
+        alertify.error('Не вдалося оновити вакансію');
+        console.error(error);
       }
 
     }
@@ -94,11 +114,16 @@ export const VacancyCreator = () => {
 
     try {
       BACKEND.post('/updateVacancy', newVacancy).then(response => {
-        setVacancy(newVacancy);
-        // navigate(EMPLOYER_PERSONAL_URL);
+        if(response.data && response.data.status === 'ok') {
+          setVacancy(newVacancy);
+        } else {
+          alertify.error('Не вдалося оновити вакансію');
+          console.error(response);
+        }
       });
     } catch(error) {
-      console.log(error);
+      alertify.error('Не вдалося оновити вакансію');
+      console.error(error);
     }
 
   }
