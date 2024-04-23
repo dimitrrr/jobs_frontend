@@ -13,6 +13,26 @@ import { EmployeeProfile, EmployerProfile } from './pages/profile';
 import { Vacancy } from './pages/vacancy';
 import { AppContext } from './context/context';
 import alertify from 'alertifyjs';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function App() {
   const CONTEXT = useContext(AppContext);

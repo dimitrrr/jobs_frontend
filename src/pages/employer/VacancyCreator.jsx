@@ -70,6 +70,7 @@ export const VacancyCreator = () => {
       ...vacancy,
       employer: CONTEXT.user._id,
       payment: JSON.stringify(vacancy.payment),
+      timestamp: Date.now(),
     };
 
     if(isNewVacancy) {

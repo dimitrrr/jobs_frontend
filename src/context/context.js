@@ -23,6 +23,8 @@ export const LANGUAGES = {
     ENGLISH: 'ENGLISH',
 }
 
+export const MONTHS = ['січень', 'лютий', 'березень', 'квітень', 'травень', 'червень', 'липень', 'серпень', 'вересень', 'жовтень', 'листопад', 'грудень'];
+
 const defaultState = {
     user: {},
     updateState: (newState) => {},

@@ -22,6 +22,8 @@ import { SavedUsers } from './SavedUsers.jsx';
 import { List } from './List.jsx';
 import { PaymentExpectations } from './PaymentExpectations.jsx';
 import { SalaryChart } from './SalaryChart.jsx';
+import { CandidatesChart } from './CandidatesChart.jsx';
+import { VacancyDateChart } from './VacancyDateChart.jsx';
 import { RecommendedVacancies } from './RecommendedVacancies.jsx';
 import { LanguageSelector } from './LanguageSelector.jsx';
 
@@ -50,6 +52,8 @@ export {
     List,
     PaymentExpectations,
     SalaryChart,
+    CandidatesChart,
     RecommendedVacancies,
     LanguageSelector,
+    VacancyDateChart,
 };

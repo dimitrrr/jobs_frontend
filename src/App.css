@@ -111,14 +111,12 @@ main {
   font-size: 16px;
 }
 
-/* Основні стилі сторінки вакансії */
 .vacancy-page {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Стилі для блоку з інформацією про вакансію */
 .vacancy {
   margin-bottom: 20px;
 }
@@ -150,12 +148,10 @@ main {
   margin-top: 10px;
 }
 
-/* Стилі для блоку з даними про роботодавця */
 .employer-data {
   margin-top: 20px;
 }
 
-/* Стилі для блоку кандидата */
 .candidate {
   margin-top: 20px;
 }
@@ -321,7 +317,6 @@ main {
 
 .worker-page {
   max-width: 600px;
-  /* margin: 0 auto; */
   padding: 20px;
 }
 
@@ -631,7 +626,6 @@ main {
 
 .posted-vacancies {
   margin-top: 20px;
-  /* max-width: 400px; */
 }
 
 .posted-resumes .resume-item {
@@ -678,8 +672,18 @@ main {
   margin-top: 10px;
 }
 
-.applied-vacancies .applied-vacancy .button {
-  margin-top: 10px;
+.applied-vacancies .applied-vacancy .candidate-row {
+  display: flex;
+}
+
+.applied-vacancies .applied-vacancy .candidate-info {
+  width: 50%;
+}
+
+.applied-vacancies .applied-vacancy .button-wrapper {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .searched-employees .employee-item {

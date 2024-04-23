@@ -52,14 +52,31 @@ export const CandidateVacancies = () => {
 
   }
 
+  const toCandidatekDate = (timestamp) => {
+    const date = new Date(timestamp);
+
+    const hours = date.getHours();
+    const minutes = "0" + date.getMinutes();
+
+    const formattedTime = hours + ':' + minutes.substr(-2);
+    return formattedTime + ", "+ date.toDateString();
+  }
+
   return candidates.length ? (
       <div className='applied-vacancies'>
         {
           candidates.map(c => (
           <div className='applied-vacancy' key={c._id}>
             <VacancyRow vacancy={c.vacancy} isHiddenVacancy={false} isSavedVacancy={false} />
-            <div className="status">Статус: {statuses[c.status]}</div>
-            <button className='button primary-button' onClick={() => removeCandidate(c._id)}>Видалити заявку</button>
+            <div className="candidate-row">
+              <div className="candidate-info">
+                <div className="status">Статус: {statuses[c.status]}</div>
+                {c.timestamp ? <div className="timestamp">Подана: {toCandidatekDate(c.timestamp)}</div> : null}
+              </div>
+              <div className="button-wrapper">
+                <button className='button primary-button' onClick={() => removeCandidate(c._id)}>Видалити заявку</button>
+              </div>
+              </div>
           </div>
           ))
         }

@@ -1,25 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { salaries } from '../data/salary';
 import { checkSimilarity } from '../helpers';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 export const SalaryChart = ({ payment, name }) => {
   const [min, setMin] = useState(0);
@@ -67,9 +49,9 @@ export const SalaryChart = ({ payment, name }) => {
       }
     },
     scales:{
-        x: {
-            display: false
-        }
+      x: {
+        display: false
+      }
     }
   };
 

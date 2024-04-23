@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/context';
-import { EmployerData, PaymentExpectations, SalaryChart, VacancyRow } from '../../components';
+import { CandidatesChart, EmployerData, PaymentExpectations, SalaryChart, VacancyDateChart, VacancyRow } from '../../components';
 import { BACKEND } from '../../axios';
 import { useNavigate } from 'react-router-dom';
 import { ERROR_PAGE_URL } from '../../constants';
@@ -30,7 +30,9 @@ export const Vacancy = () => {
   const [CVs, setCVs] = useState([]);
   const [canBeCandidate, setCanBeCandidate] = useState(false);
   const [similarVacancies, setSimilarVacancies] = useState([]);
-  const [totalCandidates, setTotalCandidates] = useState(0);
+  const [allVacancies, setAllVacancies] = useState([]);
+  const [allCandidates, setAllCandidates] = useState([]);
+  const [allCandidatesForVacancy, setAllCandidatesForVacancy] = useState([]);
 
   const payment = JSON.parse(vacancy.payment || `{ "type": "", "min": "0", "max": "0" }`);
 
@@ -56,6 +58,7 @@ export const Vacancy = () => {
           const vacanciesToShow = vacanciesWithSimilarity.slice(0, 3);
 
           setSimilarVacancies(vacanciesToShow);
+          setAllVacancies(vacancies);
         } else {
           alertify.error('Не вдалося отримати вакансії');
           console.error(response);
@@ -119,15 +122,17 @@ export const Vacancy = () => {
             const { candidates } = response.data.data;
   
             if(candidates && candidates.length) {
-              setTotalCandidates(candidates.length);
+              const candidatesForVacancy = candidates.filter(c => c.vacancy._id === vacancyId);
+              setAllCandidatesForVacancy(candidatesForVacancy);
+              setAllCandidates(candidates);
             }
           } else {
-            alertify.error('Не вдалося отримати вакансії');
+            alertify.error('Не вдалося отримати кількість кандидатів');
             console.error(response);
           }
         });
       } catch(error) {
-        alertify.error('Не вдалося отримати вакансії');
+        alertify.error('Не вдалося отримати кількість кандидатів');
         console.error(error);
       }
     } else {
@@ -152,7 +157,7 @@ export const Vacancy = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newCandidate = { ...candidate, expectations: JSON.stringify(candidate.expectations) };
+    const newCandidate = { ...candidate, expectations: JSON.stringify(candidate.expectations), timestamp: Date.now() };
 
     try {
       BACKEND.post('/addCandidate', newCandidate).then((response) => {
@@ -190,8 +195,9 @@ export const Vacancy = () => {
   }
 
   const findCVRoleById = (_id) => {
-    if(!_id) return null;
-    return CVs && CVs.length ? CVs.find(cv => cv._id === _id).CVData.role : null;
+    if(!_id || !CVs || !CVs.length) return null;
+    const CV = CVs.find(cv => cv._id === _id);
+    return CV && CV.CVData ? CV.CVData.role : null;
   }
 
   const handleCVChange = (event) => {
@@ -206,14 +212,14 @@ export const Vacancy = () => {
     once: 'Оплата за весь проєкт',
   };
 
-  const isVacancyPayment = !!(payment && payment.min && payment.min !== 0 && payment.max !== 0);
+  const isVacancyPayment = !!(payment && payment.min && payment.min != 0 && payment.max != 0);
 
   return (
     <div className="vacancy-page">
       <div className='vacancy'>
         <div className="name">{vacancy.name}</div>
         <div className="status">{vacancy.status}</div>
-        { totalCandidates ? <div className='total-candidates'>Відгукнулися: {totalCandidates}</div> : null}
+        { allCandidatesForVacancy ? <div className='total-candidates'>Відгукнулися: {allCandidatesForVacancy.length}</div> : null}
         <div className="tags">{vacancy.tags.map(tag => <div key={tag.id}>{tag.name}{tag.value ? `-${tag.value}` : ''}</div>)}</div>
         <div className="text">{vacancy.text}</div>
         <div className="testTaskLink">{vacancy.testTaskLink}</div>
@@ -225,11 +231,21 @@ export const Vacancy = () => {
           <EmployerData timeZone={vacancy.employer.timeZone} shortForm={false} company={JSON.parse(vacancy.employer.company)} employerId={vacancy.employer._id} />
         ) : null
       }
-      {
-        isVacancyPayment && payment.type !== 'once' ? (
-          <SalaryChart payment={payment} name={vacancy.name}/>
+      <div className="charts">
+        {
+          isVacancyPayment && payment.type !== 'once' ? (
+            <SalaryChart payment={payment} name={vacancy.name}/>
+          ) : null
+        }
+        { allCandidates && allCandidates.length ? (
+          <CandidatesChart candidates={allCandidates} name={vacancy.name} /> 
         ) : null
-      }
+        }
+        { allVacancies && allVacancies.length ? (
+          <VacancyDateChart vacancies={allVacancies} name={vacancy.name} /> 
+        ) : null
+        }
+      </div>
       {
         similarVacancies.length ? (
           <>
