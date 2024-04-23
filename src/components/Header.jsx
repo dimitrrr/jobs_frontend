@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { DEFAULT_URL, EMPLOYEE_SEARCH_RESULTS, LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM, VACANCIES_SEARCH_RESULTS } from '../constants';
+import { DEFAULT_URL, DEFAULT_EXTERNAL_URL, EMPLOYEE_SEARCH_RESULTS, LOGGENID_ITEM, START_PAGE_URL, TOKEN_ITEM, VACANCIES_SEARCH_RESULTS } from '../constants';
 import { AppContext } from '../context/context';
 
 export const Header = () => {
@@ -30,7 +30,8 @@ export const Header = () => {
     window.localStorage.removeItem(EMPLOYEE_SEARCH_RESULTS);
     CONTEXT.updateState({...CONTEXT, user: {}});
     navigate(0);
-    window.location.replace(DEFAULT_URL + START_PAGE_URL);
+    const defaultPage = process.env.NODE_ENV === 'production' ? DEFAULT_EXTERNAL_URL : DEFAULT_URL;
+    window.location.replace(defaultPage + START_PAGE_URL);
   }
 
   const renderLoginRegistrationLinks = () => {

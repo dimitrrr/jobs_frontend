@@ -1,6 +1,7 @@
 export const BACKEND_URL = 'http://localhost:1234';
 export const BACKEND_EXTERNAL_URL = 'https://jobs-api-8u9c.onrender.com:1234';
 export const DEFAULT_URL = 'http://localhost:3000';
+export const DEFAULT_EXTERNAL_URL = 'https://jobs-crk3.onrender.com';
 export const OPENAI_API_KEY = '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';
 export const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 export const START_PAGE_URL = '/';
