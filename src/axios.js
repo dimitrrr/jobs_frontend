@@ -1,8 +1,8 @@
 import axios from "axios";
-import { OPENAI_API_KEY, BACKEND_URL, OPENAI_API_URL } from "./constants";
+import { OPENAI_API_KEY, BACKEND_URL, BACKEND_EXTERNAL_URL, OPENAI_API_URL } from "./constants";
 
 export const BACKEND = axios.create({
-    baseURL: BACKEND_URL,
+    baseURL: process.env.NODE_ENV === 'production' ? BACKEND_EXTERNAL_URL : BACKEND_URL,
     headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
