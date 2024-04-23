@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CV_CREATOR_URL } from '../constants';
 import { BACKEND } from '../axios';
 import alertify from 'alertifyjs';
+import { savePdf } from '../helpers';
 
 export const AddedCVs = () => {
     const CONTEXT = useContext(AppContext);
@@ -44,7 +45,7 @@ export const AddedCVs = () => {
   
       return addedCVs.map(cv => (
       <div className='resume-item' key={cv._id}>
-        <div className='role'>{cv.CVData ? cv.CVData.role : ''}</div>
+        <div className='role' onClick={() => downloadCV(cv)}>{cv.CVData ? cv.CVData.role : ''}</div>
         <div className='timestamp'>Додано: {toCVDate(cv.timestamp)}</div>
         <div>
           <input type='checkbox' checked={cv.visible == undefined ? true : cv.visible} onChange={(event) => handleCheckboxChange(event, cv._id)} /> Публічне
@@ -74,6 +75,16 @@ export const AddedCVs = () => {
         console.error(error);
       }
     }
+
+
+  const downloadCV = (CV) => {
+    if(!CV || !CV.file || !CV.file.data) {
+      alertify.error('Не вдалося знайти резюме');
+      return;
+    }
+
+    savePdf(CV.file.data);
+  }
 
 
   const handleCheckboxChange = (event, id) => {

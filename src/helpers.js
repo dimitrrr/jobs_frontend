@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver'
+
 export function checkSimilarity(text1, text2){
   return similarity(text1, text2);
 }
@@ -41,4 +43,31 @@ function editDistance(s1, s2) {
       costs[s2.length] = lastValue;
   }
   return costs[s2.length];
+}
+
+export function savePdf(fileByte) {
+
+  const bytes = new Uint8Array(fileByte);
+
+  const pdfBlob = new Blob([bytes], {type: "application/pdf"});
+
+  saveAs(pdfBlob, 'CV.pdf');
+
+
+    // try {
+    //   BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response => {
+            
+    //     if(response.data instanceof Blob) {
+    //       const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+  
+    //       saveAs(pdfBlob, 'CV.pdf');
+    //     } else {
+    //       alertify.error('Не вдалося отримати файл');
+    //       console.error(response);
+    //     }
+    //   });
+    // } catch(error) {
+    //   alertify.error('Не вдалося отримати файл');
+    //   console.error(error);
+    // }
 }

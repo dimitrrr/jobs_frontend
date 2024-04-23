@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
-import { BACKEND } from '../axios';
-import { saveAs } from 'file-saver';
 import { EMPLOYEE_PROFILE_PAGE_URL } from '../constants';
 import alertify from 'alertifyjs';
+import { savePdf } from '../helpers';
 
 export const EmployeeRow = ({CV, onMoveToEmployee = null, setEmployeeToList, hideCV = false}) => {
   const CONTEXT = useContext(AppContext);
@@ -32,27 +31,12 @@ export const EmployeeRow = ({CV, onMoveToEmployee = null, setEmployeeToList, hid
   }
 
   const downloadCV = () => {
-    if(!CV._id) {
+    if(!CV._id || !CV.file || !CV.file.data) {
       alertify.error('Не вдалося знайти резюме');
       return;
     }
 
-    try {
-      BACKEND.post('/fetchCreatedPdf', {employeeId: CV.employee._id, CVid: CV._id}, { responseType: 'blob' }).then(response => {
-            
-        if(response.data instanceof Blob) {
-          const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
-  
-          saveAs(pdfBlob, 'CV.pdf');
-        } else {
-          alertify.error('Не вдалося отримати файл');
-          console.error(response);
-        }
-      });
-    } catch(error) {
-      alertify.error('Не вдалося отримати файл');
-      console.error(error);
-    }
+    savePdf(CV.file.data);
   }
 
   const moveToEmployeePage = () => {

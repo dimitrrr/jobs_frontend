@@ -2,7 +2,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-phone-number-input/style.css';
 
 import React, { useContext, useEffect, useState } from 'react'
-import { saveAs } from 'file-saver';
 import { useNavigate } from 'react-router-dom';
 import { EMPLOYEE_PERSONAL_URL } from '../../constants';
 import { BACKEND, OPENAI } from '../../axios';
@@ -12,6 +11,7 @@ import DatePicker from "react-datepicker";
 import PhoneInput from 'react-phone-number-input';
 import { LANGUAGES } from '../../context/context.js';
 import alertify from "alertifyjs";
+import { savePdf } from "../../helpers.js";
 
 const SECTIONS = ['Контактні дані', 'Освіта', 'Досвід роботи', 'Навички', 'Характеристика', 'Додатково', 'Підсумок'];
 
@@ -222,20 +222,9 @@ export const CVCreator = () => {
     try {
       BACKEND.post('/createPdf', CV).then(response => {
 
-        if(response.data && response.data.status === 'ok') {
-          const { employee: employeeId, _id: CVid } = response.data.data;
-          BACKEND.post('/fetchCreatedPdf', {employeeId, CVid,}, { responseType: 'blob' }).then(response2 => {
-            
-            if(response2.data instanceof Blob) {
-              const pdfBlob = new Blob([response2.data], { type: 'application/pdf' });
-    
-              saveAs(pdfBlob, 'CV.pdf');
-              setCVData({});
-            } else {
-              alertify.error("Не вдалося створити резюме");
-              console.error(response);
-            }
-          });
+        if(response.data && response.data.status === 'ok' && response.data.data && response.data.data.file && response.data.data.file.data) {
+          savePdf(response.data.data.file.data);
+          setCVData({});
         } else {
           alertify.error("Не вдалося створити резюме");
           console.error(response);

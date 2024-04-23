@@ -3,7 +3,6 @@ import { BACKEND } from '../axios';
 import { AppContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 import { EMPLOYEE_PROFILE_PAGE_URL } from '../constants';
-import { saveAs } from 'file-saver';
 import alertify from 'alertifyjs';
 
 const possibleStatusValues = ['pending', 'accepted', 'denied'];
@@ -72,27 +71,12 @@ export const Candidate = ({candidate}) => {
   }
 
   const downloadCV = () => {
-    if(!candidate || !candidate.CV || !candidate.CV._id) {
+    if(!candidate || !candidate.CV || !candidate.CV._id || !candidate.CV.file || !candidate.CV.file.data) {
       alertify.error('Не вдалося знайти резюме');
       return;
     }
 
-    try {
-      BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response => {
-            
-        if(response.data instanceof Blob) {
-          const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
-  
-          saveAs(pdfBlob, 'CV.pdf');
-        } else {
-          alertify.error('Не вдалося отримати файл');
-          console.error(response);
-        }
-      });
-    } catch(error) {
-      alertify.error('Не вдалося отримати файл');
-      console.error(error);
-    }
+    downloadCV(candidate.CV.file.data);
   }
 
   return (
