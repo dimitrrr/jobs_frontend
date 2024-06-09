@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SearchFilters, SearchResults, SearchRow } from '../../components'
 import { AppContext } from '../../context/context';
 import { BACKEND } from '../../axios';
-import { VACANCIES_SEARCH_RESULTS } from '../../constants';
+import { CV_CREATOR_URL, VACANCIES_SEARCH_RESULTS } from '../../constants';
 import alertify from 'alertifyjs';
+import { useNavigate } from 'react-router-dom';
 
 export const EmployeeHome = () => {
+  const navigate = useNavigate();
   const CONTEXT = useContext(AppContext);
   const [searchState, setSearchState] = useState({
     query: '',
@@ -158,6 +160,10 @@ export const EmployeeHome = () => {
   const saveToLocalStorage = () => {
     window.localStorage.setItem(VACANCIES_SEARCH_RESULTS, JSON.stringify(searchState));
   }
+  
+  const moveToCVCreator = id => {
+    navigate(`${CV_CREATOR_URL}?CV_id=${id}`);
+  }
 
   return (
     <div className="search-page">
@@ -178,6 +184,10 @@ export const EmployeeHome = () => {
           }
         </>
       ) }
+
+      { !searchState.error && !searchState.results.length ? (
+        <div>Для початку роботи вкажіть посаду для пошуку у вакансії або <span onClick={() => moveToCVCreator('new')} className="toCreator">створіть резюме</span></div>
+      ) : null }
     </div>
   )
 }

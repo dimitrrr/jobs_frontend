@@ -83,7 +83,17 @@ export const Vacancy = () => {
           if(response.data && response.data.status === 'ok') {
             const { vacancy, candidate: can } = response.data.data;
             setVacancy(vacancy);
-            setCandidate({...candidate, vacancy: vacancy._id, employee: userId});
+
+            const newCandidate = { ...candidate, vacancy: vacancy._id, employee: userId };
+            if(vacancy.payment && vacancy.payment.length) {
+              const payment = JSON.parse(vacancy.payment);
+              
+              const expectations = { ...payment };
+
+              newCandidate.expectations = expectations;
+            }
+
+            setCandidate(newCandidate);
   
             const cbc = !can && vacancy.employer._id !== CONTEXT.user._id; 
             setCanBeCandidate(cbc);
@@ -214,6 +224,13 @@ export const Vacancy = () => {
 
   const isVacancyPayment = !!(payment && payment.min && payment.min != 0 && payment.max != 0);
 
+  let canBeCandidateTitle = null;
+  if(!canBeCandidate) {
+    if(!vacancy.employer || vacancy.employer._id === CONTEXT.user._id) canBeCandidateTitle = 'Ви не можете подати заявку на цю вакансію';
+    else if(candidate && candidate.employee) canBeCandidateTitle = 'Ви вже подали заявку на цю вакансію';
+    else canBeCandidateTitle = 'Ви не можете подати заявку на цю вакансію';
+  }
+
   return (
     <div className="vacancy-page">
       <div className='vacancy'>
@@ -299,10 +316,8 @@ export const Vacancy = () => {
         ) : null
       }
       {
-        !canBeCandidate ? 
-        !vacancy.employer || vacancy.employer._id === CONTEXT.user._id ? 
-        null : (
-          <div className='already-candidate'>{candidate && candidate.employee ? 'Ви вже подали заявку на цю вакансію' : ''}</div>
+        !canBeCandidate ? (
+          <div className='already-candidate'>{canBeCandidateTitle}</div>
         ) : null
       }
     </div>

@@ -936,3 +936,8 @@ main {
 .language-selector button.active {
   background-color: #ccc;
 }
+
+.toCreator {
+  cursor: pointer;
+  text-decoration: underline;
+}

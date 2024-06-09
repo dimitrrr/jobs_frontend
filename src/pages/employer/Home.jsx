@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SearchEmployeeResults, SearchFilters, SearchRow } from '../../components'
 import { AppContext } from '../../context/context';
 import { BACKEND } from '../../axios';
-import { EMPLOYEE_SEARCH_RESULTS } from '../../constants';
+import { EMPLOYEE_SEARCH_RESULTS, VACANCY_CREATOR_URL } from '../../constants';
 import alertify from 'alertifyjs';
+import { useNavigate } from 'react-router-dom';
 
 export const EmployerHome = () => {
+  const navigate = useNavigate();
   const CONTEXT = useContext(AppContext);
   const [searchState, setSearchState] = useState({
     query: '',
@@ -158,6 +160,10 @@ export const EmployerHome = () => {
     window.localStorage.setItem(EMPLOYEE_SEARCH_RESULTS, JSON.stringify(searchState));
   }
 
+  const moveToVacancyCreator = id => {
+    navigate(`${VACANCY_CREATOR_URL}?vacancy_id=${id}`);
+  }
+
   return (
     <div className="search-page">
       <SearchRow type='employer' query={searchState.query} onChange={handleInputChange} onSubmit={handleSearchSubmit} onClear={clearLocalStorage} />
@@ -177,6 +183,11 @@ export const EmployerHome = () => {
           }
         </>
       ) }
+
+
+      { !searchState.error && !searchState.results.length ? (
+        <div>Для початку роботи вкажіть посаду для пошуку серед робітників або <span onClick={() => moveToVacancyCreator('new')} className="toCreator">створіть вакансію</span></div>
+      ) : null }
     </div>
   )
 }
