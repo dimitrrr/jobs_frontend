@@ -56,7 +56,7 @@ export const EmployerHome = () => {
 
     const results = employees
     .filter(
-      e => e.employee._id !== CONTEXT.user._id && 
+      e => e.employee && e.employee._id !== CONTEXT.user._id && 
       e.CVData && e.CVData.role &&
       e.CVData.role.toLowerCase().includes(searchState.query.toLowerCase()) &&
       (e.visible == undefined || e.visible)
@@ -90,7 +90,7 @@ export const EmployerHome = () => {
 
     const filteredCVs = employees
       .filter(
-        e => e.employee._id !== CONTEXT.user._id && 
+        e => e.employee && e.employee._id !== CONTEXT.user._id && 
         e.CVData && e.CVData.role &&
         e.CVData.role.toLowerCase().includes(searchState.query.toLowerCase()) &&
         (e.visible == undefined || e.visible)
