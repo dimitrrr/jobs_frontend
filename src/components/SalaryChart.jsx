@@ -56,7 +56,7 @@ export const SalaryChart = ({ payment, name }) => {
   };
 
   const data = {
-    labels: ['Порівняння рівнів оплати'],
+    labels: ['Порівняння рівнів оплати, UAH'],
     datasets: [
       {
         label: 'Мінімальна очікувана оплата перерахована на місяць',

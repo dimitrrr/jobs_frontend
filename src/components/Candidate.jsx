@@ -87,7 +87,7 @@ export const Candidate = ({candidate}) => {
       <div>{candidate.testTaskLink}</div>
       <div className='download-cv' onClick={downloadCV}>Завантажити резюме</div>
       <div className='time-offset'>Різниця в часі: {getTimeOffset()} годин</div>
-      <div className='expectations'>{expectations.type} {expectations.min}-{expectations.max}</div>
+      <div className='expectations'>{expectations.type} {expectations.min} - {expectations.max}UAH</div>
       <form onSubmit={updateCandidateStatus} className='select-and-button'>
         <select value={candidateStatus} onChange={handleStatusChange}>
           <option value="accepted">Прийнято</option>

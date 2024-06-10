@@ -240,7 +240,7 @@ export const Vacancy = () => {
         <div className="tags">{vacancy.tags.map(tag => <div key={tag.id}>{tag.name}{tag.value ? `-${tag.value}` : ''}</div>)}</div>
         <div className="text">{vacancy.text}</div>
         <div className="testTaskLink">{vacancy.testTaskLink}</div>
-        { isVacancyPayment ? <div className="payment">{paymentTypes[payment.type]}: {payment.min} - {payment.max}</div> : null }
+        { isVacancyPayment ? <div className="payment">{paymentTypes[payment.type]}: {payment.min} - {payment.max}UAH</div> : null }
       </div>
       <hr className='divider'/>
       {
