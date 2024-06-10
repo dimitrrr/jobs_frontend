@@ -19,7 +19,7 @@ export const EmployeePersonal = () => {
   }
 
   const renderSidebar = () => {
-    const views = ['Мої заявки', 'Мої резюме', 'Дані користувача', 'Рекомендовані вакансії', 'Збережені вакансії', 'Приховані вакансії', 'Відгуки від роботодавців'];
+    const views = ['Мої заявки', 'Мої резюме', 'Інформація про користувача', 'Рекомендовані вакансії', 'Збережені вакансії', 'Приховані вакансії', 'Відгуки від роботодавців'];
     return views.map((v, i) => <div className={`view ${currentView === i ? 'view-active' : ''}`} key={`employee-view-${i}`} onClick={() => setCurrentView(i)}>{v}</div>);
   }
 
