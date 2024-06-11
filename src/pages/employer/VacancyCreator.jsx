@@ -30,6 +30,7 @@ export const VacancyCreator = () => {
         BACKEND.post('/getVacancyById', { _id: vacancyId }).then(response => {
           if(response.data && response.data.status === 'ok' && response.data.data) {
             const vacancy = response.data.data;
+            vacancy.payment = JSON.parse(vacancy.payment);
             setVacancy(vacancy);
           } else {
             navigate(ERROR_PAGE_URL);
@@ -140,7 +141,7 @@ export const VacancyCreator = () => {
     removed: 'Непотрібна',
   }
 
-  const expectations = vacancy.payment && vacancy.payment.length ? JSON.parse(vacancy.payment) : { type: 'hourly', min: 0, max: 0 };
+  const expectations = vacancy.payment || { type: 'hourly', min: 0, max: 0 };
 
   return (
     <div className='createVacancy'>
