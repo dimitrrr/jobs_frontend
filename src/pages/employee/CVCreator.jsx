@@ -379,7 +379,7 @@ export const CVCreator = () => {
       return (
         <div className='resume-section'>
           <div>
-            <label>Професійні навички та рівень володіння</label>
+            <label>Професійні навички та рівень володіння (1 - мінімальне володіння, 5 - експертність)</label>
             <List initialItems={skills} onAfterUpdate={onAfterSkillsUpdate} type='itemswithselect' name='skills' values={skillLevels} initialValue={skillLevels[0]} suggested={suggestedSkills} role={CVData.role || ''}/>
           </div>
           <div className="buttons">
