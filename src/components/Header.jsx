@@ -62,7 +62,7 @@ export const Header = () => {
         ) : null }
         { shouldShowEmployeePersonal ? (
           <li>
-            <Link to="/employee/personal">Особистий кабінет робітника {userData ? userData.username : ''}</Link>
+            <Link to="/employee/personal">Особистий кабінет робітника <span style={{ textDecoration: 'underline' }}>{userData ? userData.username : ''}</span></Link>
           </li>
         ) : null }
         <li>
@@ -89,7 +89,7 @@ export const Header = () => {
         ) : null }
         { shouldShowEmployerPersonal ? (
           <li>
-            <Link to="/employer/personal">Особистий кабінет роботодавця {userData ? userData.username : ''}</Link>
+            <Link to="/employer/personal">Особистий кабінет роботодавця <span style={{ textDecoration: 'underline' }}>{userData ? userData.username : ''}</span></Link>
           </li>
         ) : null }
         <li>
