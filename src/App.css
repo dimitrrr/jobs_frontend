@@ -404,8 +404,9 @@ main {
 
 .createVacancy .additional-buttons {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 10px;
+  margin-top: 10px;
 }
 
 .select-and-button {
@@ -788,6 +789,16 @@ main {
   gap: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.companyDataEdit input[type="text"], .companyDataEdit textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 5px;
 }
 
 .companyDataEdit .form-control input, .companyDataEdit.form-control textarea {

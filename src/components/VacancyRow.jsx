@@ -103,11 +103,17 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
   const renderVacancyForEmployer = () => {
     if(!vacancy) return <></>
 
+    const labelForVacancyStatus = {
+      active: 'Відкрита',
+      archived: 'Закрита',
+      removed: 'Непотрібна',
+    }
+
     return (
       <div>
         <div className="vacancy-row">
           <div className="name" onClick={() => moveToVacancy(vacancy._id)}>{vacancy.name}</div>
-          <div className='status'>{vacancy.status}</div>
+          <div className='status'>{labelForVacancyStatus[vacancy.status]}</div>
           <div className="buttons">
             <button className='button secondary-button' onClick={() => moveToVacancyCreator(vacancy._id)}>Редагувати</button>
           </div>

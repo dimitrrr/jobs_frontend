@@ -134,6 +134,14 @@ export const VacancyCreator = () => {
     setVacancy(newVacancy);
   };
 
+  const labelForVacancyStatus = {
+    active: 'Відкрита',
+    archived: 'Закрита',
+    removed: 'Непотрібна',
+  }
+
+  const expectations = vacancy.payment && vacancy.payment.length ? JSON.parse(vacancy.payment) : { type: 'hourly', min: 0, max: 0 };
+
   return (
     <div className='createVacancy'>
       <div className='creator-header header'>{isNewVacancy ? 'Створити' : 'Редагувати'} вакансію</div>
@@ -151,8 +159,8 @@ export const VacancyCreator = () => {
             <label className='header'>Додайте кілька тегів, щоб зробити вакансію більш інформативною (наприклад, "Для студентів" або "Для ветеранів")</label>
             <List initialItems={vacancy.tags} onAfterUpdate={onAfterTagsUpdate} type='items' name='tags' />
           </div>
-          { !isNewVacancy ? <div className="status">Статус: {vacancy.status}</div> : null }
-          <PaymentExpectations expectations={vacancy.payment} handleExpectationsChange={handlePaymentChange} />
+          { !isNewVacancy ? <div className="status">Статус: {labelForVacancyStatus[vacancy.status]}</div> : null }
+          <PaymentExpectations expectations={expectations} handleExpectationsChange={handlePaymentChange} />
           <div className="form-control">
             <label className='header'>Опис</label>
             <textarea

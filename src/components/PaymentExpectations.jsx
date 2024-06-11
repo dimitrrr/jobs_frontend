@@ -4,7 +4,7 @@ export const PaymentExpectations = ({expectations, handleExpectationsChange}) =>
   return (
     <div className="form-control payment-expectations">
       <div className='expectations-title' style={{fontWeight: 'bold'}}>
-        Вкажіть очікуваний тип та рівень оплати
+        Вкажіть очікуваний тип та рівень оплати, UAH
       </div>
       <div className="radio">
         <label>
