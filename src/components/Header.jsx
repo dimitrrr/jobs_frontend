@@ -38,10 +38,10 @@ export const Header = () => {
     return (
       <>
         <li>
-          <Link to="/employee/">Робітник</Link>
+          <Link to="/employee/">До робітника</Link>
         </li>
         <li>
-          <Link to="/employer/">Роботодавець</Link>
+          <Link to="/employer/">До роботодавця</Link>
         </li>
         <li>
           <Link to='/'>Увійти</Link>
@@ -66,7 +66,7 @@ export const Header = () => {
           </li>
         ) : null }
         <li>
-          <Link to="/employer/">Роботодавець</Link>
+          <Link to="/employer/">До роботодавця</Link>
         </li>
         <li className='logout'>
           <button className='button primary-button' onClick={logOut}>
@@ -93,7 +93,7 @@ export const Header = () => {
           </li>
         ) : null }
         <li>
-          <Link to="/employee/">Робітник</Link>
+          <Link to="/employee/">До робітника</Link>
         </li>
         <li className='logout'>
           <button className='button primary-button' onClick={logOut}>
