@@ -169,6 +169,8 @@ export const Vacancy = () => {
 
     const newCandidate = { ...candidate, expectations: JSON.stringify(candidate.expectations), timestamp: Date.now() };
 
+    if(CVs.length && !newCandidate.CV) newCandidate.CV = CVs[0]._id;
+
     try {
       BACKEND.post('/addCandidate', newCandidate).then((response) => {
         if(response.data && response.data.status === 'ok') {
@@ -231,11 +233,17 @@ export const Vacancy = () => {
     else canBeCandidateTitle = 'Ви не можете подати заявку на цю вакансію';
   }
 
+  const labelForVacancyStatus = {
+    active: 'Відкрита',
+    archived: 'Закрита',
+    removed: 'Непотрібна',
+  }
+
   return (
     <div className="vacancy-page">
       <div className='vacancy'>
         <div className="name">{vacancy.name}</div>
-        <div className="status">{vacancy.status}</div>
+        <div className="status">{labelForVacancyStatus[vacancy.status]}</div>
         { allCandidatesForVacancy ? <div className='total-candidates'>Відгукнулися: {allCandidatesForVacancy.length}</div> : null}
         <div className="tags">{vacancy.tags.map(tag => <div key={tag.id}>{tag.name}{tag.value ? `-${tag.value}` : ''}</div>)}</div>
         <div className="text">{vacancy.text}</div>
