@@ -419,7 +419,7 @@ export const CVCreator = () => {
     }
 
     if(section === 5) {
-      const languageLevels = ['початковий', 'базовий', 'середній', 'вище середнього', 'просунутий', 'майстерний'];
+      const languageLevels = ['початковий (А1)', 'базовий (А2)', 'середній (B1)', 'вище середнього (B2)', 'просунутий (C1)', 'майстерний (C2)'];
       return (
         <div className='resume-section'>
           <div>

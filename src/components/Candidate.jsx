@@ -4,6 +4,7 @@ import { AppContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 import { EMPLOYEE_PROFILE_PAGE_URL } from '../constants';
 import alertify from 'alertifyjs';
+import { savePdf } from '../helpers';
 
 const possibleStatusValues = ['pending', 'accepted', 'denied'];
 
@@ -76,7 +77,7 @@ export const Candidate = ({candidate}) => {
       return;
     }
 
-    downloadCV(candidate.CV.file.data);
+    savePdf(candidate.CV.file.data);
   }
 
   return (

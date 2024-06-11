@@ -41,13 +41,15 @@ export const Feedback = ({userId, sender = '', showAddFeedback = true}) => {
     return formattedTime + ", "+ date.toDateString();
   }
 
+  const fromUser = f => f.fromUser ? f.fromUser.username ? f.fromUser.username : 'Ви' : 'Анонімний користувач';
+
   return (
     <div>
       {feedback.length ? (<div>
         <div className='feedback-list'>
           {feedback.slice(0, 3).map((f, i) => (
             <div key={f._id || `feedback-${i}`} className='feedback-item'>
-              <div className='from'>Від: {f.fromUser.username}</div>
+              <div className='from'>Від: {fromUser(f)}</div>
               <div className='mark'>{f.mark}</div>
               <div className='text'>{f.text}</div>
               <div className='timestamp'>{toFeedbackDate(f.timestamp)}</div>
