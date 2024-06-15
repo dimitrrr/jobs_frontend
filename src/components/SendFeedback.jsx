@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Rating } from 'react-simple-star-rating'
 import { AppContext } from '../context/context';
 import { BACKEND } from '../axios';
 import alertify from 'alertifyjs';
@@ -22,6 +23,10 @@ export const SendFeedback = ({aboutUser, addFeedback}) => {
 
   if(feedback.fromUser === aboutUser) {
     return <></>
+  }
+
+  const handleRating = (rate) => {
+    setFeedback({...feedback, mark: rate});
   }
 
   const handleInputChange = (event) => {
@@ -81,7 +86,7 @@ export const SendFeedback = ({aboutUser, addFeedback}) => {
           </label>
         </div>
       </div>
-      <div className="form-control">
+      {/* <div className="form-control">
         <label>Рейтинг</label>
         <input
           type="text"
@@ -89,7 +94,8 @@ export const SendFeedback = ({aboutUser, addFeedback}) => {
           value={feedback.mark}
           onChange={handleInputChange}
         />
-      </div>
+      </div> */}
+      <Rating onClick={handleRating} initialValue={feedback.mark} />
       <div className="form-control">
         <label>Текст відгуку</label>
         <textarea
