@@ -132,7 +132,7 @@ export const Vacancy = () => {
             const { candidates } = response.data.data;
   
             if(candidates && candidates.length) {
-              const candidatesForVacancy = candidates.filter(c => c.vacancy._id === vacancyId);
+              const candidatesForVacancy = candidates.filter(c => c.vacancy && c.CV && c.vacancy._id === vacancyId);
               setAllCandidatesForVacancy(candidatesForVacancy);
               setAllCandidates(candidates);
             }
