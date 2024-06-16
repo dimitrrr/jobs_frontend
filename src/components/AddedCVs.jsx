@@ -40,6 +40,7 @@ export const AddedCVs = () => {
       const formattedTime = hours + ':' + minutes.substr(-2);
       return formattedTime + ", "+ date.toDateString();
     }
+
     const renderCVs = () => {
       if(!addedCVs || !addedCVs.length) return <></>
   
@@ -76,7 +77,6 @@ export const AddedCVs = () => {
       }
     }
 
-
   const downloadCV = (CV) => {
     if(!CV || !CV.file || !CV.file.data) {
       alertify.error('Не вдалося знайти резюме');
@@ -85,7 +85,6 @@ export const AddedCVs = () => {
 
     savePdf(CV.file.data);
   }
-
 
   const handleCheckboxChange = (event, id) => {
     const value = event.target.checked;

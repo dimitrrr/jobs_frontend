@@ -527,6 +527,7 @@ main {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   border-radius: 5px;
+  margin: 0 auto;
 }
 
 .feedback-form .form-control {
@@ -557,6 +558,7 @@ main {
 
 .feedback-list {
   max-width: 400px;
+  margin: 0 auto;
   padding: 20px;
 }
 
@@ -664,6 +666,16 @@ main {
   margin-bottom: 0;
 }
 
+.employee-profile {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.employee-profile .resume-item {
+  margin: 0 auto;
+}
+
 .posted-resumes {
   margin-top: 20px;
   max-width: 400px;
@@ -673,26 +685,28 @@ main {
   margin-top: 20px;
 }
 
-.posted-resumes .resume-item {
+.resume-item {
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 15px;
   margin-bottom: 15px;
+  max-width: 400px;
 }
 
-.posted-resumes .resume-item .role {
+.resume-item .role {
+  cursor: pointer;
   font-weight: bold;
   font-size: 18px;
   color: #007bff;
   margin-bottom: 10px;
 }
 
-.posted-resumes .resume-item .timestamp {
+.resume-item .timestamp {
   color: #777;
   font-size: 12px;
 }
 
-.posted-resumes .resume-item .button {
+.resume-item .button {
   margin-top: 10px;
 }
 
