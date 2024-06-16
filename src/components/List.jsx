@@ -14,6 +14,7 @@ export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='
   }, [initialValue]);
 
   const handleAddItem = () => {
+    if(!inputText || !inputText.length) return;
     const item = { name: inputText, value: inputValue || '', id: `${name}-${Date.now()}` };
     const newItems = [...items, item];
 
