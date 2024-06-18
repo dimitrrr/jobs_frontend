@@ -30,7 +30,7 @@ export const SalaryChart = ({ payment, name }) => {
 
   const computeAverage = () => {
 
-    const vacanciesWithSimilarity = salaries.map(s => ({ vacancy: s, similarity: checkSimilarity(s.name.toLowerCase(), name.toLowerCase())}))
+    const vacanciesWithSimilarity = salaries.map(s => ({ vacancy: s, similarity: checkSimilarity(s.name.toLowerCase(), name.toLowerCase(), true)}))
     
     vacanciesWithSimilarity.sort((a, b) => b.similarity - a.similarity);
 

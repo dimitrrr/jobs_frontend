@@ -15,7 +15,7 @@ export const VacancyDateChart = ({ vacancies, name }) => {
   useEffect(() => {
     if(!vacancies) return;
 
-    const vacanciesWithSimilarity = vacancies.map(v => ({ vacancy: v, similarity: checkSimilarity(v.name.toLowerCase(), name.toLowerCase())}));
+    const vacanciesWithSimilarity = vacancies.map(v => ({ vacancy: v, similarity: checkSimilarity(v.name.toLowerCase(), name.toLowerCase(), true)}));
     const filteredVacancies = vacanciesWithSimilarity.filter(v => v.similarity > 0.5);
 
     const vacanciesGroupedByMonth = Object.groupBy(filteredVacancies, v => {

@@ -1,7 +1,9 @@
 import { saveAs } from 'file-saver'
 
-export function checkSimilarity(text1, text2){
-  return similarity(text1, text2);
+export function checkSimilarity(text1, text2, shouldTranslit = false){
+  const uaSimilarity = similarity(text1, text2);
+  const translitSimilarity = shouldTranslit ? similarity(translit(text1), translit(text2)) : null;
+  return shouldTranslit && translitSimilarity > uaSimilarity ? translitSimilarity : uaSimilarity;
 }
 
 function similarity(s1, s2) {
@@ -53,7 +55,6 @@ export function savePdf(fileByte) {
 
   saveAs(pdfBlob, 'CV.pdf');
 
-
     // try {
     //   BACKEND.post('/fetchCreatedPdf', {employeeId: candidate.employee._id, CVid: candidate.CV._id}, { responseType: 'blob' }).then(response => {
             
@@ -70,4 +71,24 @@ export function savePdf(fileByte) {
     //   alertify.error('Не вдалося отримати файл');
     //   console.error(error);
     // }
+}
+
+export function translit(word) {
+  const converter = {
+    'sch': 'щ',
+
+    'yo': 'ё', 'zh': 'ж', 'ch': 'ч', 'sh': 'ш', 'yu': 'ю', 'ya': 'я',
+
+    'a': 'а', 'b': 'б', 'v': 'в', 'g': 'г', 'd': 'д',
+    'e': 'е', 'z': 'з', 'и': 'i', 'y': 'й', 'k': 'к',
+    'l': 'л', 'm': 'м', 'n': 'н', 'o': 'о', 'p': 'п',
+    'r': 'р', 's': 'с', 't': 'т', 'u': 'у', 'f': 'ф',
+    'h': 'х', 'c': 'ц', 'y': 'и', 'i': 'і'
+  };
+
+  for (const [key, value] of Object.entries(converter)) {
+    word = word.replaceAll(key, value);
+  }
+
+  return word;
 }

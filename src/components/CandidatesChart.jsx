@@ -16,7 +16,7 @@ export const CandidatesChart = ({ name, candidates }) => {
       return c.vacancy && c.CV;
     });
 
-    const candidatesWithSimilarity = candidates.map(c => ({ candidate: c, similarity: checkSimilarity(c.vacancy.name.toLowerCase(), name.toLowerCase()) }));
+    const candidatesWithSimilarity = candidates.map(c => ({ candidate: c, similarity: checkSimilarity(c.vacancy.name.toLowerCase(), name.toLowerCase(), true) }));
   
     const filteredCandidates = candidatesWithSimilarity.filter(c => c.similarity >= 0.5);
 

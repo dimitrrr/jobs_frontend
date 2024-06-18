@@ -50,6 +50,8 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
   const moveToVacancy = (id) => {
     if(onMoveToVacancy) onMoveToVacancy();
     navigate(`${VACANCY_URL}?vacancy_id=${id}`);
+    window.location.reload();
+    
   }
 
   const moveToVacancyCreator = (id) => {
