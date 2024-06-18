@@ -10,6 +10,12 @@ export const CandidatesChart = ({ name, candidates }) => {
   useEffect(() => {
     if(!candidates && !candidates.length) return;
 
+    candidates = candidates.filter(c => {
+      if(!c.vacancy || !c.CV) console.error('toremove', c)
+
+      return c.vacancy && c.CV;
+    });
+
     const candidatesWithSimilarity = candidates.map(c => ({ candidate: c, similarity: checkSimilarity(c.vacancy.name.toLowerCase(), name.toLowerCase()) }));
   
     const filteredCandidates = candidatesWithSimilarity.filter(c => c.similarity >= 0.5);
