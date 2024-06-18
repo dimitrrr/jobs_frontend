@@ -19,7 +19,7 @@ export const PostedVacancies = () => {
             const { vacancies, candidates } = response.data.data;
   
             vacancies.forEach(v => {
-              v.candidates = candidates.filter(c => c.vacancy._id === v._id);
+              v.candidates = candidates.filter(c => c.vacancy && c.vacancy._id && c.vacancy._id === v._id);
             });
   
             setPostedVacancies(vacancies);
