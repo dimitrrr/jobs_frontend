@@ -74,7 +74,11 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
     const employer = vacancy.employer;
     let company = null;
     if(employer.company && employer.company.length) {
-      company = JSON.parse(employer.company);
+      try {
+        company = JSON.parse(employer.company);
+      } catch(error) {
+        company = { name: 'Компанія' };
+      }
     }
     const companyName = company ? company.name : employer.username;
 
@@ -127,7 +131,7 @@ export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false
             </select>
             <button type='submit' className='button secondary-button'>Прийняти зміну</button>
           </form>
-          <div className='candidates' onClick={() => setCandidatesVisible()}>Відгукнулися: {state.candidates.length}</div>
+          <div className='candidates' onClick={() => setCandidatesVisible()}>Відгукнулися: {state.candidates.length} &#8595;</div>
         </div>
         { state.candidatesVisible ? <CandidatesForVacancy candidates={state.candidates}/> : null }
       </div>

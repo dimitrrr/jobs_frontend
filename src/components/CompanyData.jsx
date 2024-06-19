@@ -49,6 +49,7 @@ export const CompanyData = () => {
             type="file"
             accept=".png, .jpg, .jpeg"
             name="logo"
+            title=""
             onChange={convertToBase64}
           />
           {companyState.logo ? <img width={100} height={100} src={companyState.logo} alt='logo' /> : null}
@@ -82,7 +83,7 @@ export const CompanyData = () => {
           />
         </div>
         <div className="form-control">
-          <label>Посилання</label>
+          <label>Посилання на сайт компанії</label>
           <input
             type="text"
             name="link"

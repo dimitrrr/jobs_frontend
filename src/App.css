@@ -798,6 +798,10 @@ main {
   margin-top: 10px;
 }
 
+.candidates {
+  cursor: pointer;
+}
+
 .candidates-list {
   max-width: 600px;
   margin: 0 auto;

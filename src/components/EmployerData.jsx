@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { EMPLOYER_PROFILE_PAGE_URL } from '../constants';
 import { AppContext } from '../context/context';
 
-export const EmployerData = ({timeZone, company, employerId, shortForm = false}) => {
+export const EmployerData = ({timeZone, company, employerId, shortForm = true}) => {
   const CONTEXT = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export const EmployerData = ({timeZone, company, employerId, shortForm = false})
   }
 
   return (
-    <div className="employer" onClick={shortForm ? moveToEmployerPage : null}>
+    <div className="employer" onClick={true ? moveToEmployerPage : null}>
       { company.logo ? <img width={100} height={100} src={company.logo} alt={'company logo'} /> : null }
       { company.name ? <div className="company">{company.name}</div> : null }
       <div className='time-offset'>Різниця в часі: {getTimeOffset()} год</div>
