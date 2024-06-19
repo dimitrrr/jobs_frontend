@@ -329,7 +329,7 @@ export const CVCreator = () => {
             <DatePicker selected={graduationDate} onChange={(date) => handleDateChange(date, 'graduation')} dateFormat="MM/yyyy" showMonthYearPicker showFullMonthYearPicker/>
           </div>
           <div>
-            <label>Середній бал</label>
+            <label>Середній бал документу про освіту</label>
             <input type='text' name='school_mark' value={CVData.school_mark || ''} onChange={handleInputChange} />
           </div>
           <div className="buttons">
