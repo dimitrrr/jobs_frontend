@@ -22,7 +22,7 @@ export const Candidate = ({candidate}) => {
   }, [candidate.status]);
 
   const getColorByStatus = (status) => {
-    return status === 'accepted' ? '#00ff00' : status === 'denied' ? '#ff0000' : '#ffffff';
+    return status === 'accepted' ? '#90EE90' : status === 'denied' ? '#EE4B2B' : '#ffffff';
   }
 
   const handleStatusChange = (event) => {

@@ -351,6 +351,10 @@ main {
   font-weight: bold;
   color: black;
   cursor: pointer;
+  width: 300px;
+}
+
+.search-results .vacancy-row .name {
   width: 500px;
 }
 
@@ -584,6 +588,7 @@ main {
 .feedback-item .text {
   margin-top: 10px;
   color: #333;
+  margin-bottom: 10px;
 }
 
 .feedback-item .timestamp {
@@ -720,6 +725,10 @@ main {
   margin: 0 auto;
 }
 
+.applied-vacancies .vacancy-row .name {
+  width: 500px !important;
+}
+
 .applied-vacancies .applied-vacancy {
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -759,7 +768,7 @@ main {
 }
 
 .searched-employees .employee-item div:first-child {
-  width: 80%;
+  width: 60%;
 }
 
 .searched-employees .employee-item:hover {
@@ -776,6 +785,7 @@ main {
   text-decoration: underline;
   cursor: pointer;
   margin-top: 10px;
+  width: 230px;
 }
 
 .searched-employees .employee-item .download-cv:hover {
