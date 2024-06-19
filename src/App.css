@@ -504,7 +504,7 @@ main {
 }
 
 .resume-section textarea {
-  width: 100%;
+  width: 680px;
   padding: 10px;
   font-size: 16px;
   border: 1px solid grey;
@@ -872,6 +872,12 @@ main {
   background-color: #eee;
   margin-top: 10px;
   margin-bottom: 10px;
+  height: 300px;
+  width: 700px;
+}
+
+.typical-characteristics {
+  height: 400px;
 }
 
 .typical .typical-examples {
@@ -880,6 +886,10 @@ main {
   flex-wrap: wrap;
   margin-top: 10px;
   padding: 10px;
+}
+
+.typical-characteristics .typical-examples {
+  flex-direction: column;
 }
 
 .typical .typical-examples .example {
@@ -892,8 +902,9 @@ main {
   text-align: center;
 }
 
-.typical .typical-examples .example.characteristic {
-  max-width: 30%;
+.typical-characteristics .typical-examples .example {
+  max-width: none;
+  text-align: left;
 }
 
 .divider {

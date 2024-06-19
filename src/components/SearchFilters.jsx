@@ -37,7 +37,7 @@ export const SearchFilters = ({ filters: initialFilters, onChange }) => {
         />
         <label>% наявності </label>
       </div>
-      <List initialItems={keywords} onAfterUpdate={onAfterKeywordsUpdate} type='items' name='keywords' />
+      <List initialItems={keywords} onAfterUpdate={onAfterKeywordsUpdate} type='items' name='keywords' showSuggested={false} />
       <button style={{marginTop: '20px'}} className='button primary-button' onClick={() => handleConfirm()}>Оновити результати</button>
     </div>
   )

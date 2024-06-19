@@ -380,7 +380,7 @@ export const CVCreator = () => {
         <div className='resume-section'>
           <div>
             <label>Професійні навички та рівень володіння (1 - мінімальне володіння, 5 - експертність)</label>
-            <List initialItems={skills} onAfterUpdate={onAfterSkillsUpdate} type='itemswithselect' name='skills' values={skillLevels} initialValue={skillLevels[0]} suggested={suggestedSkills} role={CVData.role || ''}/>
+            <List initialItems={skills} onAfterUpdate={onAfterSkillsUpdate} type='itemswithselect' name='skills' values={skillLevels} initialValue={skillLevels[0]} suggested={suggestedSkills} role={CVData.role || ''}  showSuggested={true} />
           </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>
@@ -395,18 +395,16 @@ export const CVCreator = () => {
         <div className='resume-section'>
           <div>
             {
-              suggestedCharacteristics && suggestedCharacteristics.length ? (
-                <div className='typical'>
-                  Наприклад{CVData.role ? `, для ${CVData.role}` : ''}:
-                  <div className='typical-examples'>
-                  {
-                    suggestedCharacteristics.map((s, i) => (
-                      <div className='example characteristic' key={s+i+Date.now()} onClick={() => handleSuggestedCharacteristicsSelect(s)}>{s}</div>
-                    ))
-                  }
-                  </div>
+              <div className='typical typical-characteristics'>
+                Наприклад{CVData.role ? `, для вакансії "${CVData.role}"` : ''}:
+                <div className='typical-examples'>
+                {
+                  suggestedCharacteristics && suggestedCharacteristics.length ? suggestedCharacteristics.map((s, i) => (
+                    <div className='example characteristic' key={s+i+Date.now()} onClick={() => handleSuggestedCharacteristicsSelect(s)}>{s}</div>
+                  )) : null
+                }
                 </div>
-              ) : null
+              </div>
             }
             <textarea name='self_characteristics' value={CVData.self_characteristics || ''} onChange={handleInputChange} />
           </div>
@@ -424,7 +422,7 @@ export const CVCreator = () => {
         <div className='resume-section'>
           <div>
             <label>Знання мов</label>
-            <List initialItems={languages} onAfterUpdate={onAfterLanguagesUpdate} type='itemswithselect' name='languages' values={languageLevels} initialValue={languageLevels[0]} />
+            <List initialItems={languages} onAfterUpdate={onAfterLanguagesUpdate} type='itemswithselect' name='languages' values={languageLevels} initialValue={languageLevels[0]} showSuggested={false} />
           </div>
           <div>
             <label>Посилання на сертифікати</label>
@@ -436,7 +434,7 @@ export const CVCreator = () => {
           </div>
           <div className="add-field">
             <label>За необхідності додайте більше полів</label>
-            <List initialItems={additionalFields} onAfterUpdate={onAfterAdditionalFieldsUpdate} type='itemswithinput' name='additionalfields' />
+            <List initialItems={additionalFields} onAfterUpdate={onAfterAdditionalFieldsUpdate} type='itemswithinput' name='additionalfields' showSuggested={false} />
           </div>
           <div className="buttons">
             <button className='button secondary-button' onClick={handlePrevious}>Назад</button>

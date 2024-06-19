@@ -158,7 +158,7 @@ export const VacancyCreator = () => {
           </div>
           <div className="form-control">
             <label className='header'>Додайте кілька тегів, щоб зробити вакансію більш інформативною (наприклад, "Для студентів" або "Для ветеранів")</label>
-            <List initialItems={vacancy.tags} onAfterUpdate={onAfterTagsUpdate} type='items' name='tags' />
+            <List initialItems={vacancy.tags} onAfterUpdate={onAfterTagsUpdate} type='items' name='tags' showSuggested={false}/>
           </div>
           { !isNewVacancy ? <div className="status">Статус: {labelForVacancyStatus[vacancy.status]}</div> : null }
           <PaymentExpectations expectations={expectations} handleExpectationsChange={handlePaymentChange} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='', type='items', name='list', suggested=[], role='' }) => {
+export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='', type='items', name='list', suggested=[], role='', showSuggested=false }) => {
   const [items, setItems] = useState([]);
   const [inputText, setInputText] = useState('');
   const [inputValue, setInputValue] = useState(initialValue);
@@ -42,15 +42,14 @@ export const List = ({ onAfterUpdate, initialItems=[], values=[], initialValue='
 
   return (
     <div className='custom-list'>
-      {
-        suggested && suggested.length ? (
+      { showSuggested ? (
           <div className='typical'>
-            Наприклад{role ? `, для ${role}` : ''}:
+            Наприклад{role ? `, для вакансії "${role}"` : ''}:
             <div className='typical-examples'>
             {
-              suggested.map((s, i) => (
+              suggested && suggested.length ? suggested.map((s, i) => (
                 <div className='example' key={s+i+Date.now()} onClick={() => setInputText(s)}>{s}</div>
-              ))
+              )) : null
             }
             </div>
           </div>

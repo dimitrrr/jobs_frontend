@@ -9,11 +9,11 @@ import alertify from 'alertifyjs';
 export const VacancyRow = ({ vacancy, updateVacancyStatus, isForEmployer = false, setVacancyToList = null, isSavedVacancy = true, isHiddenVacancy = true, onMoveToVacancy = null, showEmployeeButtons = true }) => {
   const CONTEXT = useContext(AppContext);
   const [state, setState] = useState({
-    isVacancySaved: CONTEXT.user.savedVacancies ? CONTEXT.user.savedVacancies.find(v => v._id === vacancy._id) : false,
-    isVacancyHidden: CONTEXT.user.savedVacancies ? CONTEXT.user.hiddenVacancies.find(v => v._id === vacancy._id) : false,
-    candidates: vacancy.candidates,
+    isVacancySaved: CONTEXT.user.savedVacancies ? CONTEXT.user.savedVacancies.find(v => v._id === vacancy?._id) : false,
+    isVacancyHidden: CONTEXT.user.savedVacancies ? CONTEXT.user.hiddenVacancies.find(v => v._id === vacancy?._id) : false,
+    candidates: vacancy?.candidates || [],
     candidatesVisible: false,
-    status: vacancy.status,
+    status: vacancy?.status || 'removed',
   });
   const navigate = useNavigate();
 
