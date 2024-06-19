@@ -247,7 +247,7 @@ export const Vacancy = () => {
         { allCandidatesForVacancy ? <div className='total-candidates'>Відгукнулися: {allCandidatesForVacancy.length}</div> : null}
         <ul className="tags">{vacancy.tags.map(tag => <li key={tag.id}><a href='#' className='tag'>{tag.name}{tag.value ? `-${tag.value}` : ''}</a></li>)}</ul>
         <div className="text">{vacancy.text}</div>
-        <div className="testTaskLink">{vacancy.testTaskLink}</div>
+        <div className="testTaskLink">{ vacancy.testTaskLink ? <a href={vacancy.testTaskLink}>{vacancy.testTaskLink}</a> : null}</div>
         { isVacancyPayment ? <div className="payment">{paymentTypes[payment.type]}: {payment.min} - {payment.max}UAH</div> : null }
       </div>
       <hr className='divider'/>
